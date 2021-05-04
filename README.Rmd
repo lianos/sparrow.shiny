@@ -14,9 +14,9 @@ knitr::opts_chunk$set(
 
 # Overview
 
-The `multiGSEA.shiny` package provides an interactive shiny applications that
+The `sparrow.shiny` package provides an interactive shiny applications that
 enables users to explore the results of a gene set enrichment analysis performed
-[`multiGSEA`](https://github.com/lianos/multiGSEA).
+using the [sparrow](https://github.com/lianos/sparrow) package.
 
 # Usage
 
@@ -26,23 +26,24 @@ near future in the form of a vignette, or more likely a screen cast.
 In the meantime, this will just have to get you started:
 
 ```{r eval = FALSE}
-library(multiGSEA.shiny)
-vm <- exampleExpressionSet(dataset='tumor-vs-normal', do.voom=TRUE)
-mg <- multiGSEA(gdb, vm, vm$design, "tumor", methods=c("camera", "fry"))
-explore(mg)
+library(sparrow.shiny)
+vm <- exampleExpressionSet(dataset = 'tumor-vs-normal', do.voom = TRUE)
+sr <- seas(gdb, vm, vm$design, "tumor", methods = c("camera", "fry"))
+explore(sr)
 ```
 
 The `explore` function will launch the application and load it with the
-`MultiGSEAResult` object produced by the call to the `multiGSEA` function. You
-can then explore the results of the "camera" or "fry" analysis through there.
+`SparrowResult` object produced by the call to the `sparrow::seas()` function.
+You can then explore the results of the "camera" or "fry" analysis through
+there.
 
-Users can serialize `MultiGSEAResult` objects to `*.rds` files on their
+Users can serialize `SparrowResult` objects to `*.rds` files on their
 filesystem, which can also be loaded individually once the application is
 launched.
 
 # Application Deployment
 
-Analysts can simply launch the `multiGSEA.shiny::explore()` application from
+Analysts can simply launch the `sparrow.shiny::explore()` application from
 their workstation, however these applications can also be deployed to a shiny
 server.
 
@@ -66,14 +67,11 @@ Notes on setting up a ShinyProxy server on AWS are provided in the
 
 # Installation
 
-The multiGSEA suite of package will soon be submitted to bioconductor and
-installable via the recommended `biocLite` mechanism. In the meantime, these
+The sparrow suite of package will soon be submitted to bioconductor and
+installable via the recommended `BiocManager` mechanism. In the meantime, these
 packages can be installed like so:
 
 ```{r gh-installation, eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("lianos/multiGSEA")
-devtools::install_github("lianos/multiGSEA.shiny")
-devtools::install_github("lianos/GeneSetDb.MSigDB.Hsapiens.v61")
-devtools::install_github("lianos/GeneSetDb.MSigDB.Mmusculus.v61")
+# install.packages("remotes")
+remotes::install_github("lianos/sparrow.shiny")
 ```
