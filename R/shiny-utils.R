@@ -1,46 +1,45 @@
-##' Interactively explore a MultiGSEAResult via a shiny app
-##'
-##' @description
-##' This will launch a shiny application that enables exploratory analysis of
-##' the results from the different GSEA methods run within a
-##' \code{MultiGSEAResult}.
-##'
-##' Reference the "shiny-multiGSEA" vignette for more detailed documentation of
-##' the functionality provided by this application.
-##'
-##' @export
-##' @importFrom shiny runApp
-##' @param x A \code{MultiGSEAResult} object, or path to one as an *.rds. If
-##'   missing, the shiny app will load without a \code{MultiGSEAResult} object
-##'   to explore, and the user can upload one into the app.
-##' @examples
-##' \dontrun{
-##' vm <- exampleExpressionSet()
-##' gdb <- exampleGeneSetDb()
-##' mg <- multiGSEA(gdb, vm, vm$design, methods=c('camera', 'fry'))
-##' explore(mg)
-##' }
+#' Interactively explore a SparrowResult via a shiny app
+#'
+#' @description
+#' This will launch a shiny application that enables exploratory analysis of
+#' the results from the different GSEA methods run within a `SparrowResul`.
+#'
+#' Reference the "shiny-sparrow" vignette for more detailed documentation of
+#' the functionality provided by this application.
+#'
+#' @export
+#' @importFrom shiny runApp
+#' @param x A `SparrowResult` object, or path to one as an *.rds. If
+#'   missing, the shiny app will load without a `SparrowResult` object
+#'   to explore, and the user can upload one into the app.
+#' @examples
+#' \dontrun{
+#' vm <- exampleExpressionSet()
+#' gdb <- exampleGeneSetDb()
+#' sr <- seas(gdb, vm, vm$design, methods=c('camera', 'fry'))
+#' explore(sr)
+#' }
 explore <- function(x) {
   if (!missing(x)) {
     if (is.character(x)) x <- readRDS(x)
-    stopifnot(is(x, 'MultiGSEAResult'))
-    options(EXPLORE_MULTIGSEA_RESULT=x)
-    on.exit(options(EXPLORE_MULTIGSEA_RESULT=NULL))
+    stopifnot(is(x, 'SparrowResult'))
+    options(EXPLORE_SPARROW_RESULT=x)
+    on.exit(options(EXPLORE_SPARROW_RESULT=NULL))
   }
-  runApp(system.file('shiny', package='multiGSEA.shiny'))
+  runApp(system.file('shiny', package='sparrow.shiny'))
 }
 
-##' Adds a js$reset_<id>_<event>() to reset the selection on a plot
-##'
-##' selected elements stick on a plot even after it is redrawn, most of the
-##' times you don't want to do that.
-##'
-##' See:
-##' https://community.plot.ly/t/reseting-click-events/2718/2
-##' https://stackoverflow.com/questions/44412382/
-##'
-##' @noRd
-##' @importFrom shinyjs extendShinyjs js
+#' Adds a js$reset_<id>_<event>() to reset the selection on a plot
+#'
+#' selected elements stick on a plot even after it is redrawn, most of the
+#' times you don't want to do that.
+#'
+#' See:
+#' https://community.plot.ly/t/reseting-click-events/2718/2
+#' https://stackoverflow.com/questions/44412382/
+#'
+#' @noRd
+#' @importFrom shinyjs extendShinyjs js
 insertPlotlyReset <- function(source, event=c('hover', 'click', 'selected')) {
   stopifnot(is.character(source), length(source) == 1L)
   event <- match.arg(event)
@@ -55,25 +54,25 @@ insertPlotlyReset <- function(source, event=c('hover', 'click', 'selected')) {
 
 ## Gene Set Level Table Helpers ================================================
 
-##' Builds the table of GSEA statistics to present to the user
-##'
-##' @description
-##' The application will present the set of gene sets that pass a given
-##' \code{fdr} for a given \code{method} as a central piece of the UI. This
-##' function accepts those to arguments and prepares the statistics generated
-##' from the analysis for display.
-##'
-##' @export
-##' @param mg \code{MultiGSEAResult} object
-##' @param method the method to show statistics for
-##' @param fdr the FDR cut off to present statistics for
-##' @param prioritize the preffered collections to put at the top of the
-##'   list. The collection column of the table is turned into a factor and for
-##'   more usful display with datatable's filter. Specifcying collections
-##'   here will put those collections at the front of the factor levels and
-##'   therofre prioritize their display in the select dropdown for the filter
-##' @return a data.table of the statistics that match the filtering criteria.
-##'   A 0-row data.table is returned if nothing passes.
+#' Builds the table of GSEA statistics to present to the user
+#'
+#' @description
+#' The application will present the set of gene sets that pass a given
+#' \code{fdr} for a given \code{method} as a central piece of the UI. This
+#' function accepts those to arguments and prepares the statistics generated
+#' from the analysis for display.
+#'
+#' @export
+#' @param mg `SparrowResult` object
+#' @param method the method to show statistics for
+#' @param fdr the FDR cut off to present statistics for
+#' @param prioritize the preffered collections to put at the top of the
+#'   list. The collection column of the table is turned into a factor and for
+#'   more usful display with datatable's filter. Specifcying collections
+#'   here will put those collections at the front of the factor levels and
+#'   therofre prioritize their display in the select dropdown for the filter
+#' @return a data.table of the statistics that match the filtering criteria.
+#'   A 0-row data.table is returned if nothing passes.
 constructGseaResultTable <- function(mg, method, fdr, prioritize=c('h')) {
   out <- result(mg, method, as.dt=TRUE)
   out <- out[padj.by.collection <= fdr]
@@ -87,20 +86,20 @@ constructGseaResultTable <- function(mg, method, fdr, prioritize=c('h')) {
   out
 }
 
-##' Creates a DT::datatalbe of geneset level GSEA results for use in shiny bits
-##'
-##' @export
-##' @importFrom DT datatable
-##' @param x The set of GSEA statistics generated from from
-##'   \code{\link{constructGseaResultTable}}
-##' @param method the GSEA method being used fo rdisplay
-##' @param mg The \code{MultiGSEAResult} object. This is used swap in the
-##' URL links for genesets using \code{\link{geneSetURL}}.
-##' @return a DT::DataTable
+#' Creates a DT::datatable of geneset level GSEA results for use in shiny bits
+#'
+#' @export
+#' @importFrom DT datatable
+#' @param x The set of GSEA statistics generated from from
+#'   [constructGseaResultTable()]
+#' @param method the GSEA method being used fo rdisplay
+#' @param mg The `SparrowResult` object. This is used swap in the
+#' URL links for genesets using [sparrow::geneSetURL()].
+#' @return a DT::DataTable
 renderGseaResultTableDataTable <- function(x, method, mg, digits=3) {
   stopifnot(is(x, 'data.frame'))
   stopifnot(is.character(method) && length(method) == 1L)
-  stopifnot(is(mg, 'MultiGSEAResult'))
+  stopifnot(is(mg, 'SparrowResult'))
 
   x <- setDT(copy(x))
 
@@ -146,26 +145,26 @@ renderGseaResultTableDataTable <- function(x, method, mg, digits=3) {
   roundDT(out, digits=digits)
 }
 
-## Gene evel Table Helpers =====================================================
+# Gene evel Table Helpers =====================================================
 
-##' Transforms a column in feature table to an external link for that feature.
-##'
-##' @description
-##' When listing features in an interactive table, it's often useful to link
-##' the feature to an external webpage that has more information about that
-##' feature. Functions to genes to their NCBI or GeneCards webpage via their
-##' \code{feature_id} are provided via \code{ncbi.entrez.link} and
-##' \code{genecards.entrez.link}. The column used to transform into a link
-##' is specified by \code{link.col}.
-##'
-##' If \code{link.col} is not found in the data.frame \code{x} then the provided
-##' functions are NO-OPS, ie. the same data.frame is simply returned.
-##'
-##' @rdname feature-link-functions
-##' @export
-##' @param x a data.frame from \code{logFC(MultiGSEAResult)}
-##' @param link.col the column in \code{x} that should be transformed to a link
-##' @return a modified \code{x} with an html link in \code{link.col}
+#' Transforms a column in feature table to an external link for that feature.
+#'
+#' @description
+#' When listing features in an interactive table, it's often useful to link
+#' the feature to an external webpage that has more information about that
+#' feature. Functions to genes to their NCBI or GeneCards webpage via their
+#' `feature_id` are provided via `ncbi.entrez.link` and
+#' `genecards.entrez.link`. The column used to transform into a link
+#' is specified by `link.col`.
+#'
+#' If `link.col` is not found in the data.frame `x` then the provided
+#' functions are NO-OPS, ie. the same data.frame is simply returned.
+#'
+#' @rdname feature-link-functions
+#' @export
+#' @param x a data.frame from `SparrowResult`
+#' @param link.col the column in `x` that should be transformed to a link
+#' @return a modified `x` with an html link in `link.col`.
 ncbi.entrez.link <- function(x, link.col='symbol') {
   if (is.character(link.col) && is.character(x[[link.col]])) {
     url <- sprintf('https://www.ncbi.nlm.nih.gov/gene/%s', x$feature_id)
@@ -176,8 +175,8 @@ ncbi.entrez.link <- function(x, link.col='symbol') {
 }
 
 
-##' @rdname feature-link-functions
-##' @export
+#' @rdname feature-link-functions
+#' @export
 genecards.entrez.link <- function(x, link.col='symbol') {
   if (is.character(link.col) && is.character(x[[link.col]])) {
     url <- sprintf('http://www.genecards.org/cgi-bin/carddisp.pl?gene=%s',
@@ -188,35 +187,35 @@ genecards.entrez.link <- function(x, link.col='symbol') {
   x
 }
 
-##' Creates a DT::datatable of feature level statistics for use in shiny bits
-##'
-##' We often want to display an interactive table of feature level statistics
-##' for all features. This function is a convenience wrapper to do that.
-##'
-##' @export
-##' @param x A \code{MultiGSEAResult} or \code{data.frame} of feature level
-##'   statistics. When \code{x} is a \code{\link{MultiGSEAResult}}, the
-##'   \code{\link{logFC}} feature level statistics will be extracted for
-##'   display.
-##' @param features A character vector that specifies the subset of
-##'   \code{feature_id}'s to display from \code{x}. If \code{NULL} (default),
-##'   all of \code{x} will be used.
-##' @param digits number of digits to round the numeric columns to
-##' @param columns the columns from \code{x} to use. If \code{missing}, then
-##'   only \code{c('symbol', 'feature_id', 'logFC', 'pval', 'padj', order.by)}
-##'   will be used. If explicitly set to \code{NULL} all columns will be used.
-##'
-##' @param feature.link.fn A funcion that receives the data.frame of statistics
-##'   to be rendered and transforms one of its columns into a hyperlink for
-##'   further reference. Refer to the \code{\link{ncbi.entrez.link}} function
-##'   as an example
+#' Creates a DT::datatable of feature level statistics for use in shiny bits
+#'
+#' We often want to display an interactive table of feature level statistics
+#' for all features. This function is a convenience wrapper to do that.
+#'
+#' @export
+#' @param x A `SparrowResult` or `data.frame` of feature level
+#'   statistics. When `x` is a `SparrowResult`, the
+#'   `logFC` feature level statistics will be extracted for
+#'   display.
+#' @param features A character vector that specifies the subset of
+#'   `feature_id`'s to display from `x`. If `NULL` (default),
+#'   all of `x` will be used.
+#' @param digits number of digits to round the numeric columns to
+#' @param columns the columns from `x` to use. If `missing`, then
+#'   only `c('symbol', 'feature_id', 'logFC', 'pval', 'padj', order.by)`
+#'   will be used. If explicitly set to `NULL` all columns will be used.
+#'
+#' @param feature.link.fn A funcion that receives the data.frame of statistics
+#'   to be rendered and transforms one of its columns into a hyperlink for
+#'   further reference. Refer to the [ncbi.entrez.link()` function
+#'   as an example
 renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
                                         columns=NULL, feature.link.fn=NULL,
                                         order.by='logFC',
                                         order.dir=c('desc', 'asc'),
                                         filter='none',
                                         length.opts=c(10, 25, 50, 100, 250)) {
-  if (is(x, 'MultiGSEAResult')) {
+  if (is(x, 'SparrowResult')) {
     x <- copy(logFC(x, as.dt=TRUE))
   }
   stopifnot(is(x, 'data.table'), !is.null(x$feature_id))
@@ -288,18 +287,18 @@ renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
   roundDT(out)
 }
 
-##' Creates an HTML-ized version of \code{tabuleResults}
-##'
-##' The table produced here is broken into two sections (left and right). The
-##' left provides meta information about the geneset collections tested, ie.
-##' their names and number of genesets the contain. The right contains columns
-##' of results
-##'
-##' @export
-##' @importFrom shiny tags
-##' @return a \code{tagList} version of an HTML table for use in a shiny app
-summaryHTMLTable.multiGSEA <- function(x, names=resultNames(x), max.p, p.col) {
-  stopifnot(is(x, 'MultiGSEAResult'))
+#' Creates an HTML-ized version of \code{tabuleResults}
+#'
+#' The table produced here is broken into two sections (left and right). The
+#' left provides meta information about the geneset collections tested, ie.
+#' their names and number of genesets the contain. The right contains columns
+#' of results
+#'
+#' @export
+#' @importFrom shiny tags
+#' @return a \code{tagList} version of an HTML table for use in a shiny app
+summaryHTMLTable.sparrow <- function(x, names=resultNames(x), max.p, p.col) {
+  stopifnot(is(x, 'SparrowResult'))
   s <- tabulateResults(x, names, max.p, p.col)
 
   ## The header of this table is two rows
@@ -312,10 +311,10 @@ summaryHTMLTable.multiGSEA <- function(x, names=resultNames(x), max.p, p.col) {
     do.call(
       tags$tr,
       c(list(class='sub-header',
-             tags$th("Collection", class="multiGSEA-summary-meta"),
-             tags$th("Count", class="multiGSEA-summary-meta")),
+             tags$th("Collection"), # class="sparrow-summary-table"),
+             tags$th("Count")), # class="sparrow-summary-table")),
         lapply(names, function(name) {
-          target.dom.id <- paste0('multiGSEA-result-', name)
+          target.dom.id <- paste0('sparrow-result-', name)
           ## I wanted the headers that had the method names to link to the
           ## tab with the results, but that takes a bit more tweaking
           ## tags$th(tags$a(href=paste0('#', target.dom.id), name))
@@ -337,28 +336,28 @@ summaryHTMLTable.multiGSEA <- function(x, names=resultNames(x), max.p, p.col) {
     })
 
     do.call(tags$tr,
-            c(list(tags$td(sc$collection[1L], class='multiGSEA-summary-meta'),
-                   tags$td(sc$geneset_count[1L], class='multiGSEA-summary-meta')),
+            c(list(tags$td(sc$collection[1L]), # class='sparrow-summary-table'),
+                   tags$td(sc$geneset_count[1L])), # class='sparrow-summary-table')),
               mres))
   })
 
   tbody <- tags$tbody(tbody.rows)
-  html <- tags$div(class='multiGSEA-summary-table', tags$table(thead, tbody))
+  html <- tags$div(class='sparrow-summary-table', tags$table(thead, tbody))
 }
 
-##' Round the numeric columns of a DT
-##'
-##' @export
-##' @importFrom DT formatRound datatable
-##' @param x a DT::datatable
-##' @param digits the number of digits to round. If \code{NA}, then no rounding
-##'   is performed
-##' @return a rounded DT::datatable
-##' @examples
-##' \dontrun{
-##' df <- data.frame(a=rnorm(10), b=sample(letters, 10), c=rnorm(10))
-##' roundDT(datatable(df),  digits=2)
-##' }
+#' Round the numeric columns of a DT
+#'
+#' @export
+#' @importFrom DT formatRound datatable
+#' @param x a DT::datatable
+#' @param digits the number of digits to round. If \code{NA}, then no rounding
+#'   is performed
+#' @return a rounded DT::datatable
+#' @examples
+#' \dontrun{
+#' df <- data.frame(a=rnorm(10), b=sample(letters, 10), c=rnorm(10))
+#' roundDT(datatable(df),  digits=2)
+#' }
 roundDT <- function(x, digits=3) {
   stopifnot(is(x, "datatables"))
   if (is.na(digits)) {

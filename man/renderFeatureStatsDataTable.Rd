@@ -17,24 +17,24 @@ renderFeatureStatsDataTable(
 )
 }
 \arguments{
-\item{x}{A \code{MultiGSEAResult} or \code{data.frame} of feature level
-statistics. When \code{x} is a \code{\link{MultiGSEAResult}}, the
-\code{\link{logFC}} feature level statistics will be extracted for
+\item{x}{A `SparrowResult` or `data.frame` of feature level
+statistics. When `x` is a `SparrowResult`, the
+`logFC` feature level statistics will be extracted for
 display.}
 
 \item{features}{A character vector that specifies the subset of
-\code{feature_id}'s to display from \code{x}. If \code{NULL} (default),
-all of \code{x} will be used.}
+`feature_id`'s to display from `x`. If `NULL` (default),
+all of `x` will be used.}
 
 \item{digits}{number of digits to round the numeric columns to}
 
-\item{columns}{the columns from \code{x} to use. If \code{missing}, then
-only \code{c('symbol', 'feature_id', 'logFC', 'pval', 'padj', order.by)}
-will be used. If explicitly set to \code{NULL} all columns will be used.}
+\item{columns}{the columns from `x` to use. If `missing`, then
+only `c('symbol', 'feature_id', 'logFC', 'pval', 'padj', order.by)`
+will be used. If explicitly set to `NULL` all columns will be used.}
 
 \item{feature.link.fn}{A funcion that receives the data.frame of statistics
 to be rendered and transforms one of its columns into a hyperlink for
-further reference. Refer to the \code{\link{ncbi.entrez.link}} function
+further reference. Refer to the [ncbi.entrez.link()` function
 as an example}
 }
 \description{

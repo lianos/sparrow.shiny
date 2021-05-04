@@ -65,7 +65,7 @@ reactiveGeneSetSelect <- function(input, output, session, gdb = NULL, ...) {
     coll <- gscoll()
     name <- gsname()
     if (!unselected(coll) && !unselected(name)) {
-      out <- as_tibble(multiGSEA::geneSet(gdb., collection = coll, name = name))
+      out <- as_tibble(sparrow::geneSet(gdb., collection = coll, name = name))
       out <- select(out, feature_id)
     } else {
       out <- tibble(feature_id = character())

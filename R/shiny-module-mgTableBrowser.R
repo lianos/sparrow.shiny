@@ -1,29 +1,29 @@
-##' A module to explore the GSEA statistics generated from a multiGSEA Run.
-##'
-##' @description
-##' The UI is a DT::datatable of GSEA statistics for the selected method. The
-##' module returns a list with the following reactive elements:
-##'
-##' \describe{
-##'   \item{$stats}{
-##'     The table of gene sets and their statistics that pass the prescribed
-##'     \code{fdr} thershold
-##'   }
-##'   \item{$selected}{
-##'     The geneset that is currently "active"/selected by the user. This
-##'     is defined as \code{<collection>_::_<name>}
-##'   }
-##' }
-##'
-##' You probably want to \code{observeEvent(this$selected)} in your
-##' \code{server.R} (or similar) so you can react to user clicks on different
-##' gene sets
-##'
-##' @rdname mgTableBrowserModule
-##' @export
-##' @importFrom shiny tagList uiOutput NS
-##' @importFrom DT dataTableOutput
-##' @param id the shiny id of the UI module
+#' A module to explore the GSEA statistics generated from a sparrow::seas Run.
+#'
+#' @description
+#' The UI is a DT::datatable of GSEA statistics for the selected method. The
+#' module returns a list with the following reactive elements:
+#'
+#' \describe{
+#'   \item{$stats}{
+#'     The table of gene sets and their statistics that pass the prescribed
+#'     \code{fdr} thershold
+#'   }
+#'   \item{$selected}{
+#'     The geneset that is currently "active"/selected by the user. This
+#'     is defined as \code{<collection>_::_<name>}
+#'   }
+#' }
+#'
+#' You probably want to `observeEvent(this$selected)` in your
+#' `server.R` (or similar) so you can react to user clicks on different
+#' gene sets
+#'
+#' @rdname mgTableBrowserModule
+#' @export
+#' @importFrom shiny tagList uiOutput NS
+#' @importFrom DT dataTableOutput
+#' @param id the shiny id of the UI module
 mgTableBrowserUI <- function(id) {
   ns <- NS(id)
 
@@ -32,19 +32,19 @@ mgTableBrowserUI <- function(id) {
     DT::dataTableOutput(ns("gseaResultTable")))
 }
 
-##' @rdname mgTableBrowserModule
-##'
-##' @export
-##' @importFrom shiny reactive req renderUI tags
-##' @importFrom DT renderDataTable
-##' @param input shiny server input object
-##' @param output shiny server output object
-##' @param session shiny server session object
-##' @param mgc the \code{MultiGSEAResultContainer} object
-##' @param method a reactive that determines which method to explore from this
-##'   result
-##' @param fdr a reactive that gives the fdr threshold to filter results in the
-##'   table by.
+#' @rdname mgTableBrowserModule
+#'
+#' @export
+#' @importFrom shiny reactive req renderUI tags
+#' @importFrom DT renderDataTable
+#' @param input shiny server input object
+#' @param output shiny server output object
+#' @param session shiny server session object
+#' @param mgc the \code{SparrowResultContainer} object
+#' @param method a reactive that determines which method to explore from this
+#'   result
+#' @param fdr a reactive that gives the fdr threshold to filter results in the
+#'   table by.
 mgTableBrowser <- function(input, output, session, mgc, method, fdr,
                            server=TRUE) {
 

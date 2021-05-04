@@ -6,7 +6,7 @@
 \alias{updateGeneSetSelect}
 \alias{gs.render.select.ui}
 \alias{gs.select.choices}
-\title{A module that creates a dynamic selectizeInput for a MultiGSEAResult object}
+\title{A module that creates a dynamic selectizeInput for a SparrowResult object}
 \usage{
 geneSetSelectUI(id, label = "Select Gene Set")
 
@@ -43,27 +43,26 @@ gs.select.choices(mg, sep = "_::_")
 \arguments{
 \item{input, output, session}{the shiny-required bits for the module}
 
-\item{mgc}{A \code{\link{MultiGSEAResultContainer}} object}
+\item{mgc}{A [SparrowResultContainer()] object}
 
 \item{server}{\code{logical} to indicate whether options should be loaded
-on the server side (default: \code{TRUE})}
+on the server side (default: `TRUE`)}
 
 \item{maxOptions}{The maximum number of options to load into the dropdown}
 
 \item{sep}{the separater to put between the collection and name bits of a
 geneset. These are the values used in the gene set \code{selectizeInput}.}
 
-\item{choices}{the output of gs.select.choices(MultiGSEAResult)}
+\item{choices}{the output of gs.select.choices(SparrowResult)}
 
 \item{ns}{the namespace function for this module}
 
-\item{mg}{\code{MultiGSEAResult} to build options for}
+\item{mg}{`SparrowResult` to build options for}
 }
 \value{
-a properly wired \code{\link[shiny]{selectizeInput}}
+a properly wired `[shiny::selectizeInput()]`
 
-\code{data.table} to populate \code{choices} of
-  \code{selectizeInput}
+`data.table` to populate `choices` of `selectizeInput`
 }
 \description{
 This code was inspired from the
@@ -72,14 +71,10 @@ gist.
 
 Note that when returning a data.frame for the choices of a selectizeInput,
 we need a column called "value" and a column called "label".
-\itemize{
-  \item{value}{
-    the value that is sent back when an item is selected;
-  }
-  \item{label}{
-    the text that appears in the selection after its triggered
-  }
 }
+\details{
+* `value`: the value that is sent back when an item is selected
+* `label`: athe text that appears in the selection after its triggered
 }
 \section{Module Return}{
 

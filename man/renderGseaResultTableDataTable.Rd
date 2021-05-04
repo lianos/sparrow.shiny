@@ -2,22 +2,22 @@
 % Please edit documentation in R/shiny-utils.R
 \name{renderGseaResultTableDataTable}
 \alias{renderGseaResultTableDataTable}
-\title{Creates a DT::datatalbe of geneset level GSEA results for use in shiny bits}
+\title{Creates a DT::datatable of geneset level GSEA results for use in shiny bits}
 \usage{
 renderGseaResultTableDataTable(x, method, mg, digits = 3)
 }
 \arguments{
 \item{x}{The set of GSEA statistics generated from from
-\code{\link{constructGseaResultTable}}}
+[constructGseaResultTable()]}
 
 \item{method}{the GSEA method being used fo rdisplay}
 
-\item{mg}{The \code{MultiGSEAResult} object. This is used swap in the
-URL links for genesets using \code{\link{geneSetURL}}.}
+\item{mg}{The `SparrowResult` object. This is used swap in the
+URL links for genesets using [sparrow::geneSetURL()].}
 }
 \value{
 a DT::DataTable
 }
 \description{
-Creates a DT::datatalbe of geneset level GSEA results for use in shiny bits
+Creates a DT::datatable of geneset level GSEA results for use in shiny bits
 }

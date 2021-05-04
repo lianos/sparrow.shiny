@@ -1,8 +1,8 @@
 ---
-title: "Interactive Exploration MultiGSEAResults with multiGSEA.shiny"
+title: "Interactive Exploration SparrowResults with sparrow.shiny"
 author: "Steve Lianoglou"
 date: "`r BiocStyle::doc_date()`"
-package: "`r BiocStyle::pkg_ver('multiGSEA.shiny')`"
+package: "`r BiocStyle::pkg_ver('sparrow.shiny')`"
 output:
   rmarkdown::html_document:
     self_contained: yes
@@ -10,38 +10,38 @@ output:
     toc: true
     fig_width: 5
 vignette: >
-  %\VignetteIndexEntry{Interactive Exploration MultiGSEAResults with multiGSEA.shiny}
+  %\VignetteIndexEntry{Interactive Exploration SparrowResults with sparrow.shiny}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding[utf8]{inputenc}
 ---
 
 # Overview
 
-One of the main functionalities provided by the multiGSEA package is the
-\code{multiGSEA} function itself which provides a container that holds the
+One of the main functionalities provided by the sparrow package is the
+`seas()` function, which provides a container that holds the
 results of the variety of gene set enrichement analyses performed by the
 function as well as the differential expression results generated for the
 sampe comparison.
 
 This package provides a number of shiny modules that are stitched together
-into an app invoked by the \code{explore} function which allows the user
+into an app invoked by the `explore` function which allows the user
 to interactively explore the gene set enrichment analysis results from each
 of the individual methods as well as the individual gene level differential
 expression statistics.
 
-You will first have to run `multiGSEA` on your dataset, or load a serialized
-version of it from your disk:
+You will first have to run `sparrow::seas()` on your dataset, or load a
+serialized version of it from your disk:
 
 ```{r}
-library(multiGSEA)
-library(multiGSEA.shiny)
-mg <- exampleMultiGSEAResult()
+library(sparrow)
+library(sparrow.shiny)
+sr <- exampleSparrowResult()
 ```
 
 Then invoke the `explore` method to look at the results
 
 ```{r, eval=FALSE}
-explore(mg)
+explore(sr)
 ```
 
 Every bit of this application is interactive. Go ahead and play with it while

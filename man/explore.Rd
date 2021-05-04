@@ -2,28 +2,27 @@
 % Please edit documentation in R/shiny-utils.R
 \name{explore}
 \alias{explore}
-\title{Interactively explore a MultiGSEAResult via a shiny app}
+\title{Interactively explore a SparrowResult via a shiny app}
 \usage{
 explore(x)
 }
 \arguments{
-\item{x}{A \code{MultiGSEAResult} object, or path to one as an *.rds. If
-missing, the shiny app will load without a \code{MultiGSEAResult} object
+\item{x}{A `SparrowResult` object, or path to one as an *.rds. If
+missing, the shiny app will load without a `SparrowResult` object
 to explore, and the user can upload one into the app.}
 }
 \description{
 This will launch a shiny application that enables exploratory analysis of
-the results from the different GSEA methods run within a
-\code{MultiGSEAResult}.
+the results from the different GSEA methods run within a `SparrowResul`.
 
-Reference the "shiny-multiGSEA" vignette for more detailed documentation of
+Reference the "shiny-sparrow" vignette for more detailed documentation of
 the functionality provided by this application.
 }
 \examples{
 \dontrun{
 vm <- exampleExpressionSet()
 gdb <- exampleGeneSetDb()
-mg <- multiGSEA(gdb, vm, vm$design, methods=c('camera', 'fry'))
-explore(mg)
+sr <- seas(gdb, vm, vm$design, methods=c('camera', 'fry'))
+explore(sr)
 }
 }

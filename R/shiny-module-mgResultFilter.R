@@ -30,7 +30,7 @@ mgResultFilterUI <- function(id, mg=NULL) {
 #' @importFrom shiny isolate reactive
 mgResultFilter <- function(input, output, session, mgc) {
 
-  # When the MultiGSEAResult changes, we want to update different aspects of
+  # When the SparrowResult changes, we want to update different aspects of
   # the application
   observeEvent(mgc(), {
     req(mgc())
@@ -41,7 +41,7 @@ mgResultFilter <- function(input, output, session, mgc) {
 
   output$gseaDownloadStats <- downloadHandler(
     filename=function() {
-      sprintf('multiGSEA-gsea-statistics-%s.csv', isolate(input$gseaMethod))
+      sprintf('sparrow-gsea-statistics-%s.csv', isolate(input$gseaMethod))
     },
     content=function(file) {
       write.csv(result(mgc()$mg, isolate(input$gseaMethod)), file,

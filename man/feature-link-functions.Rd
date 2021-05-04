@@ -10,21 +10,21 @@ ncbi.entrez.link(x, link.col = "symbol")
 genecards.entrez.link(x, link.col = "symbol")
 }
 \arguments{
-\item{x}{a data.frame from \code{logFC(MultiGSEAResult)}}
+\item{x}{a data.frame from `SparrowResult`}
 
-\item{link.col}{the column in \code{x} that should be transformed to a link}
+\item{link.col}{the column in `x` that should be transformed to a link}
 }
 \value{
-a modified \code{x} with an html link in \code{link.col}
+a modified `x` with an html link in `link.col`.
 }
 \description{
 When listing features in an interactive table, it's often useful to link
 the feature to an external webpage that has more information about that
 feature. Functions to genes to their NCBI or GeneCards webpage via their
-\code{feature_id} are provided via \code{ncbi.entrez.link} and
-\code{genecards.entrez.link}. The column used to transform into a link
-is specified by \code{link.col}.
+`feature_id` are provided via `ncbi.entrez.link` and
+`genecards.entrez.link`. The column used to transform into a link
+is specified by `link.col`.
 
-If \code{link.col} is not found in the data.frame \code{x} then the provided
+If `link.col` is not found in the data.frame `x` then the provided
 functions are NO-OPS, ie. the same data.frame is simply returned.
 }

@@ -36,10 +36,10 @@ updateActiveGeneSetInContrastView(session, viewer, geneset, mgc)
 
 \item{session}{the shiny-required bits for the module}
 
-\item{mgc}{A \code{\link{MultiGSEAResultContainer}} object}
+\item{mgc}{A [SparrowResultContainer()] object}
 
 \item{server}{\code{logical} to indicate whether options should be loaded
-on the server side (default: \code{TRUE})}
+on the server side (default: `TRUE`)}
 
 \item{maxOptions}{The maximum number of options to load into the dropdown}
 

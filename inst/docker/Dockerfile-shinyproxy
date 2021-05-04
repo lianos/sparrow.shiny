@@ -1,7 +1,7 @@
 ## layered ontop of lianos/multigsea so that the application can be deployed
 ## via shinyproxy
 
-FROM lianos/multigsea
+FROM lianos/sparrow
 LABEL maintainer="Steve Lianoglou (slianoglou@gmail.com)"
 
 # Tweak R_HOME/etc/Rprofile.site to customize `options` values.
@@ -21,14 +21,14 @@ COPY Rprofile.site /etc/R/Rprofile.site
 
 EXPOSE 3838
 
-CMD ["R", "-e", "multiGSEA.shiny::explore()"]
+CMD ["R", "-e", "sparrow.shiny::explore()"]
 
 # You then build this, like so:
 #
-#     $ docker build -f Dockerfile-shinyproxy -t lianos/multigsea-shinyproxy:latest .
+#     $ docker build -f Dockerfile-shinyproxy -t lianos/sparrow-shinyproxy:latest .
 #
 # Debugging applications that fail to launch:
 #
 # * Check if there are any errors when you launch manually:
-#   $ docker run -p 3838:3838 lianos/multigsea-shinyproxy
+#   $ docker run -p 3838:3838 lianos/sparrow-shinyproxy
 

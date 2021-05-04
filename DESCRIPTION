@@ -1,13 +1,13 @@
-Package: multiGSEA.shiny
+Package: sparrow.shiny
 Type: Package
-Title: Provides shiny components to visualize multilGSEA results
-Version: 0.1.15
+Title: Provides shiny components to visualize sparrow results
+Version: 0.99.0
 Authors@R: c(
     person("Steve", "Lianoglou", , "slianoglou@gmail.com", c("aut", "cre")),
     person("Denali Therapeutics", role = c("cph", "fnd"), comment = "2018+"),
     person("Genentech", role = c("cph", "fnd"), comment = "2014 - 2017"))
 Description: Provides shiny components to visualize and interact with gene set
-    enrichment analyses performed by the multiGSEA package.
+    enrichment analyses performed by the sparrow package.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -18,7 +18,7 @@ Imports:
     dtplyr,
     DT,
     miniUI,
-    multiGSEA (>= 0.13.9),
+    sparrow,
     plotly,
     readxl,
     shiny,
@@ -27,7 +27,6 @@ Imports:
     shinyWidgets,
     V8
 Remotes:
-    lianos/multiGSEA@develop,
-    lianos/multiGSEA.shiny@develop
+    lianos/sparrow@main,
 biocViews: DifferentialExpression, GeneExpression, GeneSetEnrichment, Pathways
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

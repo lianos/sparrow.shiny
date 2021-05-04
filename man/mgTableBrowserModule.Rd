@@ -3,7 +3,7 @@
 \name{mgTableBrowserUI}
 \alias{mgTableBrowserUI}
 \alias{mgTableBrowser}
-\title{A module to explore the GSEA statistics generated from a multiGSEA Run.}
+\title{A module to explore the GSEA statistics generated from a sparrow::seas Run.}
 \usage{
 mgTableBrowserUI(id)
 
@@ -18,7 +18,7 @@ mgTableBrowser(input, output, session, mgc, method, fdr, server = TRUE)
 
 \item{session}{shiny server session object}
 
-\item{mgc}{the \code{MultiGSEAResultContainer} object}
+\item{mgc}{the \code{SparrowResultContainer} object}
 
 \item{method}{a reactive that determines which method to explore from this
 result}
@@ -41,7 +41,7 @@ module returns a list with the following reactive elements:
   }
 }
 
-You probably want to \code{observeEvent(this$selected)} in your
-\code{server.R} (or similar) so you can react to user clicks on different
+You probably want to `observeEvent(this$selected)` in your
+`server.R` (or similar) so you can react to user clicks on different
 gene sets
 }

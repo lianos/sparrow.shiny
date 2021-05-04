@@ -7,7 +7,7 @@
 constructGseaResultTable(mg, method, fdr, prioritize = c("h"))
 }
 \arguments{
-\item{mg}{\code{MultiGSEAResult} object}
+\item{mg}{`SparrowResult` object}
 
 \item{method}{the method to show statistics for}
 
