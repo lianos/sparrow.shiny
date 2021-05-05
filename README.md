@@ -6,7 +6,16 @@
 The `sparrow.shiny` package provides an interactive shiny applications
 that enables users to explore the results of a gene set enrichment
 analysis performed using the
-[sparrow](https://github.com/lianos/sparrow) package.
+[sparrow](https://github.com/lianos/sparrow)
+
+Although this is a standalone package, it’s really only used as an
+“enhancement” to the sparrow package itself, as well as providing shiny
+modules to the
+[FacileAnalysis](https://github.com/facilebio/FacileAnalysis) package,
+too.
+
+All that of that is to say: there isn’t much end-user stuff here to play
+with.
 
 # Usage
 
@@ -16,12 +25,10 @@ the near future in the form of a vignette, or more likely a screen cast.
 In the meantime, this will just have to get you started:
 
 ``` r
-library(sparrow)
-library(sparrow.shiny)
-vm <- exampleExpressionSet(dataset = 'tumor-vs-normal', do.voom = TRUE)
-gdb <- exampleGeneSetDb()
-sr <- seas(gdb, vm, vm$design, "tumor", methods = c("camera", "fry"))
-explore(sr)
+vm <- sparrow::exampleExpressionSet(dataset = 'tumor-vs-normal', do.voom = TRUE)
+gdb <- sparrow::exampleGeneSetDb()
+sr <- sparrow::seas(gdb, vm, vm$design, "tumor", methods = c("camera", "fry"))
+sparrow.shiny::explore(sr)
 ```
 
 The `explore` function will launch the application and load it with the

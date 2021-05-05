@@ -16,7 +16,16 @@ knitr::opts_chunk$set(
 
 The `sparrow.shiny` package provides an interactive shiny applications that
 enables users to explore the results of a gene set enrichment analysis performed
-using the [sparrow](https://github.com/lianos/sparrow) package.
+using the [sparrow][]
+
+Although this is a standalone package, it's really only used as an "enhancement"
+to the sparrow package itself, as well as providing shiny modules to the
+[FacileAnalysis][] package, too.
+
+All that of that is to say: there isn't much end-user stuff here to play with.
+
+[sparrow]: https://github.com/lianos/sparrow
+[FacileAnalysis]: https://github.com/facilebio/FacileAnalysis
 
 # Usage
 
