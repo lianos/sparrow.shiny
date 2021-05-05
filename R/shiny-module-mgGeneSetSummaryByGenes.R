@@ -36,8 +36,8 @@ mgGeneSetSummaryByGene <- function(input, output, session, mgc,
     mg.fids <- intersect(fids, sparrow::featureIds(mg))
     if (length(mg.fids)) {
       out <- sparrow::geneSetSummaryByGenes(
-        mg, mg.fids, feature.rename='symbol',
-        method=method, max.p=max.p, as.dt=TRUE)
+        mg, mg.fids, feature.rename = 'symbol',
+        method = method, max.p = max.p, as.dt = TRUE)
       out <- out[order(n, decreasing=TRUE)]
     } else {
       out <- NULL
@@ -59,7 +59,7 @@ mgGeneSetSummaryByGene <- function(input, output, session, mgc,
         ngs <- nrow(genesets())
       }
     }
-    tags$p(sprintf('%d features selected across %d genesets', n, ngs))
+    shiny::tags$p(sprintf('%d features selected across %d genesets', n, ngs))
   })
 
   output$other_genesets <- DT::renderDataTable({

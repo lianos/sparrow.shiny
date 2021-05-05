@@ -4,7 +4,6 @@
 #' of iteself that will never trigger reactivity.
 #'
 #' @export
-#' @importFrom shiny observeEvent
 #' @param gdb A [reactiveGeneSetDb()] module, or `NULL`
 #' @return A list of geneset info and membersihp
 reactiveGeneSetSelect <- function(input, output, session, gdb = NULL, ...) {

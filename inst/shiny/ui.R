@@ -1,54 +1,64 @@
-shinyUI(fluidPage(
+shiny::shinyUI(fluidPage(
   title="Sparrow Explorer",
-  useShinyjs(),
-  tags$head(
-    tags$link(rel="stylesheet", type="text/css", href="dashboard.css"),
-    tags$link(rel="stylesheet", type="text/css", href="miniUI.css")
+  shinyjs::useShinyjs(),
+  shiny::tags$head(
+    shiny::tags$link(rel="stylesheet", type="text/css", href="dashboard.css"),
+    shiny::tags$link(rel="stylesheet", type="text/css", href="miniUI.css")
   ),
 
 
-  fluidRow(
-    column(3, wellPanel(fileInput("mgresult", 'Sparrow Result Upload'))),
-    column(9, wellPanel(mgResultFilterUI("mg_result_filter")))),
+  shiny::fluidRow(
+    shiny::column(
+      3,
+      shiny::wellPanel(shiny::fileInput("mgresult", 'Sparrow Result Upload'))),
+    shiny::column(
+      9,
+      shiny::wellPanel(sparrow.shiny::mgResultFilterUI("mg_result_filter")))),
 
-  tabsetPanel(
-    tabPanel(
+  shiny::tabsetPanel(
+    shiny::tabPanel(
       "Overview",
-      fluidRow(
-        column(
+      shiny::fluidRow(
+        shiny::column(
           12,
-          tags$div(style="margin-bottom: 10px; padding: 5px; background-color: white",
-                   title='GSEA Results',
-                   uiOutput("gseaMethodSummary"))))),
+          shiny::tags$div(
+            style="margin-bottom: 10px; padding: 5px; background-color: white",
+            title='GSEA Results',
+            shiny::uiOutput("gseaMethodSummary"))))),
 
-    tabPanel(
+    shiny::tabPanel(
       "GSEA Results",
-      fluidRow(
-        column(
-          5, style="padding: 0", wellPanel(geneSetContrastViewUI("geneset_viewer"))),
-        column(
-          7, mgTableBrowserUI("mg_table_browser"))),
-      fluidRow(
-        column(
+      shiny::fluidRow(
+        shiny::column(
+          5, style="padding: 0",
+          shiny::wellPanel(
+            sparrow.shiny::geneSetContrastViewUI("geneset_viewer"))),
+        shiny::column(
+          7,
+          sparrow.shiny::mgTableBrowserUI("mg_table_browser"))),
+      shiny::fluidRow(
+        shiny::column(
           12,
-          tags$h4("Other Gene Sets with Selected Genes"),
-          mgGeneSetSummaryByGeneUI('other_genesets_gsea')))
+          shiny::tags$h4("Other Gene Sets with Selected Genes"),
+          sparrow.shiny::mgGeneSetSummaryByGeneUI('other_genesets_gsea')))
       ),
 
-    tabPanel(
+    shiny::tabPanel(
       "Differential Gene Expression",
-      fluidRow(
-        column(5, mgVolcanoUI("dge_volcano")),
-        column(7,
-               tags$div(
-                 style="float:right",
-                 downloadButton('download_dge_stats', 'Download Statistics')),
-               DT::dataTableOutput("dge_volcano_genestats"))),
-      fluidRow(
-        column(
+      shiny::fluidRow(
+        shiny::column(
+          5,
+          sparrow.shiny::mgVolcanoUI("dge_volcano")),
+        shiny::column(
+          7,
+          shiny::tags$div(
+            style="float:right",
+            shiny::downloadButton('download_dge_stats', 'Download Statistics')),
+          DT::dataTableOutput("dge_volcano_genestats"))),
+      shiny::fluidRow(
+        shiny::column(
           12,
-          tags$h4("Other Gene Sets with Selected Genes"),
-          mgGeneSetSummaryByGeneUI('other_genesets_volcano'))))
+          shiny::tags$h4("Other Gene Sets with Selected Genes"),
+          sparrow.shiny::mgGeneSetSummaryByGeneUI('other_genesets_volcano'))))
   ) ## tabsetPanel
-
 ))

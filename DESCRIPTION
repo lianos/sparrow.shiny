@@ -14,8 +14,6 @@ LazyData: true
 Imports:
     checkmate,
     data.table,
-    dplyr,
-    dtplyr,
     DT,
     miniUI,
     sparrow,
@@ -24,8 +22,7 @@ Imports:
     shinydashboard,
     shinyjs (>= 2.0.0),
     shinyWidgets,
-    tools,
-    V8
+    tools
 Suggests:
     readxl
 Remotes:

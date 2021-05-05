@@ -5,9 +5,6 @@
 #' validation checks are implemented.
 #'
 #' @export
-#' @importFrom tools file_ext
-#' @importFrom shiny need observe observeEvent reactive reactiveValues validate
-#' @importFrom shinyjs toggleState
 #' @return A list of reactive components. `$gdb()` will be a GeneSetDb when
 #'   the user uploades a valid gene set definition file. Otherwise it will be
 #'   `NULL`.
@@ -20,10 +17,10 @@ userDefinedGeneSetDb <- function(input, output, session, ...) {
   state <- shiny::reactiveValues(
     dat = empty.def)
 
-  observeEvent(input$upload, {
+  shiny::observeEvent(input$upload, {
     type <- input$upload$type
     path <- input$upload$datapath
-    ext <- tolower(file_ext(path))
+    ext <- tolower(tools::file_ext(path))
 
     if (ext %in% c("xlsx", "xls")) {
       shiny::validate(

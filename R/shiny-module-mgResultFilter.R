@@ -24,8 +24,6 @@ mgResultFilterUI <- function(id, mg=NULL) {
 
 #' @export
 #' @rdname mgResultFilter
-#' @importFrom shiny observeEvent req updateSelectInput downloadHandler
-#' @importFrom shiny isolate reactive
 mgResultFilter <- function(input, output, session, mgc) {
 
   # When the SparrowResult changes, we want to update different aspects of

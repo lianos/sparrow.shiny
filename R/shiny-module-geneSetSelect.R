@@ -18,8 +18,6 @@ geneSetSelectUI <- function(id, label="Select Gene Set") {
 #' @export
 #' @rdname geneSetSelectModule
 #' @aliases geneSetSelect
-#' @importFrom shiny renderUI req observeEvent reactive
-#' @importFrom shiny updateSelectizeInput
 #'
 #' @param input,output,session the shiny-required bits for the module
 #' @param mgc A [SparrowResultContainer()] object
@@ -35,8 +33,13 @@ geneSetSelect <- function(input, output, session, mgc, server=TRUE,
   # Programmatically create the UI from the SparrowResults
   output$geneset_picker <- shiny::renderUI({
     shiny::req(mgc())
-    mo <- if (is.infinite(maxOptions)) nrow(sparrow::geneSets(mgc()$mg)) else maxOptions
-    gs.render.select.ui(session$ns, mgc()$choices, server=server, maxOptions=mo)
+    if (is.infinite(maxOptions)) {
+      mo <- nrow(sparrow::geneSets(mgc()$mg))
+    } else {
+      mo <- maxOptions
+    }
+    gs.render.select.ui(session$ns, mgc()$choices, server = server,
+                        maxOptions = mo)
   })
   shiny::outputOptions(output, "geneset_picker", suspendWhenHidden = FALSE)
 
@@ -47,30 +50,34 @@ geneSetSelect <- function(input, output, session, mgc, server=TRUE,
     }, priority = 5)
   }
 
-  vals <- reactive({
+  vals <- shiny::reactive({
     gs <- input$geneset
     if (is.null(gs) || length(gs) == 0 || nchar(gs) == 0) {
       # HACK, just put something here if it's not selectd
       # gs <- mgc()$choices$value[1L]
       coll <- name <- stats <- NULL
     } else {
-      info <- gs %>%
-        strsplit(sep, fixed=TRUE) %>%
-        unlist %>%
-        sapply(as.character) %>%
-        setNames(c('collection', 'name'))
+      info <- unlist(strsplit(gs, sep, fixed = TRUE))
+      info <- sapply(info, as.character)
+      names(info) <- c("collection", "name")
+
+      # info <- gs %>%
+      #   strsplit(sep, fixed=TRUE) %>%
+      #   unlist %>%
+      #   sapply(as.character) %>%
+      #   setNames(c('collection', 'name'))
       coll <- info[1L]
       name <- info[2L]
 
-      ## When this is used as a module in another application
-      ## (ie. FacileExplorer), it is possible that the GeneSetDb used
-      ## swaps from under our feet and the geneset (collection,name) you
-      ## had loaded in this UI element disappears. This should be caught
-      ## by some reactive expression upstream, but I can't get it to work,
-      ## (I thought the observeEvent(..., priority=5) would do the trick)
-      ## so I'm ensuring that the geneSet() call doesn't fail. If it does, it
-      ## means that geneset you are looking for disappeared, likely due to
-      ## the reason I stated above.
+      # When this is used as a module in another application
+      # (ie. FacileExplorer), it is possible that the GeneSetDb used
+      # swaps from under our feet and the geneset (collection,name) you
+      # had loaded in this UI element disappears. This should be caught
+      # by some reactive expression upstream, but I can't get it to work,
+      # (I thought the observeEvent(..., priority=5) would do the trick)
+      # so I'm ensuring that the geneSet() call doesn't fail. If it does, it
+      # means that geneset you are looking for disappeared, likely due to
+      # the reason I stated above.
       stats <- sparrow::failWith(NULL, {
         sparrow::geneSet(mgc()$mg, info[1L], info[2L], as.dt = TRUE)
       })
@@ -107,7 +114,6 @@ updateGeneSetSelect <- function(session, id, label=NULL, choices=NULL,
 #'
 #' @rdname geneSetSelectModule
 #'
-#' @importFrom shiny selectizeInput
 #' @param ns the namespace function for this module
 #' @param choices the output of gs.select.choices(SparrowResult)
 #' @param server \code{logical} to indicate whether options should be loaded

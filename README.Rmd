@@ -26,12 +26,10 @@ near future in the form of a vignette, or more likely a screen cast.
 In the meantime, this will just have to get you started:
 
 ```{r eval = FALSE, message=FALSE, warning=FALSE}
-library(sparrow)
-library(sparrow.shiny)
 vm <- sparrow::exampleExpressionSet(dataset = 'tumor-vs-normal', do.voom = TRUE)
 gdb <- sparrow::exampleGeneSetDb()
 sr <- sparrow::seas(gdb, vm, vm$design, "tumor", methods = c("camera", "fry"))
-explore(sr)
+sparrow.shiny::explore(sr)
 ```
 
 The `explore` function will launch the application and load it with the

@@ -30,87 +30,83 @@
 #'
 #' @rdname geneSetContrastViewModule
 #' @export
-#' @importFrom miniUI miniTabstripPanel miniTabPanel miniContentPanel
-#' @importFrom shiny NS tagList tags fluidRow column selectInput downloadButton
-#' @importFrom shiny icon downloadHandler
-#' @importFrom DT dataTableOutput
-#'
 #' @param id the shiny id of the module
 #' @param height,width the height and width of the module
 #' @return \code{geneSetContrastViewUI} returns tagList of html stuff to dump
 #'   into the UI.
 geneSetContrastViewUI <- function(id, height="590px", width="400px") {
-  ns <- NS(id)
+  ns <- shiny::NS(id)
 
-  tagList(
-    tags$div(
+  shiny::tagList(
+    shiny::tags$div(
       # class="gadget-container", style=paste("height:", height),
       class="gadget-container",
       style=sprintf("height: %s; width %s;", height, width),
-      tags$div(
+      shiny::tags$div(
         style="padding: 0 5px 0 5px",
         geneSetSelectUI(ns("gs_select"), "Select Gene Set")),
-      miniTabstripPanel(
-        miniTabPanel(
-          "Visualize", icon = icon("area-chart"),
-          miniContentPanel(
-            plotlyOutput(ns("gs_viz"), height="350px"),
+     miniUI::miniTabstripPanel(
+        miniUI::miniTabPanel(
+          "Visualize",
+          icon = shiny::icon("area-chart"),
+          miniUI::miniContentPanel(
+            plotly::plotlyOutput(ns("gs_viz"), height="350px"),
             # call with js$reset_gs_viz_selected()
             insertPlotlyReset('gs_viz', 'selected'),
-            fluidRow(
-              column(
+            shiny::fluidRow(
+              shiny::column(
                 8,
-                selectInput(ns("gs_viz_type"), NULL,
-                            c('boxplot', 'density'), 'density')),
-              column(
+                shiny::selectInput(ns("gs_viz_type"), NULL,
+                                   c('boxplot', 'density'), 'density')),
+              shiny::column(
                 4,
-                selectInput(ns("gs_viz_stat"), NULL,
-                            c('logFC'='logFC', 't-statistic'='t'), 'logFC'))
+                shiny::selectInput(ns("gs_viz_stat"), NULL,
+                                   c('logFC'='logFC', 't-statistic'='t'),
+                                   'logFC'))
             )
           )
         ), ## Viz miniTabPanel
-        miniTabPanel(
-          "Genes", icon = icon("table"),
-          miniContentPanel(
+        miniUI::miniTabPanel(
+          "Genes", icon = shiny::icon("table"),
+          miniUI::miniContentPanel(
             DT::dataTableOutput(ns("gs_members")),
-            downloadButton(ns("gs_gene_table"), 'Download'))
+            shiny::downloadButton(ns("gs_gene_table"), 'Download'))
         ) ## Members Table miniTabPanel
       ) ## miniTabstripPanel
     ) ## div.gadget-container
   ) ## tagList
 }
 
-##' @rdname geneSetContrastViewModule
-##' @export
-##' @importFrom shiny callModule reactive req downloadHandler outputOptions
-##' @importFrom DT renderDataTable
-##'
-##' @inheritParams geneSetSelect
-##' @return the \code{geneSetContrastView} module returns a reactive list,
-##'   with a \code{$gs} element that indicates the currently active geneset in
-##'   the `geneSetSelect` module, and a \code{$selected} element, a character
-##'   vector of feature_ids currently brushed in a contrast view.
+#' @rdname geneSetContrastViewModule
+#' @export
+#' @inheritParams geneSetSelect
+#' @return the \code{geneSetContrastView} module returns a reactive list,
+#'   with a \code{$gs} element that indicates the currently active geneset in
+#'   the `geneSetSelect` module, and a \code{$selected} element, a character
+#'   vector of feature_ids currently brushed in a contrast view.
 geneSetContrastView <- function(input, output, session, mgc,
                                 server=TRUE, maxOptions=Inf, sep="_::_",
                                 feature.link.fn=ncbi.entrez.link,
                                 itools=c('wheel_zoom', 'box_select', 'reset', 'save')) {
-  gs <- callModule(geneSetSelect, 'gs_select', mgc, server=server,
-                   maxOptions=maxOptions, sep=sep)
-  plt <- reactive({
-    coll <- req(gs()$collection)
-    name <- req(gs()$name)
+  gs <- shiny::callModule(
+    geneSetSelect, 'gs_select', mgc, server = server,
+    maxOptions = maxOptions, sep = sep)
+  plt <- shiny::reactive({
+    coll <- shiny::req(gs()$collection)
+    name <- shiny::req(gs()$name)
     ns <- session$ns
-    js$reset_gs_viz_selected()
+    shinyjs::js$reset_gs_viz_selected()
     sparrow::iplot(mgc()$mg, coll, name,
-                   value=input$gs_viz_stat,
-                   type=input$gs_viz_type, tools=itools,
-                   main=NULL, with.legend=FALSE, with.data=TRUE,
-                   shiny_source='gs_viz', width=350, height=350)
+                   value = input$gs_viz_stat,
+                   type = input$gs_viz_type,
+                   tools = itools,
+                   main = NULL, with.legend = FALSE, with.data = TRUE,
+                   shiny_source = 'gs_viz', width = 350, height = 350)
 
   })
 
-  selected_features <- reactive({
-    event <- event_data('plotly_selected', source='gs_viz')
+  selected_features <- shiny::reactive({
+    event <- plotly::event_data('plotly_selected', source='gs_viz')
     if (!is.null(event)) {
       out <- event$key
     } else {
@@ -119,53 +115,51 @@ geneSetContrastView <- function(input, output, session, mgc,
     out
   })
 
-  output$gs_viz <- renderPlotly({
-    req(plt())
+  output$gs_viz <- plotly::renderPlotly({
+    shiny::req(plt())
   })
 
-  # outputOptions(output, "gs_viz", suspendWhenHidden=FALSE)
+  # shiny::outputOptions(output, "gs_viz", suspendWhenHidden=FALSE)
 
   output$gs_members <- DT::renderDataTable({
-    req(gs())
-    gs.stats <- req(gs()$stats)
+    shiny::req(gs())
+    gs.stats <- shiny::req(gs()$stats)
     if (!is(gs.stats, 'data.table')) {
-      # browser()
       req(NULL)
     }
     renderFeatureStatsDataTable(gs.stats, feature.link.fn=feature.link.fn,
                                 filter='none')
-  }, server=server)
+  }, server = server)
 
-  output$gs_gene_table <- downloadHandler(
-    filename=function() {
+  output$gs_gene_table <- shiny::downloadHandler(
+    filename = function() {
       sprintf('sparrow-gene-statistics-%s_%s.csv', gs()$collection, gs()$name)
     },
-    content=function(file) {
-      write.csv(gs()$stats, file, row.names=FALSE)
+    content = function(file) {
+      write.csv(gs()$stats, file, row.names = FALSE)
     }
   )
 
-  outputOptions(output, "gs_gene_table", suspendWhenHidden=FALSE)
+  shiny::outputOptions(output, "gs_gene_table", suspendWhenHidden=FALSE)
 
-  vals <- reactive({
+  vals <- shiny::reactive({
     list(gs=gs, selected=selected_features)
   })
 
   return(vals)
 }
 
-##' @rdname geneSetContrastViewModule
+#' @rdname geneSetContrastViewModule
 is.geneSetContrastViewer <- function(x) {
   is(x, 'reactive') && is(x()$gs, 'reactive') && is(x()$selected, 'reactive')
 }
 
-##' @export
-##' @importFrom shiny withReactiveDomain
-##' @rdname geneSetContrastViewModule
+#' @export
+#' @rdname geneSetContrastViewModule
 updateActiveGeneSetInContrastView <- function(session, viewer, geneset, mgc) {
   stopifnot(is(mgc, 'SparrowResultContainer'))
   stopifnot(is.geneSetContrastViewer(viewer))
-  withReactiveDomain(session, {
+  shiny::withReactiveDomain(session, {
     # id <- req(viewer()$gs()$select.id)
     # 2016-12-23
     # Hack to enable this to work within arbitray module nesting levels.
@@ -177,9 +171,9 @@ updateActiveGeneSetInContrastView <- function(session, viewer, geneset, mgc) {
     # to be working here. (also, I doubt this paragraph will make sense when I
     # read it in a few months)
     modname <- sub('-test$', '', session$ns('test'))
-    id <- req(viewer()$gs()$select.id)
+    id <- shiny::req(viewer()$gs()$select.id)
     id <- sub(paste0(modname, '-'), '', id)
-    updateSelectizeInput(session, id, choices=mgc$choices,
-                         selected=geneset, server=TRUE)
+    shiny::updateSelectizeInput(
+      session, id, choices = mgc$choices, selected = geneset, server = TRUE)
   })
 }
