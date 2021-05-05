@@ -101,11 +101,11 @@ geneSetContrastView <- function(input, output, session, mgc,
     name <- req(gs()$name)
     ns <- session$ns
     js$reset_gs_viz_selected()
-    iplot(mgc()$mg, coll, name,
-          value=input$gs_viz_stat,
-          type=input$gs_viz_type, tools=itools,
-          main=NULL, with.legend=FALSE, with.data=TRUE,
-          shiny_source='gs_viz', width=350, height=350)
+    sparrow::iplot(mgc()$mg, coll, name,
+                   value=input$gs_viz_stat,
+                   type=input$gs_viz_type, tools=itools,
+                   main=NULL, with.legend=FALSE, with.data=TRUE,
+                   shiny_source='gs_viz', width=350, height=350)
 
   })
 

@@ -9,10 +9,10 @@ if (!interactive()) {
   # calls.
   #
   # Otherwise, this same global.R file is also launched via the call from
-  # multiGSEA.shiny::explore(), and I don't want these library calls to pollute
+  # sparrow.shiny::explore(), and I don't want these library calls to pollute
   # a users workspace.
-  library(multiGSEA)
-  library(multiGSEA.shiny)
+  library(sparrow)
+  library(sparrow.shiny)
   library(DT)
 
   ## Loading "standard" Libraries ------------------------------------------------

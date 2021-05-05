@@ -30,11 +30,11 @@ shiny:
       url: http://localhost:2375
       port-range-start: 20000
   apps:
-  - name: multiGSEA
-    display-name: multiGSEA Explorer
+  - name: sparrow
+    display-name: sparrow Explorer
     description: Application that enables interactive exploration of GSEA results.
-    docker-cmd: ["R", "-e", "multiGSEA.shiny::explore()"]
-    docker-image: lianos/multigsea-shinyproxy
+    docker-cmd: ["R", "-e", "sparrow.shiny::explore()"]
+    docker-image: lianos/sparrow-shinyproxy
     #groups: scientists, mathematicians
 logging:
   file:

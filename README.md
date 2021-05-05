@@ -16,8 +16,10 @@ the near future in the form of a vignette, or more likely a screen cast.
 In the meantime, this will just have to get you started:
 
 ``` r
+library(sparrow)
 library(sparrow.shiny)
 vm <- exampleExpressionSet(dataset = 'tumor-vs-normal', do.voom = TRUE)
+gdb <- exampleGeneSetDb()
 sr <- seas(gdb, vm, vm$design, "tumor", methods = c("camera", "fry"))
 explore(sr)
 ```
@@ -44,7 +46,7 @@ containerize and deploy this application in different contexts.
 
 The [`Dockerfile-base`](inst/docker/Dockerfile-base) creates a docker
 image that, when run, launches the shiny app on
-`http://container.ip/multiGSEA` (ie. `http://localhost/multiGSEA`).
+`http://container.ip/sparrow` (ie. `http://localhost/sparrow`).
 
 ## ShinyProxy
 

@@ -1,22 +1,22 @@
 shinyServer(function(input, output, session) {
-  ## If this application was invoked via explore(MultiGSEAResult), then
-  ## getOption(EXPLORE_MULTIGSEA_RESULT='path/to/result.rds') was set that
+  ## If this application was invoked via explore(SparrowResult), then
+  ## getOption(EXPLORE_SPARROW_RESULT='path/to/result.rds') was set that
   ## we can load, otherwise this will respond to a user upload.
   mgc <- reactive({
     ## Are we here because the user uploaded something, or did the user ask
-    ## to `explore(MultiGSEAResult)`? This implementation feels wrong, but ...
+    ## to `explore(SparrowResult)`? This implementation feels wrong, but ...
     if (is.null(input$mgresult)) {
-      mg <- getOption('EXPLORE_MULTIGSEA_RESULT', NULL)
-      res <- failWith(NULL, MultiGSEAResultContainer(mg), silent=TRUE)
+      mg <- getOption('EXPLORE_SPARROW_RESULT', NULL)
+      res <- sparrow::failWith(NULL, SparrowResultContainer(mg), silent=TRUE)
       return(res)
     }
     ## User uploaded a file
-    return(failWith(NULL, MultiGSEAResultContainer(input$mgresult$datapath)))
+    return(sparrow::failWith(NULL, SparrowResultContainer(input$mgresult$datapath)))
   })
 
   lfc <- reactive({
     lfc <- req(mgc()$mg)
-    lfc <- logFC(lfc, as.dt=TRUE)
+    lfc <- sparrow::logFC(lfc, as.dt=TRUE)
     lfc[order(logFC, decreasing=TRUE)]
   })
 
@@ -24,16 +24,16 @@ shinyServer(function(input, output, session) {
 
   ## Overview Tab ==============================================================
   output$gseaMethodSummary <- renderUI({
-    obj <- failWith(NULL, expr=mgc(), silent=TRUE)
-    if (!is(obj, 'MultiGSEAResultContainer')) {
+    obj <- sparrow::failWith(NULL, expr=mgc(), silent=TRUE)
+    if (!is(obj, 'SparrowResultContainer')) {
       tags$p(style="font-weight: bold; color: red",
-             "Upload the MultiGSEAResult object to initialize the application")
+             "Upload the SparrowResult object to initialize the application")
     } else {
       tagList(
         tags$h4("GSEA Analyses Overview"),
-        summaryHTMLTable.multiGSEA(mgc()$mg, mgc()$methods,
-                                   gs_result_filter()$fdr(),
-                                   p.col='padj.by.collection')
+        summaryHTMLTable.sparrow(obj$mg, obj$methods,
+                                 gs_result_filter()$fdr(),
+                                 p.col='padj.by.collection')
       )
     }
   })
@@ -78,7 +78,6 @@ shinyServer(function(input, output, session) {
     res <- res.all[, list(symbol, feature_id, logFC, pval, padj)]
 
     selected <- gene.volcano()
-    # browser()
     if (!is.null(selected)) {
       res <- subset(res, feature_id %in% selected$feature_id)
     }
@@ -88,7 +87,7 @@ shinyServer(function(input, output, session) {
 
   ## Respond to user click to download differential expression statistics
   output$download_dge_stats <- downloadHandler(
-    filename=function() "multiGSEA-feature-level-statistics.csv",
+    filename=function() "sparrow-feature-level-statistics.csv",
     content=function(file) write.csv(lfc(), file, row.names=FALSE))
 
   ## A table of other genesets that brushed genes in the contrast viewer

@@ -8,7 +8,6 @@
 #' the functionality provided by this application.
 #'
 #' @export
-#' @importFrom shiny runApp
 #' @param x A `SparrowResult` object, or path to one as an *.rds. If
 #'   missing, the shiny app will load without a `SparrowResult` object
 #'   to explore, and the user can upload one into the app.
@@ -23,10 +22,10 @@ explore <- function(x) {
   if (!missing(x)) {
     if (is.character(x)) x <- readRDS(x)
     stopifnot(is(x, 'SparrowResult'))
-    options(EXPLORE_SPARROW_RESULT=x)
-    on.exit(options(EXPLORE_SPARROW_RESULT=NULL))
+    options(EXPLORE_SPARROW_RESULT = x)
+    on.exit(options(EXPLORE_SPARROW_RESULT = NULL))
   }
-  runApp(system.file('shiny', package='sparrow.shiny'))
+  shiny::runApp(system.file("shiny", package = "sparrow.shiny"))
 }
 
 #' Adds a js$reset_<id>_<event>() to reset the selection on a plot
@@ -39,7 +38,6 @@ explore <- function(x) {
 #' https://stackoverflow.com/questions/44412382/
 #'
 #' @noRd
-#' @importFrom shinyjs extendShinyjs js
 insertPlotlyReset <- function(source, event=c('hover', 'click', 'selected')) {
   stopifnot(is.character(source), length(source) == 1L)
   event <- match.arg(event)
@@ -49,10 +47,12 @@ insertPlotlyReset <- function(source, event=c('hover', 'click', 'selected')) {
        // window.alert(jsid);
        Shiny.onInputChange(jsid, 'null'); }",
     source, event, event, source)
-  extendShinyjs(text=text, functions=sprintf("reset_%s_%s", source, event))
+  shinyjs::extendShinyjs(
+    text = text,
+    functions = sprintf("reset_%s_%s", source, event))
 }
 
-## Gene Set Level Table Helpers ================================================
+# Gene Set Level Table Helpers =================================================
 
 #' Builds the table of GSEA statistics to present to the user
 #'
@@ -74,7 +74,7 @@ insertPlotlyReset <- function(source, event=c('hover', 'click', 'selected')) {
 #' @return a data.table of the statistics that match the filtering criteria.
 #'   A 0-row data.table is returned if nothing passes.
 constructGseaResultTable <- function(mg, method, fdr, prioritize=c('h')) {
-  out <- result(mg, method, as.dt=TRUE)
+  out <- sparrow::result(mg, method, as.dt=TRUE)
   out <- out[padj.by.collection <= fdr]
   if (nrow(out)) {
     colls <- sort(unique(out$collection))
@@ -89,7 +89,6 @@ constructGseaResultTable <- function(mg, method, fdr, prioritize=c('h')) {
 #' Creates a DT::datatable of geneset level GSEA results for use in shiny bits
 #'
 #' @export
-#' @importFrom DT datatable
 #' @param x The set of GSEA statistics generated from from
 #'   [constructGseaResultTable()]
 #' @param method the GSEA method being used fo rdisplay
@@ -114,7 +113,7 @@ renderGseaResultTableDataTable <- function(x, method, mg, digits=3) {
   setnames(res, names(rcols), rcols)
 
   res[, name := {
-    url <- geneSetURL(mg, as.character(collection), name)
+    url <- sparrow::geneSetURL(mg, as.character(collection), name)
     xname <- gsub('_', ' ', name)
     html <- '<a href="%s" target="_blank">%s</a>'
     ifelse(is.na(url), xname, sprintf(html, url, xname))
@@ -129,20 +128,22 @@ renderGseaResultTableDataTable <- function(x, method, mg, digits=3) {
   length.opts <- c(length.opts, nrow(res))
 
   dt.opts <- list(
-    dom='ltpir',
-    order=dt.order,
-    scrollX=TRUE,
-    pageLength=length.opts[1L],
-    lengthMenu=length.opts)
+    dom = 'ltpir',
+    order = dt.order,
+    scrollX = TRUE,
+    pageLength = length.opts[1L],
+    lengthMenu = length.opts)
 
   setDF(res)
-  dtargs <- list(data=res, filter='top',
-                 selection=list(mode='single', selected=NA, target='row'),
-                 # extensions='Buttons',
-                 escape=FALSE, rownames=FALSE,
-                 options=dt.opts)
+  dtargs <- list(
+    data = res, filter = 'top',
+    selection = list(
+      mode = 'single', selected = NA, target='row'),
+    # extensions='Buttons',
+    escape = FALSE, rownames = FALSE,
+    options = dt.opts)
   out <- do.call(DT::datatable, dtargs)
-  roundDT(out, digits=digits)
+  roundDT(out, digits = digits)
 }
 
 # Gene evel Table Helpers =====================================================
@@ -216,7 +217,7 @@ renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
                                         filter='none',
                                         length.opts=c(10, 25, 50, 100, 250)) {
   if (is(x, 'SparrowResult')) {
-    x <- copy(logFC(x, as.dt=TRUE))
+    x <- copy(sparrow::logFC(x, as.dt = TRUE))
   }
   stopifnot(is(x, 'data.table'), !is.null(x$feature_id))
   order.dir <- match.arg(order.dir)
@@ -273,9 +274,9 @@ renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
   }
 
   dt.opts <- list(
-    pageLength=length.opts[1L],
-    lengthMenu=length.opts,
-    dom='ltipr')
+    pageLength = length.opts[1L],
+    lengthMenu = length.opts,
+    dom = 'ltipr')
 
   rename.cols <- c("FDR" = "padj")
   rename.cols <- rename.cols[rename.cols %in% colnames(x)]
@@ -295,18 +296,17 @@ renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
 #' of results
 #'
 #' @export
-#' @importFrom shiny tags
 #' @return a \code{tagList} version of an HTML table for use in a shiny app
-summaryHTMLTable.sparrow <- function(x, names=resultNames(x), max.p, p.col) {
+summaryHTMLTable.sparrow <- function(x, names = resultNames(x), max.p, p.col) {
   stopifnot(is(x, 'SparrowResult'))
-  s <- tabulateResults(x, names, max.p, p.col)
+  s <- sparrow::tabulateResults(x, names, max.p, p.col)
 
   ## The header of this table is two rows
-  thead <- tags$thead(
+  thead <- shiny::tags$thead(
     ## Super headers
-    tags$tr(class='super-header',
-            tags$th("Gene Sets", colspan="2"),
-            tags$th("Analysis Summary", colspan=length(names))),
+    shiny::tags$tr(class='super-header',
+                   shiny::tags$th("Gene Sets", colspan="2"),
+                   shiny::tags$th("Analysis Summary", colspan=length(names))),
     ## Sub headers
     do.call(
       tags$tr,
@@ -318,7 +318,7 @@ summaryHTMLTable.sparrow <- function(x, names=resultNames(x), max.p, p.col) {
           ## I wanted the headers that had the method names to link to the
           ## tab with the results, but that takes a bit more tweaking
           ## tags$th(tags$a(href=paste0('#', target.dom.id), name))
-          tags$th(name)
+          shiny::tags$th(name)
         })
       )))
 
@@ -331,24 +331,26 @@ summaryHTMLTable.sparrow <- function(x, names=resultNames(x), max.p, p.col) {
 
     mres <- lapply(names, function(name) {
       with(sc[sc[['method']] == name,,drop=FALSE], {
-        tags$td(sprintf("%d (%d up; %d down)", sig_count, sig_up, sig_down))
+        shiny::tags$td(sprintf("%d (%d up; %d down)", sig_count, sig_up, sig_down))
       })
     })
 
-    do.call(tags$tr,
-            c(list(tags$td(sc$collection[1L]), # class='sparrow-summary-table'),
-                   tags$td(sc$geneset_count[1L])), # class='sparrow-summary-table')),
-              mres))
+    do.call(
+      shiny::tags$tr,
+      c(list(shiny::tags$td(sc$collection[1L]), # class='sparrow-summary-table'),
+             shiny::tags$td(sc$geneset_count[1L])), # class='sparrow-summary-table')),
+        mres))
   })
 
-  tbody <- tags$tbody(tbody.rows)
-  html <- tags$div(class='sparrow-summary-table', tags$table(thead, tbody))
+  tbody <- shiny::tags$tbody(tbody.rows)
+  html <- shiny::tags$div(
+    class='sparrow-summary-table',
+    shiny::tags$table(thead, tbody))
 }
 
 #' Round the numeric columns of a DT
 #'
 #' @export
-#' @importFrom DT formatRound datatable
 #' @param x a DT::datatable
 #' @param digits the number of digits to round. If \code{NA}, then no rounding
 #'   is performed
@@ -368,7 +370,7 @@ roundDT <- function(x, digits=3) {
     is.numeric(x) && any(as.integer(x) != x, na.rm = TRUE)
   })
   if (any(round.me)) {
-    x <- formatRound(x, round.me, digits=digits)
+    x <- DT::formatRound(x, round.me, digits=digits)
   }
   x
 }

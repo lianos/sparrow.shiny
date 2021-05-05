@@ -15,10 +15,10 @@ SparrowResultContainer <- function(x) {
   } else if (is(x, 'GeneSetDb')) {
     ## Hack to init some shinybits that are useful to have ontop of a GeneSetDb
     ## (I feel horrible for having this)
-    fids <- featureIds(x)
+    fids <- sparrow::featureIds(x)
     fids <- setNames(rnorm(length(fids)), fids)
-    sr <- seas(x, fids, methods=NULL)
-  } else if (is(x, 'SparrowGSEAResult')) {
+    sr <- sparrow::seas(x, fids, methods=NULL)
+  } else if (is(x, 'SparrowResult')) {
     sr <- x
   } else {
     sr <- NULL
@@ -29,7 +29,7 @@ SparrowResultContainer <- function(x) {
   }
 
   methods <- local({
-    tmp <- resultNames(sr)
+    tmp <- sparrow::resultNames(sr)
     if (length(tmp) == 0L) {
       warning("No GSEA methods found in SparrowResult, ",
               "you can only make a geneSetSelectUI")
@@ -46,7 +46,7 @@ SparrowResultContainer <- function(x) {
 
   gs.choices <- gs.select.choices(sr)
 
-  out <- list(sr=sr, methods=methods, choices=gs.choices)
+  out <- list(mg = sr, methods = methods, choices = gs.choices)
   class(out) <- c('SparrowResultContainer', class(out))
   out
 }

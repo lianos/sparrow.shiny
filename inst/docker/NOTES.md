@@ -19,12 +19,10 @@ BiocManager::install(c(
     "goseq",
     "msigdbr",
     "knitr",
-    "org.Hs.eg.db",
-    "org.Mm.eg.db",
     "PANTHER.db",
     "reactome.db",
     "statmod",
     "webshot"))
 
-BiocManager::install("lianos/multiGSEA.shiny")
+BiocManager::install("lianos/sparrow.shiny")
 ```

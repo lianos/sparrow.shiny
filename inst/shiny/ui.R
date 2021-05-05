@@ -1,5 +1,5 @@
 shinyUI(fluidPage(
-  title="multiGSEA Explorer",
+  title="Sparrow Explorer",
   useShinyjs(),
   tags$head(
     tags$link(rel="stylesheet", type="text/css", href="dashboard.css"),
@@ -8,7 +8,7 @@ shinyUI(fluidPage(
 
 
   fluidRow(
-    column(3, wellPanel(fileInput("mgresult", 'multiGSEA Result Upload'))),
+    column(3, wellPanel(fileInput("mgresult", 'Sparrow Result Upload'))),
     column(9, wellPanel(mgResultFilterUI("mg_result_filter")))),
 
   tabsetPanel(

@@ -1,5 +1,5 @@
-## This creates a Docker image that will make the multiGSEA.shiny::explore()
-## application available on http://localhost/multiGSEA
+## This creates a Docker image that will make the sparrow.shiny::explore()
+## application available on http://localhost/sparrow
 ##
 ## tips: http://tamaszilagyi.com/blog/dockerized-shiny-app-development/
 
@@ -21,16 +21,15 @@ RUN apt-get update && apt-get install -y \
 
 ## multiGSEA and friends dependencies are fully specified in their
 ## `Depends:` and `Imports:`, so this should suffice:
-RUN Rscript -e "source('https://bioconductor.org/biocLite.R'); \
-    biocLite(c(\
+RUN Rscript -e "install.packages('BiocManager'); \
+    BiocManager(c(\
       'remotes', \
       'statmod', \
       'webdriver', \
       'devtools', \
-      'lianos/multiGSEA', \
-      'lianos/multiGSEA.shiny',  \
-      'lianos/GeneSetDb.MSigDB.Hsapiens.v61', \
-      'lianos/GeneSetDb.MSigDB.Mmusculus.v61'))" \
+      'igordot/msigdbr', \
+      'lianos/sparrow', \
+      'lianos/sparrow.shiny'))" \
   && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
 ## install phantomjs
@@ -39,13 +38,13 @@ RUN Rscript -e "webdriver::install_phantomjs()"
 ## Copy the shiny application files to a multiGSEA subdirectory of the
 ## directory that shiny is serving apps from (/srv/shiny-server)
 RUN cp -Rf \
-  `Rscript -e "cat(system.file('shiny', package = 'multiGSEA.shiny'))"` \
-  /srv/shiny-server/multiGSEA
-RUN chmod -Rf 755 /srv/shiny-server/multiGSEA
+  `Rscript -e "cat(system.file('shiny', package = 'sparrow.shiny'))"` \
+  /srv/shiny-server/sparrow
+RUN chmod -Rf 755 /srv/shiny-server/sparrow
 
 # You then build this, like so:
 #
-#     $ docker build -f Dockerfile-base -t lianos/multigsea:latest .
+#     $ docker build -f Dockerfile-base -t lianos/sparrow:latest .
 #
 # Then run it like so:
 #
@@ -57,7 +56,7 @@ RUN chmod -Rf 755 /srv/shiny-server/multiGSEA
 #
 # And you can acces the multiGSEA shiny app like so:
 #
-#     http://localhost/multiGSEA
+#     http://localhost/sparrow
 #
 # once container is done you can remove it:
 #

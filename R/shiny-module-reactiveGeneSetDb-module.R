@@ -11,9 +11,6 @@
 #' it easier to develop within the FacieAnalysis shiny world.
 #'
 #' @export
-#' @importFrom shinyWidgets updatePickerInput
-#' @importFrom shiny updateSliderInput renderUI
-#'
 #' @param gdb A static or reactive GeneSetDb object
 #' @param min.gs.size,max.gs.size the default minimum and maximum geneset size
 #'   set in the UI when `gdb` is first loaded or changes (when reactive)
@@ -24,32 +21,32 @@ reactiveGeneSetDb <- function(input, output, session, gdb,
   min.gs.size <- assert_number(round(min.gs.size), lower = 2L, null.ok = FALSE)
   max.gs.size <- assert_number(round(max.gs.size), lower = 2L, null.ok = TRUE)
 
-  state <- reactiveValues(
+  state <- shiny::reactiveValues(
     gdb = NULL,
     min.gs.size = min.gs.size,
     max.gs.size = max.gs.size)
 
-  rgdb <- reactive({
+  rgdb <- shiny::reactive({
     gdb. <- if (is(gdb, "reactive")) gdb() else gdb
     assert_class(gdb., "GeneSetDb")
     gdb.
   })
 
-  observe({
+  shiny::observe({
     gs.range <- input$size
     if (state$min.gs.size != gs.range[1L]) state$min.gs.size <- gs.range[1L]
     if (state$min.gs.size != gs.range[2L]) state$max.gs.size <- gs.range[2L]
   })
 
-  rmin.gs.size <- reactive(state$min.gs.size)
-  rmax.gs.size <- reactive(state$max.gs.size)
+  rmin.gs.size <- shiny::reactive(state$min.gs.size)
+  rmax.gs.size <- shiny::reactive(state$max.gs.size)
 
-  observeEvent(rgdb(), {
+  shiny::observeEvent(rgdb(), {
     gdb. <- req(rgdb())
-    req(is(gdb., "GeneSetDb"))
+    shiny::req(is(gdb., "GeneSetDb"))
 
     # ........................................................ collection picker
-    gsets <- geneSets(gdb.)
+    gsets <- sparrow::geneSets(gdb.)
     min.n <- min(gsets$N)
     max.n <- max(gsets$N)
     colls.all <- unique(gsets$collection)
@@ -62,7 +59,7 @@ reactiveGeneSetDb <- function(input, output, session, gdb,
     gs.count <- table(gsets$collection)
     names(colls.all) <- sprintf("%s [%d total gene sets]", colls.all,
                                 gs.count[colls.all])
-    updatePickerInput(
+    shinyWidgets::updatePickerInput(
       session,
       "collections",
       choices = colls.all,
@@ -81,21 +78,22 @@ reactiveGeneSetDb <- function(input, output, session, gdb,
     }
     state$min.gs.size <- min.val
     state$max.gs.size <- max.val
-    updateSliderInput(session, "size", min = min.n, max = max.n,
+    shiny::updateSliderInput(session, "size", min = min.n, max = max.n,
                       value = c(min.n, max.n))
   })
 
-  genesets <- reactive({
+  genesets <- shiny::reactive({
     selected.colls <- input$collections
-    gdb. <- req(rgdb())
-    req(is(gdb., "GeneSetDb"))
-    gsets <- geneSets(gdb.) %>%
-      filter(collection %in% selected.colls,
-             N >= rmin.gs.size(), N <= rmax.gs.size())
+    gdb. <- shiny::req(rgdb())
+    shiny::req(is(gdb., "GeneSetDb"))
+    gsets <- sparrow::geneSets(gdb.) %>%
+      subset(collection %in% selected.colls &
+               N >= rmin.gs.size() &
+               N <= rmax.gs.size())
     gsets
   })
 
-  output$gscount <- renderUI({
+  output$gscount <- shiny::renderUI({
     tags$span(nrow(genesets()))
   })
 
@@ -113,19 +111,17 @@ reactiveGeneSetDb <- function(input, output, session, gdb,
 #' UI components to filter a GeneSetDb by collection and set size
 #'
 #' @export
-#' @importFrom shiny NS tagList sliderInput uiOutput
-#' @importFrom shinyWidgets pickerInput
 reactiveGeneSetDbFilterUI <- function(id, min = 2, max = 100L, ...) {
-  ns <- NS(id)
+  ns <- shiny::NS(id)
 
-  tagList(
+  shiny::tagList(
     tags$p(
       tags$span("Gene Sets Selected:",
                 style = "font-weight: bold; color: #FF7F00"),
-      uiOutput(ns("gscount"), inline = TRUE)),
-    sliderInput(ns("size"), "Set Size", min = min, max = max,
-                value = c(min, max)),
-    pickerInput(
+      shiny::uiOutput(ns("gscount"), inline = TRUE)),
+    shiny::sliderInput(ns("size"), "Set Size", min = min, max = max,
+                       value = c(min, max)),
+    shinyWidgets::pickerInput(
       ns("collections"),
       "Collections",
       choices = NULL,
@@ -147,7 +143,7 @@ reactiveGeneSetDbFilterUI <- function(id, min = 2, max = 100L, ...) {
 #' @export
 GeneSetDb.ReactiveGeneSetDb <- function(x, ...) {
   gdb <- x$gdb()
-  gsets.all <- geneSets(gdb)
+  gsets.all <- sparrow::geneSets(gdb)
   gsets.selected <- x$geneSets()
 
   keep <- is.element(

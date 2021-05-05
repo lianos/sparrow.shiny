@@ -1,29 +1,25 @@
 
-##' Module that displays gene sets related to (by membership) a set of genes.
-##' @export
-##' @importFrom shiny NS tagList checkboxInput uiOutput
-##' @importFrom DT dataTableOutput
-##' @rdname mgGeneSetSummaryByGene
+#' Module that displays gene sets related to (by membership) a set of genes.
+#' @export
+#' @rdname mgGeneSetSummaryByGene
 mgGeneSetSummaryByGeneUI <- function(id, mg=NULL) {
-  ns <- NS(id)
+  ns <- shiny::NS(id)
 
-  tagList(
-    checkboxInput(ns('genesets_sigonly'),
-                  'Show membership for significant gene sets only',
-                  value=TRUE, width="100%"),
-    uiOutput(ns('selected_message')),
+  shiny::tagList(
+    shiny::checkboxInput(ns('genesets_sigonly'),
+                         'Show membership for significant gene sets only',
+                         value=TRUE, width="100%"),
+    shiny::uiOutput(ns('selected_message')),
     DT::dataTableOutput(ns("other_genesets")))
 }
 
-##' @rdname mgGeneSetSummaryByGene
-##' @export
-##' @importFrom shiny reactive req renderUI tags
-##' @importFrom DT renderDataTable datatable
+#' @rdname mgGeneSetSummaryByGene
+#' @export
 mgGeneSetSummaryByGene <- function(input, output, session, mgc,
                                    features, method, fdr) {
-  genesets <- reactive({
-    fids <- req(features())
-    mg <- req(mgc()$mg)
+  genesets <- shiny::reactive({
+    fids <- shiny::req(features())
+    mg <- shiny::req(mgc()$mg)
 
     if (input$genesets_sigonly) {
       method <- method()
@@ -37,10 +33,11 @@ mgGeneSetSummaryByGene <- function(input, output, session, mgc,
       fids <- fids$feature_id
     }
 
-    mg.fids <- intersect(fids, featureIds(mg))
+    mg.fids <- intersect(fids, sparrow::featureIds(mg))
     if (length(mg.fids)) {
-      out <- geneSetSummaryByGenes(mg, mg.fids, feature.rename='symbol',
-                                   method=method, max.p=max.p, as.dt=TRUE)
+      out <- sparrow::geneSetSummaryByGenes(
+        mg, mg.fids, feature.rename='symbol',
+        method=method, max.p=max.p, as.dt=TRUE)
       out <- out[order(n, decreasing=TRUE)]
     } else {
       out <- NULL
@@ -48,8 +45,8 @@ mgGeneSetSummaryByGene <- function(input, output, session, mgc,
     out
   })
 
-  output$selected_message <- renderUI({
-    fids <- req(features())
+  output$selected_message <- shiny::renderUI({
+    fids <- shiny::req(features())
     if (is.null(fids)) {
       n <- 0L
       ngs <- 0L
@@ -66,12 +63,12 @@ mgGeneSetSummaryByGene <- function(input, output, session, mgc,
   })
 
   output$other_genesets <- DT::renderDataTable({
-    out <- copy(req(genesets()))
-    mg <- req(mgc()$mg)
+    out <- copy(shiny::req(genesets()))
+    mg <- shiny::req(mgc()$mg)
     out[, collection := factor(collection)]
     out[, active := NULL]
     out[, name := {
-      url <- geneSetURL(mg, as.character(collection), name)
+      url <- sparrow::geneSetURL(mg, as.character(collection), name)
       xname <- gsub('_', ' ', name)
       html <- '<a href="%s" target="_blank">%s</a>'
       ifelse(is.na(url), xname, sprintf(html, url, xname))
@@ -83,8 +80,8 @@ mgGeneSetSummaryByGene <- function(input, output, session, mgc,
                   rownames=FALSE, colnames=c("FDR"="padj"))
   })
 
-  ## Return the selected geneset
-  reactive({
+  # Return the selected geneset
+  shiny::reactive({
     idx <- input$other_genesets_row_last_clicked
     if (!is.null(idx)) {
       others <- genesets()

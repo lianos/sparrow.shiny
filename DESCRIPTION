@@ -20,13 +20,15 @@ Imports:
     miniUI,
     sparrow,
     plotly,
-    readxl,
     shiny,
     shinydashboard,
     shinyjs (>= 2.0.0),
     shinyWidgets,
+    tools,
     V8
+Suggests:
+    readxl
 Remotes:
-    lianos/sparrow@main,
+    lianos/sparrow,
 biocViews: DifferentialExpression, GeneExpression, GeneSetEnrichment, Pathways
 RoxygenNote: 7.1.1

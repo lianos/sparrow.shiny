@@ -21,22 +21,18 @@
 #'
 #' @rdname mgTableBrowserModule
 #' @export
-#' @importFrom shiny tagList uiOutput NS
-#' @importFrom DT dataTableOutput
 #' @param id the shiny id of the UI module
 mgTableBrowserUI <- function(id) {
-  ns <- NS(id)
+  ns <- shiny::NS(id)
 
-  tagList(
-    uiOutput(ns("resultTableMessage")),
+  shiny::tagList(
+    shiny::uiOutput(ns("resultTableMessage")),
     DT::dataTableOutput(ns("gseaResultTable")))
 }
 
 #' @rdname mgTableBrowserModule
 #'
 #' @export
-#' @importFrom shiny reactive req renderUI tags
-#' @importFrom DT renderDataTable
 #' @param input shiny server input object
 #' @param output shiny server output object
 #' @param session shiny server session object
@@ -49,8 +45,8 @@ mgTableBrowser <- function(input, output, session, mgc, method, fdr,
                            server=TRUE) {
 
   ## under the FDR threshold
-  gsea.result.table <- reactive({
-    mg <- req(mgc()$mg)
+  gsea.result.table <- shiny::reactive({
+    mg <- shiny::req(mgc()$mg)
     if (is.null(method()) || method() == "") {
       # msg("... gseaMethod not selected yet")
       return(NULL)
@@ -60,8 +56,8 @@ mgTableBrowser <- function(input, output, session, mgc, method, fdr,
     constructGseaResultTable(mg, method(), fdr())
   })
 
-  selected <- reactive({
-    tbl <- req(gsea.result.table())
+  selected <- shiny::reactive({
+    tbl <- shiny::req(gsea.result.table())
     idx <- input$gseaResultTable_row_last_clicked
     ## By defualt, if user doesn't click a row we will say that the first
     ## row is selected
@@ -73,8 +69,8 @@ mgTableBrowser <- function(input, output, session, mgc, method, fdr,
     paste(xcol, xname, sep='_::_')
   })
 
-  output$resultTableMessage <- renderUI({
-    gst <- req(gsea.result.table())
+  output$resultTableMessage <- shiny::renderUI({
+    gst <- shiny::req(gsea.result.table())
     if (!is(gst, 'data.frame')) {
       tmsg <- ''
     } else if (nrow(gst) == 0) {
@@ -83,14 +79,14 @@ mgTableBrowser <- function(input, output, session, mgc, method, fdr,
       tmsg <- sprintf('Showing %d genesets at FDR cutoff of %.2f',
                       nrow(gst), fdr())
     }
-    tags$h5(tmsg)
+    shiny::tags$h5(tmsg)
   })
 
   output$gseaResultTable <- DT::renderDataTable({
-    req(gsea.result.table(), mgc())
+    shiny::req(gsea.result.table(), mgc())
     renderGseaResultTableDataTable(gsea.result.table(), method(),
                                    mgc()$mg)
-  }, server=server)
+  }, server = server)
 
-  list(stats=gsea.result.table, selected=selected)
+  list(stats = gsea.result.table, selected = selected)
 }
