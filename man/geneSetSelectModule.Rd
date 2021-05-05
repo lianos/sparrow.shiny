@@ -78,6 +78,6 @@ we need a column called "value" and a column called "label".
 }
 \section{Module Return}{
 
-Returns information about the geneSetSelect object
+Returns information about the `geneSetSelect` object
 }
 

@@ -13,7 +13,7 @@ geneSetSelectUI <- function(id, label="Select Gene Set") {
 }
 
 #' @section Module Return:
-#' Returns information about the geneSetSelect object
+#' Returns information about the `geneSetSelect` object
 #'
 #' @export
 #' @rdname geneSetSelectModule

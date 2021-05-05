@@ -24,7 +24,7 @@ to the sparrow package itself, as well as providing shiny modules to the
 
 All that of that is to say: there isn't much end-user stuff here to play with.
 
-[sparrow]: https://github.com/lianos/sparrow
+[sparrow]: https://github.com/lianos/sparrow/actions
 [FacileAnalysis]: https://github.com/facilebio/FacileAnalysis
 
 # Usage
