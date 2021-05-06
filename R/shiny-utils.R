@@ -283,8 +283,9 @@ renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
   if (length(rename.cols) == 0) {
     rename.cols <- colnames(x)
   }
-  out <- DT::datatable(setDF(x), selection='none', escape=FALSE, rownames=FALSE,
-                       options=dt.opts, filter=filter, colnames=rename.cols)
+  out <- DT::datatable(
+    setDF(x), selection = 'none', escape = FALSE, rownames = FALSE,
+    options=dt.opts, filter = filter, colnames=rename.cols)
   roundDT(out)
 }
 

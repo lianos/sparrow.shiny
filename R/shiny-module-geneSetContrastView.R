@@ -87,6 +87,7 @@ geneSetContrastViewUI <- function(id, height="590px", width="400px") {
 geneSetContrastView <- function(input, output, session, mgc,
                                 server=TRUE, maxOptions=Inf, sep="_::_",
                                 feature.link.fn=ncbi.entrez.link,
+                                feature_table_filter = "none",
                                 itools=c('wheel_zoom', 'box_select', 'reset', 'save')) {
   gs <- shiny::callModule(
     geneSetSelect, 'gs_select', mgc, server = server,
@@ -128,7 +129,7 @@ geneSetContrastView <- function(input, output, session, mgc,
       req(NULL)
     }
     renderFeatureStatsDataTable(gs.stats, feature.link.fn=feature.link.fn,
-                                filter='none')
+                                filter = feature_table_filter)
   }, server = server)
 
   output$gs_gene_table <- shiny::downloadHandler(
