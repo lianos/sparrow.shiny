@@ -10,7 +10,7 @@ mgResultFilterUI <- function(id, mg=NULL) {
       shiny::column(
         5,
         shiny::selectInput(ns("gseaMethod"), "GSEA Method", "")),
-      column(
+      shiny::column(
         3,
         shiny::numericInput(ns("gseaReportFDR"), "FDR Cutoff", min = 0, max = 1,
                             value = 0.2, step = 0.05)),
