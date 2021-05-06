@@ -16,7 +16,7 @@ Imports:
     data.table,
     DT,
     miniUI,
-    sparrow,
+    sparrow (>= 0.98.0),
     plotly,
     shiny,
     shinydashboard,
