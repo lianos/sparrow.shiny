@@ -61,11 +61,6 @@ geneSetSelect <- function(input, output, session, mgc, server=TRUE,
       info <- sapply(info, as.character)
       names(info) <- c("collection", "name")
 
-      # info <- gs %>%
-      #   strsplit(sep, fixed=TRUE) %>%
-      #   unlist %>%
-      #   sapply(as.character) %>%
-      #   setNames(c('collection', 'name'))
       coll <- info[1L]
       name <- info[2L]
 

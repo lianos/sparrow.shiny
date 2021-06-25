@@ -18,6 +18,7 @@ geneSetContrastView(
   maxOptions = Inf,
   sep = "_::_",
   feature.link.fn = ncbi.entrez.link,
+  feature_table_filter = "none",
   itools = c("wheel_zoom", "box_select", "reset", "save")
 )
 

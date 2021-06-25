@@ -86,10 +86,12 @@ reactiveGeneSetDb <- function(input, output, session, gdb,
     selected.colls <- input$collections
     gdb. <- shiny::req(rgdb())
     shiny::req(is(gdb., "GeneSetDb"))
-    gsets <- sparrow::geneSets(gdb.) %>%
-      subset(collection %in% selected.colls &
-               N >= rmin.gs.size() &
-               N <= rmax.gs.size())
+    gsets <- sparrow::geneSets(gdb.)
+    gsets <- subset(
+      gsets,
+      collection %in% selected.colls &
+        N >= rmin.gs.size() &
+        N <= rmax.gs.size())
     gsets
   })
 
@@ -115,9 +117,9 @@ reactiveGeneSetDbFilterUI <- function(id, min = 2, max = 100L, ...) {
   ns <- shiny::NS(id)
 
   shiny::tagList(
-    tags$p(
-      tags$span("Gene Sets Selected:",
-                style = "font-weight: bold; color: #FF7F00"),
+    shiny::tags$p(
+      shiny::tags$span("Gene Sets Selected:",
+                       style = "font-weight: bold; color: #FF7F00"),
       shiny::uiOutput(ns("gscount"), inline = TRUE)),
     shiny::sliderInput(ns("size"), "Set Size", min = min, max = max,
                        value = c(min, max)),
