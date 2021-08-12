@@ -17,7 +17,7 @@ SparrowResultContainer <- function(x) {
     ## (I feel horrible for having this)
     fids <- sparrow::featureIds(x)
     fids <- setNames(rnorm(length(fids)), fids)
-    sr <- sparrow::seas(x, fids, methods=NULL)
+    sr <- sparrow::seas(fids, x, methods=NULL)
   } else if (is(x, 'SparrowResult')) {
     sr <- x
   } else {

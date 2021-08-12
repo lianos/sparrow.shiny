@@ -1,7 +1,7 @@
 Package: sparrow.shiny
 Type: Package
 Title: Provides shiny components to visualize sparrow results
-Version: 0.98.1
+Version: 0.98.2
 Authors@R: c(
     person("Steve", "Lianoglou", , "slianoglou@gmail.com", c("aut", "cre")),
     person("Denali Therapeutics", role = c("cph", "fnd"), comment = "2018+"),
