@@ -168,7 +168,7 @@ renderGseaResultTableDataTable <- function(x, method, mg, digits=3) {
 #' @return a modified `x` with an html link in `link.col`.
 ncbi.entrez.link <- function(x, link.col='symbol') {
   if (is.character(link.col) && is.character(x[[link.col]])) {
-    url <- sprintf('https://www.ncbi.nlm.nih.gov/gene/%s', x$feature_id)
+    url <- sprintf('https://www.ncbi.nlm.nih.gov/gene/?term=%s', x$feature_id)
     html <- sprintf('<a href="%s" target="_blank">%s</a>', url, x$symbol)
     x[[link.col]] <- html
   }
