@@ -12,7 +12,7 @@
 #'   missing, the shiny app will load without a `SparrowResult` object
 #'   to explore, and the user can upload one into the app.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' vm <- exampleExpressionSet()
 #' gdb <- exampleGeneSetDb()
 #' sr <- seas(gdb, vm, vm$design, methods=c('camera', 'fry'))
@@ -38,8 +38,10 @@ explore <- function(x) {
 #' https://stackoverflow.com/questions/44412382/
 #'
 #' @noRd
-insertPlotlyReset <- function(source, event=c('hover', 'click', 'selected')) {
-  stopifnot(is.character(source), length(source) == 1L)
+#' @param the name of the "shiny source" to add the reset for
+#' @param event clear the selection on which event?
+insertPlotlyReset <- function(source, event = c('hover', 'click', 'selected')) {
+  assert_string(source)
   event <- match.arg(event)
   text <- sprintf(
     "shinyjs.reset_%s_%s = function() {
@@ -54,26 +56,33 @@ insertPlotlyReset <- function(source, event=c('hover', 'click', 'selected')) {
 
 # Gene Set Level Table Helpers =================================================
 
-#' Builds the table of GSEA statistics to present to the user
+#' Builds the table of GSEA statistics to present to the user.
 #'
-#' @description
-#' The application will present the set of gene sets that pass a given
-#' \code{fdr} for a given \code{method} as a central piece of the UI. This
-#' function accepts those to arguments and prepares the statistics generated
-#' from the analysis for display.
+#' Creates a table gene set statistics genereated from a GSEA `method` for all
+#' gene sets with an FDR (by collection) less than given threshold.
 #'
 #' @export
 #' @param mg `SparrowResult` object
 #' @param method the method to show statistics for
 #' @param fdr the FDR cut off to present statistics for
-#' @param prioritize the preffered collections to put at the top of the
-#'   list. The collection column of the table is turned into a factor and for
-#'   more usful display with datatable's filter. Specifcying collections
+#' @param prioritize the preferred collections to put at the top of the
+#'   list. The collection column of the table is turned into a factor for
+#'   more useful display with datatable's filter. Specifcying collections
 #'   here will put those collections at the front of the factor levels and
 #'   therofre prioritize their display in the select dropdown for the filter
 #' @return a data.table of the statistics that match the filtering criteria.
 #'   A 0-row data.table is returned if nothing passes.
-constructGseaResultTable <- function(mg, method, fdr, prioritize=c('h')) {
+#' @examples
+#' sres <- sparrow::exampleSparrowResult()
+#' constructGseaResultTable(sres)
+constructGseaResultTable <- function(mg, method = sparrow::resultNames(mg)[1L],
+                                     fdr = 0.10, prioritize = NULL) {
+  assert_character(prioritize, null.ok = TRUE)
+  assert_number(fdr, lower = 0.01, upper = 1)
+
+  # silence R CMD check notes from data.table NSE mojo
+  padj.by.collection <- collection <- mean.logFC.trim <- NULL
+
   out <- sparrow::result(mg, method, as.dt=TRUE)
   out <- out[padj.by.collection <= fdr]
   if (nrow(out)) {
@@ -86,7 +95,10 @@ constructGseaResultTable <- function(mg, method, fdr, prioritize=c('h')) {
   out
 }
 
-#' Creates a DT::datatable of geneset level GSEA results for use in shiny bits
+#' Creates a DT::datatable of geneset level GSEA results for use in shiny bits.
+#'
+#' This function is closely tied to the exact output of the GSEA methods from
+#' the [sparrow::seas()].
 #'
 #' @export
 #' @param x The set of GSEA statistics generated from from
@@ -94,8 +106,14 @@ constructGseaResultTable <- function(mg, method, fdr, prioritize=c('h')) {
 #' @param method the GSEA method being used fo rdisplay
 #' @param mg The `SparrowResult` object. This is used swap in the
 #' URL links for genesets using [sparrow::geneSetURL()].
-#' @return a DT::DataTable
-renderGseaResultTableDataTable <- function(x, method, mg, digits=3) {
+#' @param digits the number of digits to round numer columns to.
+#' @return A [DT::datatable()] for display
+#' @examples
+#' sres <- sparrow::exampleSparrowResult()
+#' method <- sparrow::resultNames(sres)[1L]
+#' stable <- constructGseaResultTable(sres, method)
+#' renderGseaResultTableDataTable(stable, method, sres, digits = 2)
+renderGseaResultTableDataTable <- function(x, method, mg, digits = 3) {
   stopifnot(is(x, 'data.frame'))
   stopifnot(is.character(method) && length(method) == 1L)
   stopifnot(is(mg, 'SparrowResult'))
@@ -112,6 +130,8 @@ renderGseaResultTableDataTable <- function(x, method, mg, digits=3) {
   res <- x[, names(rcols), with=FALSE]
   setnames(res, names(rcols), rcols)
 
+  # silence R CMD check notes from data.table NSE mojo
+  name <- NULL
   res[, name := {
     url <- sparrow::geneSetURL(mg, as.character(collection), name)
     xname <- gsub('_', ' ', name)
@@ -146,22 +166,27 @@ renderGseaResultTableDataTable <- function(x, method, mg, digits=3) {
   roundDT(out, digits = digits)
 }
 
-# Gene evel Table Helpers =====================================================
+# Gene level Table Helpers =====================================================
 
-#' Transforms a column in feature table to an external link for that feature.
+#' Transform a column in feature table to web link for that feature.
 #'
 #' @description
 #' When listing features in an interactive table, it's often useful to link
 #' the feature to an external webpage that has more information about that
-#' feature. Functions to genes to their NCBI or GeneCards webpage via their
-#' `feature_id` are provided via `ncbi.entrez.link` and
-#' `genecards.entrez.link`. The column used to transform into a link
-#' is specified by `link.col`.
+#' feature. We include a series of functions to link entrez or ensembl id's
+#' to different web pages.
 #'
 #' If `link.col` is not found in the data.frame `x` then the provided
 #' functions are NO-OPS, ie. the same data.frame is simply returned.
 #'
+#' @details
+#' These were implemented a while ago when our world focused on entrez id's,
+#' we need to update.
+#'
 #' @rdname feature-link-functions
+.empty_link_function <- function() {}
+
+#' @describeIn feature-link-functions links gene to ncbi web site by entrez id.
 #' @export
 #' @param x a data.frame from `SparrowResult`
 #' @param link.col the column in `x` that should be transformed to a link
@@ -176,7 +201,8 @@ ncbi.entrez.link <- function(x, link.col='symbol') {
 }
 
 
-#' @rdname feature-link-functions
+#' @describeIn feature-link-functions links a gene row to the genecards website
+#'   by entrez id
 #' @export
 genecards.entrez.link <- function(x, link.col='symbol') {
   if (is.character(link.col) && is.character(x[[link.col]])) {
@@ -188,7 +214,7 @@ genecards.entrez.link <- function(x, link.col='symbol') {
   x
 }
 
-#' Creates a DT::datatable of feature level statistics for use in shiny bits
+#' Create a DT::datatable of feature level statistics for use in shiny bits
 #'
 #' We often want to display an interactive table of feature level statistics
 #' for all features. This function is a convenience wrapper to do that.
@@ -205,11 +231,13 @@ genecards.entrez.link <- function(x, link.col='symbol') {
 #' @param columns the columns from `x` to use. If `missing`, then
 #'   only `c('symbol', 'feature_id', 'logFC', 'pval', 'padj', order.by)`
 #'   will be used. If explicitly set to `NULL` all columns will be used.
-#'
-#' @param feature.link.fn A funcion that receives the data.frame of statistics
+#' @param feature.link.fn A function that receives the data.frame of statistics
 #'   to be rendered and transforms one of its columns into a hyperlink for
-#'   further reference. Refer to the [ncbi.entrez.link()` function
-#'   as an example
+#'   further reference. Refer to [ncbi.entrez.link()] as an example.
+#' @param filter passed to [DT::datatable()]
+#' @param length.opts parameter passed as an option to [DT::datatable()] that
+#'   specifies how long the table can be per page.
+#' @return A [DT::datatable()] of feature statistics
 renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
                                         columns=NULL, feature.link.fn=NULL,
                                         order.by='logFC',

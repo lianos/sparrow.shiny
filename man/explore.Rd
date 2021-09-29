@@ -19,7 +19,7 @@ Reference the "shiny-sparrow" vignette for more detailed documentation of
 the functionality provided by this application.
 }
 \examples{
-\dontrun{
+\donttest{
 vm <- exampleExpressionSet()
 gdb <- exampleGeneSetDb()
 sr <- seas(gdb, vm, vm$design, methods=c('camera', 'fry'))
