@@ -7,7 +7,10 @@
 initialized(x, ...)
 }
 \arguments{
-\item{a}{module}
+\item{x}{A thing used in a shiny environment that requires time to initialize
+before it can be used.}
+
+\item{...}{pass through}
 }
 \value{
 logical TRUE/FALSE

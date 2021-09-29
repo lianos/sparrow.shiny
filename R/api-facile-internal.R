@@ -1,8 +1,12 @@
-# This functions are defined in facilebio, but we don't want to rely on those.
+# This functions are defined in facilebio, but are redefined and kept internal
+# here. We define them like so because we don't want to add a facilebio
+# dependency.
 
 #' Tests if a module is initialized
 #'
-#' @param a module
+#' @param x A thing used in a shiny environment that requires time to initialize
+#'   before it can be used.
+#' @param ... pass through
 #' @return logical TRUE/FALSE
 initialized <- function(x, ...) {
   UseMethod("initialized", x)
@@ -26,6 +30,10 @@ initialized.ReactiveGeneSetDb <- function(x, ...) {
 #' functions can do that jusst once
 #'
 #' @param value The (character) object returned from a `selectInput`
+#' @param ignore strings that are included in a select box that define a
+#'   "not selected / active" state
+#' @return boolean flag used to indicate wether "this thing" has been set to
+#'   a specific state by the user.
 unselected <- function(value, ignore = c("---", "__initializing__", "")) {
   if (is.null(value)) return(TRUE)
   # Otherwise this is a character

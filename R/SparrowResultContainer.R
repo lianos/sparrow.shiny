@@ -1,11 +1,14 @@
-#' A wrapper for a SparrowResult that makes some shiny bits explicit
+#' A wrapper for a SparrowResult that makes some shiny bits explicit.
+#'
+#' This creates a "shiny facade" over our standard `SparrowResult` object
+#' returned from [sparrow::seas()].
 #'
 #' @export
 #' @param x A `[sparrow::SparrowResult()]` object, or a path to
 #'   an rds-serliazed one
 #' @return a `SparrowResultContainer` object
+#'
 SparrowResultContainer <- function(x) {
-  ## TODO: S4ize SparrowResultContainer
   if (is.character(x)) {
     ## Assume this is a file
     if (!file.exists(x)) {
@@ -13,8 +16,8 @@ SparrowResultContainer <- function(x) {
     }
     sr <- readRDS(x)
   } else if (is(x, 'GeneSetDb')) {
-    ## Hack to init some shinybits that are useful to have ontop of a GeneSetDb
-    ## (I feel horrible for having this)
+    # Hack to init some shinybits that are useful to have ontop of a GeneSetDb
+    # (I feel horrible for having this)
     fids <- sparrow::featureIds(x)
     fids <- setNames(rnorm(length(fids)), fids)
     sr <- sparrow::seas(fids, x, methods = NULL, min.gs.size = 1L)
@@ -35,8 +38,9 @@ SparrowResultContainer <- function(x) {
               "you can only make a geneSetSelectUI")
       out <- character()
     } else {
-      ## I am biased and prefer to show these methods first, if available
+      # I am biased and prefer to show these methods first, if available
       pref <- c('camera', 'cameraPR', 'fgsea',
+                'ora', 'ora.up', 'ora.down',
                 'goseq', 'goseq.up', 'goseq.down')
       pref <- pref[pref %in% tmp]
       out <- c(pref, setdiff(tmp, pref))

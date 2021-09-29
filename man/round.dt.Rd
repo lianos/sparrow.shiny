@@ -7,12 +7,12 @@
 \method{round}{dt}(x, digits = 3)
 }
 \arguments{
-\item{x}{a \code{data.table} like thing}
+\item{x}{a `data.table` like thing}
 
 \item{digits}{the number of digits to round to}
 }
 \value{
-the rounded \code{x}
+the rounded `x`
 }
 \description{
 Rounds every numeric column of a data.table to given precision

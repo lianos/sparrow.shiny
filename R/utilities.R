@@ -1,7 +1,7 @@
-##' Rounds every numeric column of a data.table to given precision
-##' @param x a \code{data.table} like thing
-##' @param digits the number of digits to round to
-##' @return the rounded \code{x}
+#' Rounds every numeric column of a data.table to given precision
+#' @param x a `data.table` like thing
+#' @param digits the number of digits to round to
+#' @return the rounded `x`
 round.dt <- function(x, digits=3) {
   stopifnot(is(x, 'data.table'))
   for (cname in names(x)[sapply(x, is.numeric)]) {

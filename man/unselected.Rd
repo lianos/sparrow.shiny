@@ -8,6 +8,13 @@ unselected(value, ignore = c("---", "__initializing__", ""))
 }
 \arguments{
 \item{value}{The (character) object returned from a `selectInput`}
+
+\item{ignore}{strings that are included in a select box that define a
+"not selected / active" state}
+}
+\value{
+boolean flag used to indicate wether "this thing" has been set to
+  a specific state by the user.
 }
 \description{
 Copied from FacileViz, but we don't want to depend on that.

@@ -1,5 +1,5 @@
-# This module enables *complete browsing* of the behavior of the genesets in
-# a SparrowResultContainer.
+# This module wraps a few internal ones to enables *complete browsing* of the
+# genesets in a `SparrowResultContainer`.
 #
 # Internally it consists of a geneSetSelect module, too.
 #
@@ -9,12 +9,10 @@
 
 #' A module to encapsulate browsing differential statistics of a geneset.
 #'
-#' @description
 #' The module is meant to be displayed in "a box" so that the user can examine
 #' the coherent (or not) behavior of the geneset across a contrast with respect
 #' to the background distribution of all genes in the contrast.
 #'
-#' @details
 #' Embedded within this module is the \code{\link{geneSetSelect}} module, which
 #' provides the list of genesets the user can examine, as well as the title of
 #' the current geneset under scrutiny.
@@ -24,16 +22,15 @@
 #' can pick the type of plot to show (density or boxplot) as well as which
 #' statistics to use for plotting (logFC or t-statistics).
 #'
-#' A \code{updateActiveGeneSetInContrastView} function is provided to enable
+#' A `updateActiveGeneSetInContrastView` function is provided to enable
 #' interactions external to this module the ability to update the geneset
-#' selected in the \code{\link{geneSetSelect}} module.
+#' selected in the [geneSetSelect()] module.
 #'
 #' @rdname geneSetContrastViewModule
 #' @export
 #' @param id the shiny id of the module
 #' @param height,width the height and width of the module
-#' @return \code{geneSetContrastViewUI} returns tagList of html stuff to dump
-#'   into the UI.
+#' @return A `tagList` of html stuff to dump into the UI.
 geneSetContrastViewUI <- function(id, height="590px", width="400px") {
   ns <- shiny::NS(id)
 
@@ -77,7 +74,9 @@ geneSetContrastViewUI <- function(id, height="590px", width="400px") {
   ) ## tagList
 }
 
-#' @rdname geneSetContrastViewModule
+#' @describeIn geneSetContrastViewModule creates a server module that includes
+#'   a geneset select dropdown, and a box to view the graphical result of the
+#'   GSEA contrast
 #' @export
 #' @inheritParams geneSetSelect
 #' @return the \code{geneSetContrastView} module returns a reactive list,
@@ -150,13 +149,17 @@ geneSetContrastView <- function(input, output, session, mgc,
   return(vals)
 }
 
-#' @rdname geneSetContrastViewModule
+#' @describeIn geneSetContrastViewModule Internal function that tests if
+#'   an object has all the shiny bits to be a geneSetContrastView.
 is.geneSetContrastViewer <- function(x) {
   is(x, 'reactive') && is(x()$gs, 'reactive') && is(x()$selected, 'reactive')
 }
 
 #' @export
-#' @rdname geneSetContrastViewModule
+#' @describeIn geneSetContrastViewModule allows you to update the active
+#'   geneset in a contrast view module externally.
+#' @param viewer a `geneSetContrastViewModule`
+#' @param geneset the key of a geneset to select
 updateActiveGeneSetInContrastView <- function(session, viewer, geneset, mgc) {
   stopifnot(is(mgc, 'SparrowResultContainer'))
   stopifnot(is.geneSetContrastViewer(viewer))
