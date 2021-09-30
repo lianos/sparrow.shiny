@@ -25,12 +25,14 @@ Imports:
     sparrow (>= 0.99.0),
     plotly,
     shiny,
-    shinydashboard,
     shinyjs (>= 2.0.0),
     shinyWidgets,
     tools
 Suggests:
-    readxl
+    BiocStyle,
+    dplyr,
+    rmarkdown,
+    testthat
 Remotes:
     lianos/sparrow,
 biocViews: GUI, DataRepresentation, ReportWriting

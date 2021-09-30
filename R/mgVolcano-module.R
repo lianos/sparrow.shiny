@@ -43,7 +43,7 @@ mgVolcano <- function(input, output, session,
                       tools=c('box_select', 'reset', 'save'),
                       width=NULL, height=NULL, highlight=reactive(NULL),
                       default_xhex=1, default_yhex=0.10, webgl = FALSE, ...) {
-  shinyjs::onclick("settings", toggle(id = "widgets", anim = TRUE))
+  shinyjs::onclick("settings", shinyjs::toggle(id = "widgets", anim = TRUE))
   if (missing(idx)) {
     if (stats == 'dge') idx <- 'feature_id'
   }
