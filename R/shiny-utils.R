@@ -21,7 +21,7 @@
 explore <- function(x) {
   if (!missing(x)) {
     if (is.character(x)) x <- readRDS(x)
-    stopifnot(is(x, 'SparrowResult'))
+    assert_class(x, 'SparrowResult')
     options(EXPLORE_SPARROW_RESULT = x)
     on.exit(options(EXPLORE_SPARROW_RESULT = NULL))
   }

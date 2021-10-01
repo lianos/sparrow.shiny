@@ -79,7 +79,7 @@ geneSetContrastViewUI <- function(id, height="590px", width="400px") {
 #'   a geneset select dropdown, and a box to view the graphical result of the
 #'   GSEA contrast
 #' @export
-#' @importFrom shiny reactive
+#' @importFrom shiny reactive req
 #' @inheritParams geneSetSelect
 #' @return the \code{geneSetContrastView} module returns a reactive list,
 #'   with a \code{$gs} element that indicates the currently active geneset in

@@ -9,6 +9,19 @@
 #'   the user uploades a valid gene set definition file. Otherwise it will be
 #'   `NULL`.
 userDefinedGeneSetDb <- function(input, output, session, ...) {
+  # I had this requireNamespace call only fire if a user uploaded an xlsx
+  # file, within the shiny::observeEvent(input$upload, { ... }), but
+  # R CMD check was giving me some type of grief about it not being imported
+  # when I then try to read the file with readxl::read_excel() as if I never
+  # tried to load it:
+  #
+  # ```
+  # Warning: '::' or ':::' import not declared from: ‘readxl’
+  # 'loadNamespace' or 'requireNamespace' call not declared from: ‘readxl’
+  # ```
+  #
+  # So I'm just importing it up top here, and will know if I can use it later.
+  xlsx.ok <- requireNamespace("readxl", quietly = TRUE)
 
   empty.def <- data.frame(
     collection = character(), name = character(), feature_id = character(),
@@ -24,9 +37,7 @@ userDefinedGeneSetDb <- function(input, output, session, ...) {
 
     if (ext %in% c("xlsx", "xls")) {
       shiny::validate(
-        shiny::need(
-          requireNamespace("readxl", quietly = TRUE),
-          "readxl package is required to upload Excel files"))
+        shiny::need(xlsx.ok, "readxl package required to upload Excel files"))
     } else {
       shiny::validate(
         shiny::need(

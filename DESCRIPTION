@@ -35,5 +35,6 @@ Suggests:
     testthat
 Remotes:
     lianos/sparrow,
+VignetteBuilder: knitr
 biocViews: GUI, DataRepresentation, ReportWriting
 RoxygenNote: 7.1.1
