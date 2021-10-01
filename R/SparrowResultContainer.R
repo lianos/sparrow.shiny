@@ -4,10 +4,10 @@
 #' returned from [sparrow::seas()].
 #'
 #' @export
+#' @importFrom sparrow seas
 #' @param x A `[sparrow::SparrowResult()]` object, or a path to
 #'   an rds-serliazed one
 #' @return a `SparrowResultContainer` object
-#'
 SparrowResultContainer <- function(x) {
   if (is.character(x)) {
     ## Assume this is a file

@@ -28,6 +28,7 @@
 #'
 #' @rdname geneSetContrastViewModule
 #' @export
+#' @importFrom shiny tagList tags
 #' @param id the shiny id of the module
 #' @param height,width the height and width of the module
 #' @return A `tagList` of html stuff to dump into the UI.
@@ -78,6 +79,7 @@ geneSetContrastViewUI <- function(id, height="590px", width="400px") {
 #'   a geneset select dropdown, and a box to view the graphical result of the
 #'   GSEA contrast
 #' @export
+#' @importFrom shiny reactive
 #' @inheritParams geneSetSelect
 #' @return the \code{geneSetContrastView} module returns a reactive list,
 #'   with a \code{$gs} element that indicates the currently active geneset in
