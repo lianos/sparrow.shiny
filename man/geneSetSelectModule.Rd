@@ -75,6 +75,8 @@ for details).}
 \item{mg}{`SparrowResult` to build options for}
 }
 \value{
+a reactive list of reactive elements
+
 a properly wired `[shiny::selectizeInput()]` UI element.
 
 `data.table` to populate `choices` of `selectizeInput`

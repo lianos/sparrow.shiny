@@ -7,7 +7,7 @@
 #' @export
 #' @rdname geneSetSelectModule
 #' @aliases geneSetSelectUI
-geneSetSelectUI <- function(id, label="Select Gene Set") {
+geneSetSelectUI <- function(id, label = "Select Gene Set") {
   ns <- shiny::NS(id)
   shiny::uiOutput(ns("geneset_picker"))
 }
@@ -30,6 +30,7 @@ geneSetSelectUI <- function(id, label="Select Gene Set") {
 #' @param sep the separater to put between the collection and name bits of a
 #'   geneset. These are the values used in the gene set `selectizeInput` to
 #'   create unique keys for each geneset.
+#' @return a reactive list of reactive elements
 geneSetSelect <- function(input, output, session, mgc, server=TRUE,
                           maxOptions=Inf, sep='_::_') {
   # Programmatically create the UI from the SparrowResults

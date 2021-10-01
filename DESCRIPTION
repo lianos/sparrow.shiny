@@ -34,6 +34,7 @@ Imports:
 Suggests:
     BiocStyle,
     dplyr,
+    knitr,
     readxl,
     rmarkdown,
     testthat

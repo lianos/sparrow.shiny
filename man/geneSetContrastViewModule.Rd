@@ -57,8 +57,8 @@ to generate a uniqe string for a geneset}
 \value{
 A `tagList` of html stuff to dump into the UI.
 
-the \code{geneSetContrastView} module returns a reactive list,
-  with a \code{$gs} element that indicates the currently active geneset in
+the `geneSetContrastView` module returns a reactive list,
+  with a `$gs` element that indicates the currently active geneset in
   the `geneSetSelect` module, and a \code{$selected} element, a character
   vector of feature_ids currently brushed in a contrast view.
 }

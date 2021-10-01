@@ -79,8 +79,8 @@ geneSetContrastViewUI <- function(id, height="590px", width="400px") {
 #'   GSEA contrast
 #' @export
 #' @inheritParams geneSetSelect
-#' @return the \code{geneSetContrastView} module returns a reactive list,
-#'   with a \code{$gs} element that indicates the currently active geneset in
+#' @return the `geneSetContrastView` module returns a reactive list,
+#'   with a `$gs` element that indicates the currently active geneset in
 #'   the `geneSetSelect` module, and a \code{$selected} element, a character
 #'   vector of feature_ids currently brushed in a contrast view.
 geneSetContrastView <- function(input, output, session, mgc,

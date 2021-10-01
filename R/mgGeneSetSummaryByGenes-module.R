@@ -1,19 +1,11 @@
-
-#' Module that displays gene sets related to (by membership) a set of genes.
-#' @export
-#' @rdname mgGeneSetSummaryByGene
-mgGeneSetSummaryByGeneUI <- function(id, mg=NULL) {
-  ns <- shiny::NS(id)
-
-  shiny::tagList(
-    shiny::checkboxInput(ns('genesets_sigonly'),
-                         'Show membership for significant gene sets only',
-                         value=TRUE, width="100%"),
-    shiny::uiOutput(ns('selected_message')),
-    DT::dataTableOutput(ns("other_genesets")))
-}
-
-#' @rdname mgGeneSetSummaryByGene
+#' A module to show a tabular view of genesets that contain genes of interest.
+#'
+#' Users can look up which gene sets include query genes of interest. This is
+#' useful when you are exploring geneset hits and find esoteric results there.
+#' You can select some of the "more extreme" genes in that geneset, for instance
+#' to see if they belong to another one that makes more sense to you given the
+#' biological context of your experiment.
+#'
 #' @export
 mgGeneSetSummaryByGene <- function(input, output, session, mgc,
                                    features, method, fdr) {
@@ -97,3 +89,20 @@ mgGeneSetSummaryByGene <- function(input, output, session, mgc,
     list(others=genesets, selected=selected)
   })
 }
+
+
+#' Module that displays gene sets related to (by membership) a set of genes.
+#' @export
+#' @rdname mgGeneSetSummaryByGene
+mgGeneSetSummaryByGeneUI <- function(id, mg=NULL) {
+  ns <- shiny::NS(id)
+
+  shiny::tagList(
+    shiny::checkboxInput(ns('genesets_sigonly'),
+                         'Show membership for significant gene sets only',
+                         value=TRUE, width="100%"),
+    shiny::uiOutput(ns('selected_message')),
+    DT::dataTableOutput(ns("other_genesets")))
+}
+
+
