@@ -4,7 +4,6 @@
 #' returned from [sparrow::seas()].
 #'
 #' @export
-#' @importFrom sparrow seas
 #' @param x A `[sparrow::SparrowResult()]` object, or a path to
 #'   an rds-serliazed one
 #' @return a `SparrowResultContainer` object
@@ -19,7 +18,7 @@ SparrowResultContainer <- function(x) {
     # Hack to init some shinybits that are useful to have ontop of a GeneSetDb
     # (I feel horrible for having this)
     fids <- sparrow::featureIds(x)
-    fids <- setNames(rnorm(length(fids)), fids)
+    fids <- stats::setNames(stats::rnorm(length(fids)), fids)
     sr <- sparrow::seas(fids, x, methods = NULL, min.gs.size = 1L)
   } else if (is(x, 'SparrowResult')) {
     sr <- x

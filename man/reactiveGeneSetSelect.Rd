@@ -2,17 +2,35 @@
 % Please edit documentation in R/reactiveGeneSetSelect-module.R
 \name{reactiveGeneSetSelect}
 \alias{reactiveGeneSetSelect}
+\alias{reactiveGeneSetSelectUI}
 \title{A geneset selector for a ReactiveGeneSetDb}
 \usage{
 reactiveGeneSetSelect(input, output, session, gdb = NULL, ...)
+
+reactiveGeneSetSelectUI(id, label = NULL, dropdown_width = "350px", ...)
 }
 \arguments{
+\item{input, output, session}{shiny module bits}
+
 \item{gdb}{A [reactiveGeneSetDb()] module, or `NULL`}
+
+\item{...}{pass through (not used)}
+
+\item{id}{the id/namespace for the module}
+
+\item{label}{passed to [shiny::selectizeInput()]}
+
+\item{dropdown_width}{the width of the dropdown element in pixels}
 }
 \value{
 A list of geneset info and membersihp
 }
 \description{
-This module is unique becauase if you pass `gdb = NULL` it returns a shim
+This module is unique because if you pass `gdb = NULL` it returns a shim
 of iteself that will never trigger reactivity.
 }
+\section{Functions}{
+\itemize{
+\item \code{reactiveGeneSetSelectUI}: The UI function
+}}
+

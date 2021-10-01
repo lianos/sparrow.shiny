@@ -42,7 +42,7 @@ reactiveGeneSetDb <- function(input, output, session, gdb,
   rmax.gs.size <- shiny::reactive(state$max.gs.size)
 
   shiny::observeEvent(rgdb(), {
-    gdb. <- req(rgdb())
+    gdb. <- shiny::req(rgdb())
     shiny::req(is(gdb., "GeneSetDb"))
 
     # ........................................................ collection picker
@@ -86,13 +86,14 @@ reactiveGeneSetDb <- function(input, output, session, gdb,
     selected.colls <- input$collections
     gdb. <- shiny::req(rgdb())
     shiny::req(is(gdb., "GeneSetDb"))
-    gsets <- sparrow::geneSets(gdb.)
-    gsets <- subset(
-      gsets,
+    gsets <- sparrow::geneSets(gdb., as.dt = TRUE)
+    # silence R CMD check NOTES for data.table NSE mojo
+    collection <- N <- NULL
+    gsets <- gsets[
       collection %in% selected.colls &
         N >= rmin.gs.size() &
-        N <= rmax.gs.size())
-    gsets
+        N <= rmax.gs.size()]
+    setDF(gsets)
   })
 
   output$gscount <- shiny::renderUI({
@@ -141,8 +142,10 @@ reactiveGeneSetDbFilterUI <- function(id, min = 2, max = 100L, ...) {
 #'
 #' This can only be run within a reactive context.
 #'
-#' @noRd
 #' @export
+#' @param x A ReactiveGeneSetDb
+#' @param ... pass through (not used)
+#' @return A standard / static GeneSetDb object
 GeneSetDb.ReactiveGeneSetDb <- function(x, ...) {
   gdb <- x$gdb()
   gsets.all <- sparrow::geneSets(gdb)

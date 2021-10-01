@@ -62,6 +62,8 @@ mgGeneSetSummaryByGene <- function(input, output, session, mgc,
     shiny::tags$p(sprintf('%d features selected across %d genesets', n, ngs))
   })
 
+  # silence R CMD check notes from data.table NSE mojo
+  collection <- active <- name <- NULL
   output$other_genesets <- DT::renderDataTable({
     out <- copy(shiny::req(genesets()))
     mg <- shiny::req(mgc()$mg)

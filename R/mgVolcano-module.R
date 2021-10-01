@@ -60,7 +60,6 @@ mgVolcano <- function(input, output, session,
     if (!is.null(input$xhex)) {
       shiny::updateSliderInput(session, 'yhex', sprintf('%s filter', yaxis),
                                min=0, max=1, step=0.025, value=default_yhex)
-      # max.x <- ceiling(max(abs(dat()[['xaxis']]))) - 0.5
       max.x <- ceiling(max(abs(dat()[['.xvt']]))) - 0.5
       shiny::updateSliderInput(session, 'xhex', sprintf('%s filter', xaxis),
                                min=0, max=max.x, step=0.25, value=default_xhex)
@@ -95,7 +94,7 @@ mgVolcano <- function(input, output, session,
     dat <- plotly::plotly_data(dat)
     event <- plotly::event_data('plotly_selected', source='mgvolcano')
     if (!is.null(event)) {
-      out <- subset(dat, feature_id %in% event$key)
+      out <- dat[dat$feature_id %in% event$key,,drop = FALSE]
     } else {
       out <- NULL
     }

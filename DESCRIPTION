@@ -21,16 +21,20 @@ Imports:
     checkmate,
     data.table,
     DT,
+    methods,
     miniUI,
     sparrow (>= 0.99.0),
     plotly,
     shiny,
     shinyjs (>= 2.0.0),
     shinyWidgets,
-    tools
+    stats,
+    tools,
+    utils
 Suggests:
     BiocStyle,
     dplyr,
+    readxl,
     rmarkdown,
     testthat
 Remotes:

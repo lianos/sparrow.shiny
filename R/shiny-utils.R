@@ -131,7 +131,7 @@ renderGseaResultTableDataTable <- function(x, method, mg, digits = 3) {
   setnames(res, names(rcols), rcols)
 
   # silence R CMD check notes from data.table NSE mojo
-  name <- NULL
+  name <- collection <- NULL
   res[, name := {
     url <- sparrow::geneSetURL(mg, as.character(collection), name)
     xname <- gsub('_', ' ', name)
@@ -250,7 +250,7 @@ renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
   stopifnot(is(x, 'data.table'), !is.null(x$feature_id))
   order.dir <- match.arg(order.dir)
   if (is.character(features)) {
-    x <- subset(x, feature_id %in% features)
+    x <- x[x$feature_id %in% features,,drop = FALSE]
   }
 
   ## Figure out what columns to keep in the outgoing datatable
@@ -296,8 +296,8 @@ renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
     length.opts <- nrow(x)
   } else {
     length.opts <- length.opts[length.opts <= nrow(x)]
-    if (tail(length.opts, 1) > nrow(x)) {
-      length.opts <- c(head(length.opts, -1L), nrow(x))
+    if (utils::tail(length.opts, 1) > nrow(x)) {
+      length.opts <- c(utils::head(length.opts, -1L), nrow(x))
     }
   }
 
@@ -325,8 +325,10 @@ renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
 #' of results
 #'
 #' @export
+#' @inheritParams sparrow::resultNames
 #' @return a \code{tagList} version of an HTML table for use in a shiny app
-summaryHTMLTable.sparrow <- function(x, names = resultNames(x), max.p, p.col) {
+summaryHTMLTable.sparrow <- function(x, names = sparrow::resultNames(x),
+                                     max.p, p.col) {
   stopifnot(is(x, 'SparrowResult'))
   s <- sparrow::tabulateResults(x, names, max.p, p.col)
 
@@ -354,20 +356,21 @@ summaryHTMLTable.sparrow <- function(x, names = resultNames(x), max.p, p.col) {
   ## The body of the table one row per collection
   collections <- unique(s$collection)
   tbody.rows <- lapply(collections, function(col) {
-    sc <- subset(s, collection == col)
+    sc <- s[s$collection == col,,drop=FALSE]
     stopifnot(all(names %in% sc$method))
     stopifnot(length(unique(sc$geneset_count)) == 1L)
 
     mres <- lapply(names, function(name) {
       with(sc[sc[['method']] == name,,drop=FALSE], {
-        shiny::tags$td(sprintf("%d (%d up; %d down)", sig_count, sig_up, sig_down))
+        shiny::tags$td(
+          sprintf("%d (%d up; %d down)", sig_count, sig_up, sig_down))
       })
     })
 
     do.call(
       shiny::tags$tr,
-      c(list(shiny::tags$td(sc$collection[1L]), # class='sparrow-summary-table'),
-             shiny::tags$td(sc$geneset_count[1L])), # class='sparrow-summary-table')),
+      c(list(shiny::tags$td(sc$collection[1L]),
+             shiny::tags$td(sc$geneset_count[1L])),
         mres))
   })
 

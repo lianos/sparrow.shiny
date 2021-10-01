@@ -28,7 +28,6 @@
 #'
 #' @rdname geneSetContrastViewModule
 #' @export
-#' @importFrom shiny tagList tags
 #' @param id the shiny id of the module
 #' @param height,width the height and width of the module
 #' @return A `tagList` of html stuff to dump into the UI.
@@ -79,7 +78,6 @@ geneSetContrastViewUI <- function(id, height="590px", width="400px") {
 #'   a geneset select dropdown, and a box to view the graphical result of the
 #'   GSEA contrast
 #' @export
-#' @importFrom shiny reactive req
 #' @inheritParams geneSetSelect
 #' @return the \code{geneSetContrastView} module returns a reactive list,
 #'   with a \code{$gs} element that indicates the currently active geneset in
@@ -127,7 +125,7 @@ geneSetContrastView <- function(input, output, session, mgc,
     shiny::req(gs())
     gs.stats <- shiny::req(gs()$stats)
     if (!is(gs.stats, 'data.table')) {
-      req(NULL)
+      shiny::req(NULL)
     }
     renderFeatureStatsDataTable(gs.stats, feature.link.fn=feature.link.fn,
                                 filter = feature_table_filter)
@@ -138,7 +136,7 @@ geneSetContrastView <- function(input, output, session, mgc,
       sprintf('sparrow-gene-statistics-%s_%s.csv', gs()$collection, gs()$name)
     },
     content = function(file) {
-      write.csv(gs()$stats, file, row.names = FALSE)
+      utils::write.csv(gs()$stats, file, row.names = FALSE)
     }
   )
 

@@ -46,7 +46,7 @@ userDefinedGeneSetDb <- function(input, output, session, ...) {
     }
 
     if (ext == "csv") {
-      dat <- try(read.csv(path, stringsAsFactors = FALSE), silent = TRUE)
+      dat <- try(utils::read.csv(path, stringsAsFactors = FALSE), silent = TRUE)
     } else {
       dat <- try(readxl::read_excel(path), silent = TRUE)
     }

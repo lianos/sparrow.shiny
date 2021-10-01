@@ -1,10 +1,12 @@
 #' A geneset selector for a ReactiveGeneSetDb
 #'
-#' This module is unique becauase if you pass `gdb = NULL` it returns a shim
+#' This module is unique because if you pass `gdb = NULL` it returns a shim
 #' of iteself that will never trigger reactivity.
 #'
 #' @export
+#' @param input,output,session shiny module bits
 #' @param gdb A [reactiveGeneSetDb()] module, or `NULL`
+#' @param ... pass through args to internal modules
 #' @return A list of geneset info and membersihp
 reactiveGeneSetSelect <- function(input, output, session, gdb = NULL, ...) {
   assert_multi_class(gdb, c("reactive", "GeneSetDb"), null.ok = TRUE)
@@ -78,7 +80,11 @@ reactiveGeneSetSelect <- function(input, output, session, gdb = NULL, ...) {
     membership = membership)
 }
 
-#' @noRd
+#' @describeIn reactiveGeneSetSelect The UI function
+#' @param id the id/namespace for the module
+#' @param label passed to [shiny::selectizeInput()]
+#' @param dropdown_width the width of the dropdown element in pixels
+#' @param ... pass through (not used)
 #' @export
 reactiveGeneSetSelectUI <- function(id, label = NULL, dropdown_width = "350px",
                                     ...) {
