@@ -7,12 +7,44 @@
 \usage{
 mgGeneSetSummaryByGene(input, output, session, mgc, features, method, fdr)
 
-mgGeneSetSummaryByGeneUI(id, mg = NULL)
+mgGeneSetSummaryByGeneUI(id)
+}
+\arguments{
+\item{input, output, session}{shiny bits}
+
+\item{mgc}{A [SparrowResultContainer()]}
+
+\item{features}{a character vector of feature id's to query}
+
+\item{method, fdr}{the GSEA method and FDR threshold used to filter the
+returned gene sets against. Gene sets with features found in `features`
+who don't make the `fdr` cutoff under the specific GSEA `method` will
+not be returned}
+
+\item{id}{the namespace for the UI element}
+}
+\value{
+a reactive list that contains the following reactives
+\describe{
+  \item{$others}{
+    the result from [sparrow::geneSetSummaryByGenes()] given the query
+    params}
+  \item{$selected}{the key of the user-selected geneset from the table}
+}
 }
 \description{
-Users can look up which gene sets include query genes of interest. This is
-useful when you are exploring geneset hits and find esoteric results there.
-You can select some of the "more extreme" genes in that geneset, for instance
-to see if they belong to another one that makes more sense to you given the
-biological context of your experiment.
+This provides a shiny module over the [sparrow::geneSetSummaryByGenes()]
+functionality. It accepts a SparrowResult and a feature query and will
+enumerate the other genesets in the SparrowResult that include those genes.
 }
+\details{
+This is useful when you are exploring GSEA hits and find esoteric results
+there. You can select some of the "more extreme" genes in that geneset, for
+instance to see if they belong to another one that makes more sense to you
+given the biological context of your experiment.
+}
+\section{Functions}{
+\itemize{
+\item \code{mgGeneSetSummaryByGeneUI}: the UI for the module
+}}
+

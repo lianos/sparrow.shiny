@@ -39,7 +39,7 @@ shiny::shinyServer(function(input, output, session) {
         shiny::tags$h4("GSEA Analyses Overview"),
         sparrow.shiny::summaryHTMLTable.sparrow(
           obj$mg, obj$methods,
-          gs_result_filter()$fdr(),
+          gs_result_filter$fdr(),
           p.col = 'padj.by.collection')
       )
     }
@@ -56,8 +56,8 @@ shiny::shinyServer(function(input, output, session) {
   gs_table_browser <- shiny::callModule(
     sparrow.shiny::mgTableBrowser,
     'mg_table_browser', mgc,
-    method = gs_result_filter()$method,
-    fdr = gs_result_filter()$fdr,
+    method = gs_result_filter$method,
+    fdr = gs_result_filter$fdr,
     server = TRUE)
   ## clicks on gsea result table update the contrast view
   shiny::observeEvent(gs_table_browser$selected(), {
@@ -74,8 +74,8 @@ shiny::shinyServer(function(input, output, session) {
     sparrow.shiny::mgGeneSetSummaryByGene,
     'other_genesets_gsea',
     mgc, features = gs_viewer()$selected,
-    method = gs_result_filter()$method,
-    fdr = gs_result_filter()$fdr)
+    method = gs_result_filter$method,
+    fdr = gs_result_filter$fdr)
   ## DEBUG: Can we add a DT row click listner to the `other_genesets_gsea` so
   ## that it updates the `gs_viewer`? My first shot at doing sends the
   ## application into a tailspin, my best guess is because the selection is
@@ -112,6 +112,6 @@ shiny::shinyServer(function(input, output, session) {
     sparrow.shiny::mgGeneSetSummaryByGene,
     'other_genesets_volcano',
     mgc, features=gene.volcano,
-    method=gs_result_filter()$method,
-    fdr=gs_result_filter()$fdr)
+    method=gs_result_filter$method,
+    fdr=gs_result_filter$fdr)
 })

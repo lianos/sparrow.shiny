@@ -1,12 +1,29 @@
 #' A module to show a tabular view of genesets that contain genes of interest.
 #'
-#' Users can look up which gene sets include query genes of interest. This is
-#' useful when you are exploring geneset hits and find esoteric results there.
-#' You can select some of the "more extreme" genes in that geneset, for instance
-#' to see if they belong to another one that makes more sense to you given the
-#' biological context of your experiment.
+#' This provides a shiny module over the [sparrow::geneSetSummaryByGenes()]
+#' functionality. It accepts a SparrowResult and a feature query and will
+#' enumerate the other genesets in the SparrowResult that include those genes.
+#'
+#' This is useful when you are exploring GSEA hits and find esoteric results
+#' there. You can select some of the "more extreme" genes in that geneset, for
+#' instance to see if they belong to another one that makes more sense to you
+#' given the biological context of your experiment.
 #'
 #' @export
+#' @param input,output,session shiny bits
+#' @param mgc A [SparrowResultContainer()]
+#' @param features a character vector of feature id's to query
+#' @param method,fdr the GSEA method and FDR threshold used to filter the
+#'   returned gene sets against. Gene sets with features found in `features`
+#'   who don't make the `fdr` cutoff under the specific GSEA `method` will
+#'   not be returned
+#' @return a reactive list that contains the following reactives
+#' \describe{
+#'   \item{$others}{
+#'     the result from [sparrow::geneSetSummaryByGenes()] given the query
+#'     params}
+#'   \item{$selected}{the key of the user-selected geneset from the table}
+#' }
 mgGeneSetSummaryByGene <- function(input, output, session, mgc,
                                    features, method, fdr) {
   genesets <- shiny::reactive({
@@ -74,27 +91,31 @@ mgGeneSetSummaryByGene <- function(input, output, session, mgc,
                   rownames=FALSE, colnames=c("FDR"="padj"))
   })
 
-  # Return the selected geneset
-  shiny::reactive({
+  # the selected geneset
+  selected <- reactive({
     idx <- input$other_genesets_row_last_clicked
     if (!is.null(idx)) {
       others <- genesets()
       xcol <- as.character(others$collection[idx])
       xname <- as.character(others$name[idx])
-      selected <- paste(xcol, xname, sep='_::_')
+      sel <- paste(xcol, xname, sep='_::_')
       msg("Selected: ", selected)
     } else {
-      selected <- NULL
+      sel <- NULL
     }
-    list(others=genesets, selected=selected)
+    sel
   })
+
+
+  # Reactives to return
+  list(others = genesets, selected = selected)
 }
 
 
-#' Module that displays gene sets related to (by membership) a set of genes.
+#' @describeIn mgGeneSetSummaryByGene the UI for the module
 #' @export
-#' @rdname mgGeneSetSummaryByGene
-mgGeneSetSummaryByGeneUI <- function(id, mg=NULL) {
+#' @param id the namespace for the UI element
+mgGeneSetSummaryByGeneUI <- function(id) {
   ns <- shiny::NS(id)
 
   shiny::tagList(

@@ -1,36 +1,12 @@
-#' A module to explore the GSEA statistics generated from a sparrow::seas Run.
+#' A module that displays an interactive table of genesets from an analysis.
 #'
-#' @description
-#' The UI is a DT::datatable of GSEA statistics for the selected method. The
-#' module returns a list with the following reactive elements:
+#' This module lists all of the genesets from an analysis that are significant
+#' given an `fdr` and `method` of analysis. Row selections trigger a shiny
+#' event that broadcasts the key of the geneset that was selected. You would
+#' then want to `observeEvent(this$selected)` in your `server.R` (or similar)
+#' so you can react to the gene set selection the user triggers.
 #'
-#' \describe{
-#'   \item{$stats}{
-#'     The table of gene sets and their statistics that pass the prescribed
-#'     \code{fdr} thershold
-#'   }
-#'   \item{$selected}{
-#'     The geneset that is currently "active"/selected by the user. This
-#'     is defined as \code{<collection>_::_<name>}
-#'   }
-#' }
 #'
-#' You probably want to `observeEvent(this$selected)` in your
-#' `server.R` (or similar) so you can react to user clicks on different
-#' gene sets
-#'
-#' @rdname mgTableBrowserModule
-#' @export
-#' @param id the shiny id of the UI module
-mgTableBrowserUI <- function(id) {
-  ns <- shiny::NS(id)
-
-  shiny::tagList(
-    shiny::uiOutput(ns("resultTableMessage")),
-    DT::dataTableOutput(ns("gseaResultTable")))
-}
-
-#' @rdname mgTableBrowserModule
 #'
 #' @export
 #' @param input shiny server input object
@@ -41,6 +17,17 @@ mgTableBrowserUI <- function(id) {
 #'   result
 #' @param fdr a reactive that gives the fdr threshold to filter results in the
 #'   table by.
+#' @return a list with reactives:
+#' \describe{
+#'   \item{$stats}{
+#'     The table of gene sets and their statistics that pass the prescribed
+#'     \code{fdr} thershold
+#'   }
+#'   \item{$selected}{
+#'     The geneset that is currently "active"/selected by the user. This
+#'     is defined as \code{<collection>_::_<name>}
+#'   }
+#' }
 mgTableBrowser <- function(input, output, session, mgc, method, fdr,
                            server=TRUE) {
 
@@ -89,4 +76,15 @@ mgTableBrowser <- function(input, output, session, mgc, method, fdr,
   }, server = server)
 
   list(stats = gsea.result.table, selected = selected)
+}
+
+#' @describeIn mgTableBrowser The UI for the module.
+#' @export
+#' @param id the shiny id of the UI module
+mgTableBrowserUI <- function(id) {
+  ns <- shiny::NS(id)
+
+  shiny::tagList(
+    shiny::uiOutput(ns("resultTableMessage")),
+    DT::dataTableOutput(ns("gseaResultTable")))
 }
