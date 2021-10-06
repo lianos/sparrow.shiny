@@ -17,7 +17,7 @@ mgVolcano(
   tools = c("box_select", "reset", "save"),
   width = NULL,
   height = NULL,
-  highlight = reactive(NULL),
+  highlight = shiny::reactive(NULL),
   default_xhex = 1,
   default_yhex = 0.1,
   webgl = FALSE,
@@ -69,6 +69,9 @@ to pass in for hex-ization}
 \item{...}{pass through arguments (not used)}
 
 \item{id}{the shiny id of the output widget}
+
+\item{hexbin}{boolean to indicate if the UI should show a wrench widget to
+configure the parameters for the hexbin drawing (default: `TRUE`)}
 }
 \value{
 A reactive data.frame that includes the information of the genes

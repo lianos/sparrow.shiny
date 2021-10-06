@@ -17,10 +17,13 @@
 #'   that are brushed in the volcano plot. If no genes have been selected, then
 #'   `NULL`.
 mgVolcano <- function(input, output, session,
-                      x, stats='dge', xaxis='logFC', yaxis='pval', idx='idx',
-                      tools=c('box_select', 'reset', 'save'),
-                      width=NULL, height=NULL, highlight=reactive(NULL),
-                      default_xhex=1, default_yhex=0.10, webgl = FALSE, ...) {
+                      x, stats = 'dge', xaxis = 'logFC', yaxis = 'pval',
+                      idx = 'idx',
+                      tools = c('box_select', 'reset', 'save'),
+                      width = NULL, height = NULL,
+                      highlight = shiny::reactive(NULL),
+                      default_xhex = 1, default_yhex = 0.10, webgl = FALSE,
+                      ...) {
   shinyjs::onclick("settings", shinyjs::toggle(id = "widgets", anim = TRUE))
   if (missing(idx)) {
     if (stats == 'dge') idx <- 'feature_id'
@@ -85,6 +88,8 @@ mgVolcano <- function(input, output, session,
 #' @export
 #' @describeIn mgVolcano the UI for the module
 #' @param id the shiny id of the output widget
+#' @param hexbin boolean to indicate if the UI should show a wrench widget to
+#'   configure the parameters for the hexbin drawing (default: `TRUE`)
 mgVolcanoUI <- function(id, x, stats='dge', xaxis='logFC', yaxis='padj',
                         idx='idx', hexbin=TRUE, default_xhex=1,
                         default_yhex=0.10) {

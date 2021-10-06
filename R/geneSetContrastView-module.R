@@ -19,10 +19,18 @@
 #'
 #' @export
 #' @inheritParams geneSetSelect
+#' @param feature.link.fn a function that takes a name of a column and returns
+#'   a url linked version of the element that will provide more info for the
+#'   particular feature
+#' @param feature_table_filter filter param for [renderFeatureStatsDataTable()]
+#' @param itools the plotly tools to show in the geneset contrast visual
 #' @return returns a list of reactive elements:
-#' * `$gs`: the [geneSetSelect()] module
-#' * `$selected`: a character vector of feature_ids currently brushed in the
-#'   contrast view.
+#' \describe{
+#'   \item{gs}{the [geneSetSelect()] module}
+#'   \item{selected}{
+#'     a character vector of feature_ids currently brushed in the contrast view
+#'   }
+#' }
 geneSetContrastView <- function(input, output, session, mgc,
                                 server=TRUE, maxOptions=Inf, sep="_::_",
                                 feature.link.fn=ncbi.entrez.link,

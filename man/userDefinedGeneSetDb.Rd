@@ -10,7 +10,7 @@ userDefinedGeneSetDb(input, output, session, ...)
 userDefinedGeneSetDbUI(id, ...)
 }
 \arguments{
-\item{input, putput, session}{shiny bits}
+\item{input, output, session}{shiny module bits}
 
 \item{...}{pass through arguments}
 

@@ -6,7 +6,7 @@
 #' are implemented.
 #'
 #' @export
-#' @param input,putput,session shiny bits
+#' @param input,output,session shiny module bits
 #' @param ... pass through arguments
 #' @return A list of reactive components. `$gdb()` will be a GeneSetDb when
 #'   the user uploades a valid gene set definition file. Otherwise it will be
@@ -43,7 +43,7 @@ userDefinedGeneSetDb <- function(input, output, session, ...) {
     }
 
     shiny::validate(
-      need(is.data.frame(dat), "Error parsing geneset definition file")
+      shiny::need(is.data.frame(dat), "Error parsing geneset definition file")
     )
 
     req.cols <- c("collection", "name", "feature_id")
@@ -56,9 +56,9 @@ userDefinedGeneSetDb <- function(input, output, session, ...) {
     dat[["feature_id"]] <- as.character(dat[["feature_id"]])
     state$dat <- transform(
       dat,
-      collection = as.character(collection),
-      name = as.character(name),
-      feature_id = as.character(feature_id))
+      collection = as.character(state$dat$collection),
+      name = as.character(state$dat$name),
+      feature_id = as.character(state$dat$feature_id))
   })
 
   gdb <- shiny::reactive({

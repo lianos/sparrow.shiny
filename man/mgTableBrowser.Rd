@@ -10,11 +10,7 @@ mgTableBrowser(input, output, session, mgc, method, fdr, server = TRUE)
 mgTableBrowserUI(id)
 }
 \arguments{
-\item{input}{shiny server input object}
-
-\item{output}{shiny server output object}
-
-\item{session}{shiny server session object}
+\item{input, output, session}{shiny module bits}
 
 \item{mgc}{the \code{SparrowResultContainer} object}
 
@@ -23,6 +19,8 @@ result}
 
 \item{fdr}{a reactive that gives the fdr threshold to filter results in the
 table by.}
+
+\item{server}{boolean passed to [DT::renderDataTable()] (default: `TRUE`).}
 
 \item{id}{the shiny id of the UI module}
 }

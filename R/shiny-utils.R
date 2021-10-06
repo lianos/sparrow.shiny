@@ -234,6 +234,9 @@ genecards.entrez.link <- function(x, link.col='symbol') {
 #' @param feature.link.fn A function that receives the data.frame of statistics
 #'   to be rendered and transforms one of its columns into a hyperlink for
 #'   further reference. Refer to [ncbi.entrez.link()] as an example.
+#' @param order.by name of the column to order the geneset stats by
+#' @param order.dir do we order the table by the values in `order.by` in
+#'   `"desc"`-ending, or `"asc"`-ending order (default: `"desc"`)
 #' @param filter passed to [DT::datatable()]
 #' @param length.opts parameter passed as an option to [DT::datatable()] that
 #'   specifies how long the table can be per page.
@@ -340,10 +343,10 @@ summaryHTMLTable.sparrow <- function(x, names = sparrow::resultNames(x),
                    shiny::tags$th("Analysis Summary", colspan=length(names))),
     ## Sub headers
     do.call(
-      tags$tr,
+      shiny::tags$tr,
       c(list(class='sub-header',
-             tags$th("Collection"), # class="sparrow-summary-table"),
-             tags$th("Count")), # class="sparrow-summary-table")),
+             shiny::tags$th("Collection"), # class="sparrow-summary-table"),
+             shiny::tags$th("Count")), # class="sparrow-summary-table")),
         lapply(names, function(name) {
           target.dom.id <- paste0('sparrow-result-', name)
           ## I wanted the headers that had the method names to link to the

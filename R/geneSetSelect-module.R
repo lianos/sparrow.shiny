@@ -22,13 +22,17 @@
 #'   geneset. These are the values used in the gene set `selectizeInput` to
 #'   create unique keys for each geneset.
 #' @return a reactive list of information about the selected geneset.
-#' * `collection`: the collection its from
-#' * `name`: the name within the collection
-#' * `stats`: a data.frame of "contrast statistics" for the features in the
-#'   geneset
-#' * `select.id`: the shiny id for this module
-#' * `sep`: the separator used to key the collection,name string for this
-#'   geneset
+#' \describe{
+#'   \item{collection}{the collection its from}
+#'   \item{name}{the name within the collection}
+#'   \item{stats}{
+#'     a data.frame of "contrast statistics" for the features in the geneset
+#'   }
+#'   \item{select.id}{the shiny id for this module}
+#'   \item{sep}{
+#'     the separator used to key the collection,name string for this geneset
+#'   }
+#' }
 geneSetSelect <- function(input, output, session, mgc, server=TRUE,
                           maxOptions=Inf, sep='_::_') {
   # Programmatically create the UI from the SparrowResults
@@ -80,6 +84,7 @@ geneSetSelect <- function(input, output, session, mgc, server=TRUE,
       if (is.null(stats)) {
         coll <- name <- stats <- NULL
       } else {
+        logFC <- NULL # silence R CMD check for data.tabe NSE mojo
         stats <- stats[order(logFC, decreasing=TRUE)]
       }
     }
@@ -152,7 +157,7 @@ gs.render.select.ui <- function(ns, choices, server = TRUE,
   } else {
     choices <- sapply(unique(choices$collection), function(x) {
       out <- choices[choices[["collection"]] == x,]
-      setNames(out$value, out$label)
+      stats::setNames(out$value, out$label)
     }, simplify=FALSE)
     ui <- shiny::selectizeInput(ns("geneset"), label = NULL, choices = choices,
                                 width = "100%")
@@ -176,8 +181,10 @@ gs.render.select.ui <- function(ns, choices, server = TRUE,
 #'   to generate a uniqe string for a geneset
 #' @return `data.table` to populate `choices` of `selectizeInput`
 gs.select.choices <- function(mg, sep = "_::_") {
-  out <- sparrow::geneSets(mg, as.dt=TRUE)[, {
-    list(collection, label=name, value=paste(collection, name, sep=sep))
+  # silence R CMD check on data.table NSE mojo
+  name <- collection <- NULL
+  out <- sparrow::geneSets(mg, as.dt = TRUE)[, {
+    list(collection, label = name, value = paste(collection, name, sep = sep))
   }]
   out
 }

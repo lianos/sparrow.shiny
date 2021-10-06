@@ -43,6 +43,14 @@ genesets will be loaded from the server side. Default: `Inf` for all.}
 \item{sep}{the string used to concatenate geneset `collection` and `name`
 to generate a uniqe string for a geneset}
 
+\item{feature.link.fn}{a function that takes a name of a column and returns
+a url linked version of the element that will provide more info for the
+particular feature}
+
+\item{feature_table_filter}{filter param for [renderFeatureStatsDataTable()]}
+
+\item{itools}{the plotly tools to show in the geneset contrast visual}
+
 \item{id}{the shiny id of the module}
 
 \item{height, width}{the height and width of the module}
@@ -53,9 +61,12 @@ to generate a uniqe string for a geneset}
 }
 \value{
 returns a list of reactive elements:
-* `$gs`: the [geneSetSelect()] module
-* `$selected`: a character vector of feature_ids currently brushed in the
-  contrast view.
+\describe{
+  \item{gs}{the [geneSetSelect()] module}
+  \item{selected}{
+    a character vector of feature_ids currently brushed in the contrast view
+  }
+}
 
 A `tagList` of html stuff to dump into the UI.
 }

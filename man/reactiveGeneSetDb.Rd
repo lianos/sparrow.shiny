@@ -2,6 +2,7 @@
 % Please edit documentation in R/reactiveGeneSetDb-module.R
 \name{reactiveGeneSetDb}
 \alias{reactiveGeneSetDb}
+\alias{reactiveGeneSetDbFilterUI}
 \title{A ReactiveGeneSetDb for use in the shiiny world.}
 \usage{
 reactiveGeneSetDb(
@@ -14,12 +15,38 @@ reactiveGeneSetDb(
   default_collections = NULL,
   ...
 )
+
+reactiveGeneSetDbFilterUI(id, min = 2, max = 100L, ...)
 }
 \arguments{
+\item{input, output, session}{shiny module bits}
+
 \item{gdb}{A static or reactive GeneSetDb object}
 
 \item{min.gs.size, max.gs.size}{the default minimum and maximum geneset size
 set in the UI when `gdb` is first loaded or changes (when reactive)}
+
+\item{default_collections}{a character vector of collections that are by
+default selected for use}
+
+\item{...}{pass through args}
+
+\item{id}{shiny module namespace}
+
+\item{min, max}{ranges for the min/max geneset slider}
+}
+\value{
+A list of reactive elements wired to the input `gdb`:
+\describe{
+  \item{gdb}{a `reactive(gdb)`}
+  \item{geneSets}{a `reacvtive(geneSets(gdb))`}
+  \item{min.gs.size,max.gs.size}{
+    reactives that indicate current selection of minimum and maximum gene set
+    sizes to be used in `sparrow::conform(gdb, ...)`
+  }
+  \item{.state}{a `shiny::reactiveList` that contains the state of this module}
+  \item{.ns}{the shiny namespace for this module}
+}
 }
 \description{
 This can be instantiated from a "static" or "reactive" GeneSetDb object.
@@ -28,7 +55,9 @@ It allows users to customize which genesets are active by:
 \details{
 1. Filtering out entire collections; and
 2. Filtering genesets based on min and max (gene) size.
-
-This should be in mutliGSEA.shiny, but is developed here for now to make
-it easier to develop within the FacieAnalysis shiny world.
 }
+\section{Functions}{
+\itemize{
+\item \code{reactiveGeneSetDbFilterUI}: the UI for the module
+}}
+

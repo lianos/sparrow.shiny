@@ -36,6 +36,11 @@ will be used. If explicitly set to `NULL` all columns will be used.}
 to be rendered and transforms one of its columns into a hyperlink for
 further reference. Refer to [ncbi.entrez.link()] as an example.}
 
+\item{order.by}{name of the column to order the geneset stats by}
+
+\item{order.dir}{do we order the table by the values in `order.by` in
+`"desc"`-ending, or `"asc"`-ending order (default: `"desc"`)}
+
 \item{filter}{passed to [DT::datatable()]}
 
 \item{length.opts}{parameter passed as an option to [DT::datatable()] that

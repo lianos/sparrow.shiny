@@ -7,7 +7,7 @@
 #'
 #' @export
 #' @rdname mgResultFilter
-#' @param input,output, session shiny bits
+#' @param input,output,session shiny bits
 #' @param mgc the `SparrowResultContainer`
 #' @return A list that includes the following reactives:
 #' \describe{
@@ -48,6 +48,7 @@ mgResultFilter <- function(input, output, session, mgc) {
 #' @export
 #' @describeIn mgResultFilter the UI for the module: presents a selectInput
 #'   for the user to pick which GSEA method to expl
+#' @param id the shiny namespace for the module
 mgResultFilterUI <- function(id) {
   ns <- shiny::NS(id)
 

@@ -7,13 +7,24 @@
 #' 1. Filtering out entire collections; and
 #' 2. Filtering genesets based on min and max (gene) size.
 #'
-#' This should be in mutliGSEA.shiny, but is developed here for now to make
-#' it easier to develop within the FacieAnalysis shiny world.
-#'
 #' @export
+#' @param input,output,session shiny module bits
 #' @param gdb A static or reactive GeneSetDb object
 #' @param min.gs.size,max.gs.size the default minimum and maximum geneset size
 #'   set in the UI when `gdb` is first loaded or changes (when reactive)
+#' @param default_collections a character vector of collections that are by
+#'   default selected for use
+#' @return A list of reactive elements wired to the input `gdb`:
+#' \describe{
+#'   \item{gdb}{a `reactive(gdb)`}
+#'   \item{geneSets}{a `reacvtive(geneSets(gdb))`}
+#'   \item{min.gs.size,max.gs.size}{
+#'     reactives that indicate current selection of minimum and maximum gene set
+#'     sizes to be used in `sparrow::conform(gdb, ...)`
+#'   }
+#'   \item{.state}{a `shiny::reactiveList` that contains the state of this module}
+#'   \item{.ns}{the shiny namespace for this module}
+#' }
 reactiveGeneSetDb <- function(input, output, session, gdb,
                               min.gs.size = 2L, max.gs.size = Inf,
                               default_collections = NULL, ...) {
@@ -111,9 +122,10 @@ reactiveGeneSetDb <- function(input, output, session, gdb,
   vals
 }
 
-#' UI components to filter a GeneSetDb by collection and set size
-#'
-#' @export
+#' @describeIn reactiveGeneSetDb the UI for the module
+#' @param id shiny module namespace
+#' @param min,max ranges for the min/max geneset slider
+#' @param ... pass through args
 reactiveGeneSetDbFilterUI <- function(id, min = 2, max = 100L, ...) {
   ns <- shiny::NS(id)
 

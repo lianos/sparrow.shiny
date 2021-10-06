@@ -76,13 +76,17 @@ for details).}
 }
 \value{
 a reactive list of information about the selected geneset.
-* `collection`: the collection its from
-* `name`: the name within the collection
-* `stats`: a data.frame of "contrast statistics" for the features in the
-  geneset
-* `select.id`: the shiny id for this module
-* `sep`: the separator used to key the collection,name string for this
-  geneset
+\describe{
+  \item{collection}{the collection its from}
+  \item{name}{the name within the collection}
+  \item{stats}{
+    a data.frame of "contrast statistics" for the features in the geneset
+  }
+  \item{select.id}{the shiny id for this module}
+  \item{sep}{
+    the separator used to key the collection,name string for this geneset
+  }
+}
 
 a properly wired `[shiny::selectizeInput()]` UI element.
 

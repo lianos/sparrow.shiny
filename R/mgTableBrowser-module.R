@@ -9,14 +9,13 @@
 #'
 #'
 #' @export
-#' @param input shiny server input object
-#' @param output shiny server output object
-#' @param session shiny server session object
+#' @param input,output,session shiny module bits
 #' @param mgc the \code{SparrowResultContainer} object
 #' @param method a reactive that determines which method to explore from this
 #'   result
 #' @param fdr a reactive that gives the fdr threshold to filter results in the
 #'   table by.
+#' @param server boolean passed to [DT::renderDataTable()] (default: `TRUE`).
 #' @return a list with reactives:
 #' \describe{
 #'   \item{$stats}{
@@ -29,7 +28,7 @@
 #'   }
 #' }
 mgTableBrowser <- function(input, output, session, mgc, method, fdr,
-                           server=TRUE) {
+                           server = TRUE) {
 
   ## under the FDR threshold
   gsea.result.table <- shiny::reactive({

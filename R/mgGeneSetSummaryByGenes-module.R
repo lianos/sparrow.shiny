@@ -92,14 +92,14 @@ mgGeneSetSummaryByGene <- function(input, output, session, mgc,
   })
 
   # the selected geneset
-  selected <- reactive({
+  selected <- shiny::reactive({
     idx <- input$other_genesets_row_last_clicked
     if (!is.null(idx)) {
       others <- genesets()
       xcol <- as.character(others$collection[idx])
       xname <- as.character(others$name[idx])
       sel <- paste(xcol, xname, sep='_::_')
-      msg("Selected: ", selected)
+      sparrow::msg("Selected: ", selected)
     } else {
       sel <- NULL
     }

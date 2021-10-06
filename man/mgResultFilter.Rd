@@ -10,9 +10,11 @@ mgResultFilter(input, output, session, mgc)
 mgResultFilterUI(id)
 }
 \arguments{
-\item{input, output, }{session shiny bits}
+\item{input, output, session}{shiny bits}
 
 \item{mgc}{the `SparrowResultContainer`}
+
+\item{id}{the shiny namespace for the module}
 }
 \value{
 A list that includes the following reactives:
