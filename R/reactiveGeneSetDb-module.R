@@ -108,7 +108,7 @@ reactiveGeneSetDb <- function(input, output, session, gdb,
   })
 
   output$gscount <- shiny::renderUI({
-    tags$span(nrow(genesets()))
+    shiny::tags$span(nrow(genesets()))
   })
 
   vals <- list(

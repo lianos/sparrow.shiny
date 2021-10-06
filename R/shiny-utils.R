@@ -1,33 +1,3 @@
-#' Interactively explore a SparrowResult via a shiny app
-#'
-#' @description
-#' This will launch a shiny application that enables exploratory analysis of
-#' the results from the different GSEA methods run within a `SparrowResul`.
-#'
-#' Reference the "shiny-sparrow" vignette for more detailed documentation of
-#' the functionality provided by this application.
-#'
-#' @export
-#' @param x A `SparrowResult` object, or path to one as an *.rds. If
-#'   missing, the shiny app will load without a `SparrowResult` object
-#'   to explore, and the user can upload one into the app.
-#' @examples
-#' \donttest{
-#' vm <- sparrow::exampleExpressionSet()
-#' gdb <- sparrow::exampleGeneSetDb()
-#' sr <- sparrow::seas(vm, gdb, vm$design, methods=c('camera', 'fry'))
-#' explore(sr)
-#' }
-explore <- function(x) {
-  if (!missing(x)) {
-    if (is.character(x)) x <- readRDS(x)
-    assert_class(x, 'SparrowResult')
-    options(EXPLORE_SPARROW_RESULT = x)
-    on.exit(options(EXPLORE_SPARROW_RESULT = NULL))
-  }
-  shiny::runApp(system.file("shiny", package = "sparrow.shiny"))
-}
-
 #' Adds a js$reset_<id>_<event>() to reset the selection on a plot
 #'
 #' selected elements stick on a plot even after it is redrawn, most of the
@@ -356,7 +326,7 @@ summaryHTMLTable.sparrow <- function(x, names = sparrow::resultNames(x),
         })
       )))
 
-  ## The body of the table one row per collection
+  # The body of the table one row per collection
   collections <- unique(s$collection)
   tbody.rows <- lapply(collections, function(col) {
     sc <- s[s$collection == col,,drop=FALSE]
@@ -364,10 +334,13 @@ summaryHTMLTable.sparrow <- function(x, names = sparrow::resultNames(x),
     stopifnot(length(unique(sc$geneset_count)) == 1L)
 
     mres <- lapply(names, function(name) {
-      with(sc[sc[['method']] == name,,drop=FALSE], {
-        shiny::tags$td(
-          sprintf("%d (%d up; %d down)", sig_count, sig_up, sig_down))
-      })
+      # with(sc[sc[['method']] == name,,drop=FALSE], {
+      #   shiny::tags$td(
+      #     sprintf("%d (%d up; %d down)", sig_count, sig_up, sig_down))
+      # })
+      xsc <- sc[sc[['method']] == name,,drop=FALSE]
+      shiny::tags$td(
+        sprintf("%d (%d up; %d down)", xsc$sig_count, xsc$sig_up, xsc$sig_down))
     })
 
     do.call(

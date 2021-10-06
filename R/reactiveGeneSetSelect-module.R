@@ -17,8 +17,8 @@ reactiveGeneSetSelect <- function(input, output, session, gdb = NULL, ...) {
 
   if (is.null(gdb)) {
     out <- list(
-      collection = reactive(NULL),
-      name = reactive(NULL),
+      collection = shiny::reactive(NULL),
+      name = shiny::reactive(NULL),
       membership = shiny::reactive(data.frame(feature_id = character())))
     return(out)
   }
