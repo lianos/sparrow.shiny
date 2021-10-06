@@ -1,26 +1,17 @@
 #' Creates a GeneSetDb from a user-specfied gene set definition table.
 #'
 #' This module provides an upload button that allows a user to upload a
-#' table of gene set definitions in [mutiGSEA::GeneSetDb()] format. Minimal
-#' validation checks are implemented.
+#' table of gene set definitions in [sparrow::GeneSetDb()] format as a CSV file
+#' or excel file (if the readxl package is installed). Minimal validation checks
+#' are implemented.
 #'
 #' @export
+#' @param input,putput,session shiny bits
+#' @param ... pass through arguments
 #' @return A list of reactive components. `$gdb()` will be a GeneSetDb when
 #'   the user uploades a valid gene set definition file. Otherwise it will be
 #'   `NULL`.
 userDefinedGeneSetDb <- function(input, output, session, ...) {
-  # I had this requireNamespace call only fire if a user uploaded an xlsx
-  # file, within the shiny::observeEvent(input$upload, { ... }), but
-  # R CMD check was giving me some type of grief about it not being imported
-  # when I then try to read the file with readxl::read_excel() as if I never
-  # tried to load it:
-  #
-  # ```
-  # Warning: '::' or ':::' import not declared from: ‘readxl’
-  # 'loadNamespace' or 'requireNamespace' call not declared from: ‘readxl’
-  # ```
-  #
-  # So I'm just importing it up top here, and will know if I can use it later.
   xlsx.ok <- requireNamespace("readxl", quietly = TRUE)
 
   empty.def <- data.frame(
@@ -90,9 +81,11 @@ userDefinedGeneSetDb <- function(input, output, session, ...) {
   vals
 }
 
-#' @noRd
+#' @describeIn userDefinedGeneSetDb ui for the module
 #' @export
-userDefinedGeneSetDbUI <- function(id, ..., debug = FALSE) {
+#' @param id the module namespace
+#' @param ... pass through arguments
+userDefinedGeneSetDbUI <- function(id, ...) {
   ns <- shiny::NS(id)
   inline.style <- "display: inline-block; vertical-align:top;"
 

@@ -13,9 +13,9 @@
 #'   to explore, and the user can upload one into the app.
 #' @examples
 #' \donttest{
-#' vm <- exampleExpressionSet()
-#' gdb <- exampleGeneSetDb()
-#' sr <- seas(gdb, vm, vm$design, methods=c('camera', 'fry'))
+#' vm <- sparrow::exampleExpressionSet()
+#' gdb <- sparrow::exampleGeneSetDb()
+#' sr <- sparrow::seas(vm, gdb, vm$design, methods=c('camera', 'fry'))
 #' explore(sr)
 #' }
 explore <- function(x) {

@@ -73,7 +73,7 @@ shiny::shinyServer(function(input, output, session) {
   other_genesets_gsea <- shiny::callModule(
     sparrow.shiny::mgGeneSetSummaryByGene,
     'other_genesets_gsea',
-    mgc, features = gs_viewer()$selected,
+    mgc, features = gs_viewer$selected,
     method = gs_result_filter$method,
     fdr = gs_result_filter$fdr)
   ## DEBUG: Can we add a DT row click listner to the `other_genesets_gsea` so

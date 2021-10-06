@@ -2,9 +2,19 @@
 % Please edit documentation in R/userDefinedGeneSetDb-module.R
 \name{userDefinedGeneSetDb}
 \alias{userDefinedGeneSetDb}
+\alias{userDefinedGeneSetDbUI}
 \title{Creates a GeneSetDb from a user-specfied gene set definition table.}
 \usage{
 userDefinedGeneSetDb(input, output, session, ...)
+
+userDefinedGeneSetDbUI(id, ...)
+}
+\arguments{
+\item{input, putput, session}{shiny bits}
+
+\item{...}{pass through arguments}
+
+\item{id}{the module namespace}
 }
 \value{
 A list of reactive components. `$gdb()` will be a GeneSetDb when
@@ -13,6 +23,12 @@ A list of reactive components. `$gdb()` will be a GeneSetDb when
 }
 \description{
 This module provides an upload button that allows a user to upload a
-table of gene set definitions in [mutiGSEA::GeneSetDb()] format. Minimal
-validation checks are implemented.
+table of gene set definitions in [sparrow::GeneSetDb()] format as a CSV file
+or excel file (if the readxl package is installed). Minimal validation checks
+are implemented.
 }
+\section{Functions}{
+\itemize{
+\item \code{userDefinedGeneSetDbUI}: ui for the module
+}}
+

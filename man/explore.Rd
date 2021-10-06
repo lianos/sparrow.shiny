@@ -20,9 +20,9 @@ the functionality provided by this application.
 }
 \examples{
 \donttest{
-vm <- exampleExpressionSet()
-gdb <- exampleGeneSetDb()
-sr <- seas(gdb, vm, vm$design, methods=c('camera', 'fry'))
+vm <- sparrow::exampleExpressionSet()
+gdb <- sparrow::exampleGeneSetDb()
+sr <- sparrow::seas(vm, gdb, vm$design, methods=c('camera', 'fry'))
 explore(sr)
 }
 }

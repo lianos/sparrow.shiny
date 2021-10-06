@@ -4,19 +4,10 @@
 #' \href{https://gist.github.com/MarkEdmondson1234/7e56ee7ac5caa74224327489b0849e61}{dynamicSelectShinyModule.R}
 #' gist.
 #'
-#' @export
-#' @rdname geneSetSelectModule
-#' @aliases geneSetSelectUI
-geneSetSelectUI <- function(id, label = "Select Gene Set") {
-  ns <- shiny::NS(id)
-  shiny::uiOutput(ns("geneset_picker"))
-}
-
 #' @section Module Return:
 #' Returns information about the `geneSetSelect` object
 #'
 #' @export
-#' @rdname geneSetSelectModule
 #' @aliases geneSetSelect
 #'
 #' @param input,output,session the shiny-required bits for the module
@@ -92,8 +83,17 @@ geneSetSelect <- function(input, output, session, mgc, server=TRUE,
   return(vals)
 }
 
+#' @describeIn geneSetSelect the ui for the module
 #' @export
-#' @describeIn geneSetSelectModule updates an "external" geneSetSelectModule
+#' @param id the shiny namespace for the module
+#' @param label the label for the [shiny::selectizeInput()]
+geneSetSelectUI <- function(id, label = "Select Gene Set") {
+  ns <- shiny::NS(id)
+  shiny::uiOutput(ns("geneset_picker"))
+}
+
+#' @export
+#' @describeIn geneSetSelect update geneSetSelect externally.
 #'   with new choices
 #' @param id the 'naked' module id
 #' @inheritParams shiny::updateSelectizeInput
@@ -112,11 +112,13 @@ updateGeneSetSelect <- function(session, id, label = NULL, choices = NULL,
 
 ## Utility Functions -----------------------------------------------------------
 
-#' @describeIn geneSetSelectModule Internal function to build a `selectizeInput`
+#' @describeIn geneSetSelect Internal function to build a `selectizeInput`
 #'   widget that is specific to a SparrowResult.
 #'
 #' @param ns the namespace function for this module
 #' @param choices the output of `gs.select.choices(SparrowResult)`
+#' @param server logical indicating wether the options should be generated in
+#'   the server module, default: `TRUE`
 #' @return a properly wired `[shiny::selectizeInput()]` UI element.
 gs.render.select.ui <- function(ns, choices, server = TRUE,
                                 maxOptions = 1000, sep = '_::_') {
@@ -152,7 +154,7 @@ gs.render.select.ui <- function(ns, choices, server = TRUE,
   ui
 }
 
-#' @describeIn geneSetSelectModule Internal function to build a `data.frame`
+#' @describeIn geneSetSelect Internal function to build a `data.frame`
 #'   used to populate geneset choices for a select input.
 #'
 #' Note that when returning a data.frame for the choices from
