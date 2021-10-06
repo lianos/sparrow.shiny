@@ -75,7 +75,14 @@ for details).}
 \item{mg}{`SparrowResult` to build options for}
 }
 \value{
-a reactive list of reactive elements
+a reactive list of information about the selected geneset.
+* `collection`: the collection its from
+* `name`: the name within the collection
+* `stats`: a data.frame of "contrast statistics" for the features in the
+  geneset
+* `select.id`: the shiny id for this module
+* `sep`: the separator used to key the collection,name string for this
+  geneset
 
 a properly wired `[shiny::selectizeInput()]` UI element.
 

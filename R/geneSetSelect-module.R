@@ -21,7 +21,14 @@
 #' @param sep the separater to put between the collection and name bits of a
 #'   geneset. These are the values used in the gene set `selectizeInput` to
 #'   create unique keys for each geneset.
-#' @return a reactive list of reactive elements
+#' @return a reactive list of information about the selected geneset.
+#' * `collection`: the collection its from
+#' * `name`: the name within the collection
+#' * `stats`: a data.frame of "contrast statistics" for the features in the
+#'   geneset
+#' * `select.id`: the shiny id for this module
+#' * `sep`: the separator used to key the collection,name string for this
+#'   geneset
 geneSetSelect <- function(input, output, session, mgc, server=TRUE,
                           maxOptions=Inf, sep='_::_') {
   # Programmatically create the UI from the SparrowResults

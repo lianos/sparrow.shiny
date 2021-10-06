@@ -139,13 +139,6 @@ geneSetContrastViewUI <- function(id, height="590px", width="400px") {
 
 
 
-# #' @describeIn geneSetContrastView Internal function that tests if
-# #'   an object has all the shiny bits to be a geneSetContrastView.
-# is.geneSetContrastViewer <- function(x) {
-#   # I should j
-#   is(x()$gs, 'reactive') && is(x()$selected, 'reactive')
-# }
-
 #' @export
 #' @describeIn geneSetContrastView allows you to update the active
 #'   geneset in a contrast view module externally.
