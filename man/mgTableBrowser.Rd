@@ -5,14 +5,14 @@
 \alias{mgTableBrowserUI}
 \title{A module that displays an interactive table of genesets from an analysis.}
 \usage{
-mgTableBrowser(input, output, session, mgc, method, fdr, server = TRUE)
+mgTableBrowser(input, output, session, src, method, fdr, server = TRUE)
 
 mgTableBrowserUI(id)
 }
 \arguments{
 \item{input, output, session}{shiny module bits}
 
-\item{mgc}{the \code{SparrowResultContainer} object}
+\item{src}{the \code{SparrowResultContainer} object}
 
 \item{method}{a reactive that determines which method to explore from this
 result}
@@ -54,10 +54,10 @@ sres <- sparrow::exampleSparrowResult()
 app <- shiny::shinyApp(
   ui = mgTableBrowserUI("mod"),
   server = function(input, output, session) {
-    src <- reactive(SparrowResultContainer(sres))
-    method <- reactive("camera")
-    fdr <- reactive(0.2)
-    callModule(mgTableBrowser, "mod", src, method, fdr)
+    src <- shiny::reactive(SparrowResultContainer(sres))
+    method <- shiny::reactive("camera")
+    fdr <- shiny::reactive(0.2)
+    shiny::callModule(mgTableBrowser, "mod", src, method, fdr)
   })
 if (interactive()) {
   shiny::runApp(app)

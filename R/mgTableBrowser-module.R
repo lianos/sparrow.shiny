@@ -8,7 +8,7 @@
 #'
 #' @export
 #' @param input,output,session shiny module bits
-#' @param mgc the \code{SparrowResultContainer} object
+#' @param src the \code{SparrowResultContainer} object
 #' @param method a reactive that determines which method to explore from this
 #'   result
 #' @param fdr a reactive that gives the fdr threshold to filter results in the
@@ -30,20 +30,20 @@
 #' app <- shiny::shinyApp(
 #'   ui = mgTableBrowserUI("mod"),
 #'   server = function(input, output, session) {
-#'     src <- reactive(SparrowResultContainer(sres))
-#'     method <- reactive("camera")
-#'     fdr <- reactive(0.2)
-#'     callModule(mgTableBrowser, "mod", src, method, fdr)
+#'     src <- shiny::reactive(SparrowResultContainer(sres))
+#'     method <- shiny::reactive("camera")
+#'     fdr <- shiny::reactive(0.2)
+#'     shiny::callModule(mgTableBrowser, "mod", src, method, fdr)
 #'   })
 #' if (interactive()) {
 #'   shiny::runApp(app)
 #' }
-mgTableBrowser <- function(input, output, session, mgc, method, fdr,
+mgTableBrowser <- function(input, output, session, src, method, fdr,
                            server = TRUE) {
 
   ## under the FDR threshold
   gsea.result.table <- shiny::reactive({
-    mg <- shiny::req(mgc()$mg)
+    mg <- shiny::req(src()$mg)
     if (is.null(method()) || method() == "") {
       # msg("... gseaMethod not selected yet")
       return(NULL)
@@ -80,9 +80,9 @@ mgTableBrowser <- function(input, output, session, mgc, method, fdr,
   })
 
   output$gseaResultTable <- DT::renderDataTable({
-    shiny::req(gsea.result.table(), mgc())
+    shiny::req(gsea.result.table(), src())
     renderGseaResultTableDataTable(gsea.result.table(), method(),
-                                   mgc()$mg)
+                                   src()$mg)
   }, server = server)
 
   list(stats = gsea.result.table, selected = selected)
