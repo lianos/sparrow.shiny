@@ -14,7 +14,6 @@
 #'   to explore, and the user can upload one into the app.
 #' @return Returns the result from a call to [shiny::runApp()].
 #' @examples
-#' \donttest{
 #' # vm <- sparrow::exampleExpressionSet()
 #' # gdb <- sparrow::exampleGeneSetDb()
 #' # sr <- sparrow::seas(vm, gdb, vm$design, methods=c('camera', 'fry'))
