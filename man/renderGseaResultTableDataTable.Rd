@@ -2,7 +2,7 @@
 % Please edit documentation in R/shiny-utils.R
 \name{renderGseaResultTableDataTable}
 \alias{renderGseaResultTableDataTable}
-\title{Creates a DT::datatable of geneset level GSEA results for use in shiny bits}
+\title{Creates a DT::datatable of geneset level GSEA results for use in shiny bits.}
 \usage{
 renderGseaResultTableDataTable(x, method, mg, digits = 3)
 }
@@ -14,10 +14,19 @@ renderGseaResultTableDataTable(x, method, mg, digits = 3)
 
 \item{mg}{The `SparrowResult` object. This is used swap in the
 URL links for genesets using [sparrow::geneSetURL()].}
+
+\item{digits}{the number of digits to round numer columns to.}
 }
 \value{
-a DT::DataTable
+A [DT::datatable()] for display
 }
 \description{
-Creates a DT::datatable of geneset level GSEA results for use in shiny bits
+This function is closely tied to the exact output of the GSEA methods from
+the [sparrow::seas()].
+}
+\examples{
+sres <- sparrow::exampleSparrowResult()
+method <- sparrow::resultNames(sres)[1L]
+stable <- constructGseaResultTable(sres, method)
+renderGseaResultTableDataTable(stable, method, sres, digits = 2)
 }

@@ -1,5 +1,4 @@
-
-#' A ReactiveGeneSetDb for use in the shiiny world.
+#' A UI for a GeneSetDb that enables users to select gene sets used for testing.
 #'
 #' This can be instantiated from a "static" or "reactive" GeneSetDb object.
 #' It allows users to customize which genesets are active by:
@@ -7,13 +6,38 @@
 #' 1. Filtering out entire collections; and
 #' 2. Filtering genesets based on min and max (gene) size.
 #'
-#' This should be in mutliGSEA.shiny, but is developed here for now to make
-#' it easier to develop within the FacieAnalysis shiny world.
-#'
 #' @export
+#' @param input,output,session shiny module bits
 #' @param gdb A static or reactive GeneSetDb object
 #' @param min.gs.size,max.gs.size the default minimum and maximum geneset size
 #'   set in the UI when `gdb` is first loaded or changes (when reactive)
+#' @param default_collections a character vector of collections that are by
+#'   default selected for use
+#' @return A list of reactive elements wired to the input `gdb`:
+#' \describe{
+#'   \item{gdb}{a `reactive(gdb)`}
+#'   \item{geneSets}{a `reacvtive(geneSets(gdb))`}
+#'   \item{min.gs.size,max.gs.size}{
+#'     reactives that indicate current selection of minimum and maximum gene set
+#'     sizes to be used in `sparrow::conform(gdb, ...)`
+#'   }
+#'   \item{.state}{a `shiny::reactiveList` that contains the state of this module}
+#'   \item{.ns}{the shiny namespace for this module}
+#' }
+#' @examples
+#' sres <- sparrow::exampleSparrowResult()
+#' gdb <- sparrow::geneSetDb(sres)
+#' app <- shiny::shinyApp(
+#'   ui = shiny::shinyUI(shiny::fluidPage(
+#'     exampleUISetup(),
+#'     title = "Configure GeneSetDb",
+#'     reactiveGeneSetDbUI("mod"))),
+#'   server = function(input, output, session) {
+#'     shiny::callModule(reactiveGeneSetDb, "mod", gdb)
+#'   })
+#' if (interactive()) {
+#'   shiny::runApp(app)
+#' }
 reactiveGeneSetDb <- function(input, output, session, gdb,
                               min.gs.size = 2L, max.gs.size = Inf,
                               default_collections = NULL, ...) {
@@ -42,7 +66,7 @@ reactiveGeneSetDb <- function(input, output, session, gdb,
   rmax.gs.size <- shiny::reactive(state$max.gs.size)
 
   shiny::observeEvent(rgdb(), {
-    gdb. <- req(rgdb())
+    gdb. <- shiny::req(rgdb())
     shiny::req(is(gdb., "GeneSetDb"))
 
     # ........................................................ collection picker
@@ -86,17 +110,18 @@ reactiveGeneSetDb <- function(input, output, session, gdb,
     selected.colls <- input$collections
     gdb. <- shiny::req(rgdb())
     shiny::req(is(gdb., "GeneSetDb"))
-    gsets <- sparrow::geneSets(gdb.)
-    gsets <- subset(
-      gsets,
+    gsets <- sparrow::geneSets(gdb., as.dt = TRUE)
+    # silence R CMD check NOTES for data.table NSE mojo
+    collection <- N <- NULL
+    gsets <- gsets[
       collection %in% selected.colls &
         N >= rmin.gs.size() &
-        N <= rmax.gs.size())
-    gsets
+        N <= rmax.gs.size()]
+    setDF(gsets)
   })
 
   output$gscount <- shiny::renderUI({
-    tags$span(nrow(genesets()))
+    shiny::tags$span(nrow(genesets()))
   })
 
   vals <- list(
@@ -110,10 +135,12 @@ reactiveGeneSetDb <- function(input, output, session, gdb,
   vals
 }
 
-#' UI components to filter a GeneSetDb by collection and set size
-#'
 #' @export
-reactiveGeneSetDbFilterUI <- function(id, min = 2, max = 100L, ...) {
+#' @describeIn reactiveGeneSetDb the UI for the module
+#' @param id shiny module namespace
+#' @param min,max ranges for the min/max geneset slider
+#' @param ... pass through args
+reactiveGeneSetDbUI <- function(id, min = 2, max = 100L, ...) {
   ns <- shiny::NS(id)
 
   shiny::tagList(
@@ -141,8 +168,10 @@ reactiveGeneSetDbFilterUI <- function(id, min = 2, max = 100L, ...) {
 #'
 #' This can only be run within a reactive context.
 #'
-#' @noRd
 #' @export
+#' @param x A ReactiveGeneSetDb
+#' @param ... pass through (not used)
+#' @return A standard / static GeneSetDb object
 GeneSetDb.ReactiveGeneSetDb <- function(x, ...) {
   gdb <- x$gdb()
   gsets.all <- sparrow::geneSets(gdb)

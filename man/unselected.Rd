@@ -8,6 +8,13 @@ unselected(value, ignore = c("---", "__initializing__", ""))
 }
 \arguments{
 \item{value}{The (character) object returned from a `selectInput`}
+
+\item{ignore}{strings that are included in a select box that define a
+"not selected / active" state}
+}
+\value{
+a boolean flag used to indicate whether "this thing" has been set to
+  a specific state by the user.
 }
 \description{
 Copied from FacileViz, but we don't want to depend on that.
@@ -19,5 +26,5 @@ it returns `""`, so I'm just making this utility function to deal with that
 NOTE: This is really a function that is used by shiny modules, but instead
 of having every shiny function check if something is "unselected" and setting
 it to NULL, we move that functionality in here so that internal vizualization
-functions can do that jusst once
+functions can do that just once.
 }

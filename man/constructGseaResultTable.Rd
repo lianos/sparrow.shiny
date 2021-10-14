@@ -2,9 +2,14 @@
 % Please edit documentation in R/shiny-utils.R
 \name{constructGseaResultTable}
 \alias{constructGseaResultTable}
-\title{Builds the table of GSEA statistics to present to the user}
+\title{Builds the table of GSEA statistics to present to the user.}
 \usage{
-constructGseaResultTable(mg, method, fdr, prioritize = c("h"))
+constructGseaResultTable(
+  mg,
+  method = sparrow::resultNames(mg)[1L],
+  fdr = 0.1,
+  prioritize = NULL
+)
 }
 \arguments{
 \item{mg}{`SparrowResult` object}
@@ -13,9 +18,9 @@ constructGseaResultTable(mg, method, fdr, prioritize = c("h"))
 
 \item{fdr}{the FDR cut off to present statistics for}
 
-\item{prioritize}{the preffered collections to put at the top of the
-list. The collection column of the table is turned into a factor and for
-more usful display with datatable's filter. Specifcying collections
+\item{prioritize}{the preferred collections to put at the top of the
+list. The collection column of the table is turned into a factor for
+more useful display with datatable's filter. Specifcying collections
 here will put those collections at the front of the factor levels and
 therofre prioritize their display in the select dropdown for the filter}
 }
@@ -24,8 +29,10 @@ a data.table of the statistics that match the filtering criteria.
   A 0-row data.table is returned if nothing passes.
 }
 \description{
-The application will present the set of gene sets that pass a given
-\code{fdr} for a given \code{method} as a central piece of the UI. This
-function accepts those to arguments and prepares the statistics generated
-from the analysis for display.
+Creates a table gene set statistics genereated from a GSEA `method` for all
+gene sets with an FDR (by collection) less than given threshold.
+}
+\examples{
+sres <- sparrow::exampleSparrowResult()
+constructGseaResultTable(sres)
 }

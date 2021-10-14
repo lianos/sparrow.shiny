@@ -1,0 +1,6 @@
+Changes in version 0.99.0 (2021-09-29)
+* Submission to Bioconductor
+* Breaking Changes
+  - reactiveGeneSetDbFilterUI function renamed to `reactiveGeneSetDbUI`
+  - The $mg element in SparrowResultContainer has been renamed to `$sr`
+

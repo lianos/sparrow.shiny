@@ -1,14 +1,33 @@
 #' Creates a GeneSetDb from a user-specfied gene set definition table.
 #'
 #' This module provides an upload button that allows a user to upload a
-#' table of gene set definitions in [mutiGSEA::GeneSetDb()] format. Minimal
-#' validation checks are implemented.
+#' table of gene set definitions in [sparrow::GeneSetDb()] format as a CSV file
+#' or excel file (if the readxl package is installed). Minimal validation checks
+#' are implemented.
 #'
 #' @export
+#' @param input,output,session shiny module bits
+#' @param ... pass through arguments
 #' @return A list of reactive components. `$gdb()` will be a GeneSetDb when
 #'   the user uploades a valid gene set definition file. Otherwise it will be
 #'   `NULL`.
+#' @examples
+#' # You can upload the file available here:
+#' (ex.fn <- system.file("testdata", "user-defined-genesets-example.xlsx",
+#'                       package = "sparrow.shiny"))
+#' app <- shiny::shinyApp(
+#'   ui = shiny::shinyUI(shiny::fluidPage(
+#'     exampleUISetup(),
+#'     title = "Costum Gene Set Collection Upload",
+#'     userDefinedGeneSetDbUI("mod"))),
+#'   server = function(input, output, session) {
+#'     shiny::callModule(userDefinedGeneSetDb, "mod", gdb)
+#'   })
+#' if (interactive()) {
+#'   shiny::runApp(app)
+#' }
 userDefinedGeneSetDb <- function(input, output, session, ...) {
+  xlsx.ok <- requireNamespace("readxl", quietly = TRUE)
 
   empty.def <- data.frame(
     collection = character(), name = character(), feature_id = character(),
@@ -24,9 +43,7 @@ userDefinedGeneSetDb <- function(input, output, session, ...) {
 
     if (ext %in% c("xlsx", "xls")) {
       shiny::validate(
-        shiny::need(
-          requireNamespace("readxl", quietly = TRUE),
-          "readxl package is required to upload Excel files"))
+        shiny::need(xlsx.ok, "readxl package required to upload Excel files"))
     } else {
       shiny::validate(
         shiny::need(
@@ -35,13 +52,13 @@ userDefinedGeneSetDb <- function(input, output, session, ...) {
     }
 
     if (ext == "csv") {
-      dat <- try(read.csv(path, stringsAsFactors = FALSE), silent = TRUE)
+      dat <- try(utils::read.csv(path, stringsAsFactors = FALSE), silent = TRUE)
     } else {
       dat <- try(readxl::read_excel(path), silent = TRUE)
     }
 
     shiny::validate(
-      need(is.data.frame(dat), "Error parsing geneset definition file")
+      shiny::need(is.data.frame(dat), "Error parsing geneset definition file")
     )
 
     req.cols <- c("collection", "name", "feature_id")
@@ -50,13 +67,10 @@ userDefinedGeneSetDb <- function(input, output, session, ...) {
       shiny::need(
         length(missed) == 0L,
         sprintf("Missing columns: %s", paste(missed, collapse = ","))))
-
+    dat[["name"]] <- as.character(dat[["name"]])
+    dat[["colelction"]] <- as.character(dat[["collection"]])
     dat[["feature_id"]] <- as.character(dat[["feature_id"]])
-    state$dat <- transform(
-      dat,
-      collection = as.character(collection),
-      name = as.character(name),
-      feature_id = as.character(feature_id))
+    state$dat <- dat
   })
 
   gdb <- shiny::reactive({
@@ -79,9 +93,11 @@ userDefinedGeneSetDb <- function(input, output, session, ...) {
   vals
 }
 
-#' @noRd
+#' @describeIn userDefinedGeneSetDb ui for the module
 #' @export
-userDefinedGeneSetDbUI <- function(id, ..., debug = FALSE) {
+#' @param id the module namespace
+#' @param ... pass through arguments
+userDefinedGeneSetDbUI <- function(id, ...) {
   ns <- shiny::NS(id)
   inline.style <- "display: inline-block; vertical-align:top;"
 

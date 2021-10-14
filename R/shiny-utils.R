@@ -1,33 +1,3 @@
-#' Interactively explore a SparrowResult via a shiny app
-#'
-#' @description
-#' This will launch a shiny application that enables exploratory analysis of
-#' the results from the different GSEA methods run within a `SparrowResul`.
-#'
-#' Reference the "shiny-sparrow" vignette for more detailed documentation of
-#' the functionality provided by this application.
-#'
-#' @export
-#' @param x A `SparrowResult` object, or path to one as an *.rds. If
-#'   missing, the shiny app will load without a `SparrowResult` object
-#'   to explore, and the user can upload one into the app.
-#' @examples
-#' \dontrun{
-#' vm <- exampleExpressionSet()
-#' gdb <- exampleGeneSetDb()
-#' sr <- seas(gdb, vm, vm$design, methods=c('camera', 'fry'))
-#' explore(sr)
-#' }
-explore <- function(x) {
-  if (!missing(x)) {
-    if (is.character(x)) x <- readRDS(x)
-    stopifnot(is(x, 'SparrowResult'))
-    options(EXPLORE_SPARROW_RESULT = x)
-    on.exit(options(EXPLORE_SPARROW_RESULT = NULL))
-  }
-  shiny::runApp(system.file("shiny", package = "sparrow.shiny"))
-}
-
 #' Adds a js$reset_<id>_<event>() to reset the selection on a plot
 #'
 #' selected elements stick on a plot even after it is redrawn, most of the
@@ -38,8 +8,10 @@ explore <- function(x) {
 #' https://stackoverflow.com/questions/44412382/
 #'
 #' @noRd
-insertPlotlyReset <- function(source, event=c('hover', 'click', 'selected')) {
-  stopifnot(is.character(source), length(source) == 1L)
+#' @param the name of the "shiny source" to add the reset for
+#' @param event clear the selection on which event?
+insertPlotlyReset <- function(source, event = c('hover', 'click', 'selected')) {
+  assert_string(source)
   event <- match.arg(event)
   text <- sprintf(
     "shinyjs.reset_%s_%s = function() {
@@ -54,26 +26,33 @@ insertPlotlyReset <- function(source, event=c('hover', 'click', 'selected')) {
 
 # Gene Set Level Table Helpers =================================================
 
-#' Builds the table of GSEA statistics to present to the user
+#' Builds the table of GSEA statistics to present to the user.
 #'
-#' @description
-#' The application will present the set of gene sets that pass a given
-#' \code{fdr} for a given \code{method} as a central piece of the UI. This
-#' function accepts those to arguments and prepares the statistics generated
-#' from the analysis for display.
+#' Creates a table gene set statistics genereated from a GSEA `method` for all
+#' gene sets with an FDR (by collection) less than given threshold.
 #'
 #' @export
 #' @param mg `SparrowResult` object
 #' @param method the method to show statistics for
 #' @param fdr the FDR cut off to present statistics for
-#' @param prioritize the preffered collections to put at the top of the
-#'   list. The collection column of the table is turned into a factor and for
-#'   more usful display with datatable's filter. Specifcying collections
+#' @param prioritize the preferred collections to put at the top of the
+#'   list. The collection column of the table is turned into a factor for
+#'   more useful display with datatable's filter. Specifcying collections
 #'   here will put those collections at the front of the factor levels and
 #'   therofre prioritize their display in the select dropdown for the filter
 #' @return a data.table of the statistics that match the filtering criteria.
 #'   A 0-row data.table is returned if nothing passes.
-constructGseaResultTable <- function(mg, method, fdr, prioritize=c('h')) {
+#' @examples
+#' sres <- sparrow::exampleSparrowResult()
+#' constructGseaResultTable(sres)
+constructGseaResultTable <- function(mg, method = sparrow::resultNames(mg)[1L],
+                                     fdr = 0.10, prioritize = NULL) {
+  assert_character(prioritize, null.ok = TRUE)
+  assert_number(fdr, lower = 0.01, upper = 1)
+
+  # silence R CMD check notes from data.table NSE mojo
+  padj.by.collection <- collection <- mean.logFC.trim <- NULL
+
   out <- sparrow::result(mg, method, as.dt=TRUE)
   out <- out[padj.by.collection <= fdr]
   if (nrow(out)) {
@@ -86,7 +65,10 @@ constructGseaResultTable <- function(mg, method, fdr, prioritize=c('h')) {
   out
 }
 
-#' Creates a DT::datatable of geneset level GSEA results for use in shiny bits
+#' Creates a DT::datatable of geneset level GSEA results for use in shiny bits.
+#'
+#' This function is closely tied to the exact output of the GSEA methods from
+#' the [sparrow::seas()].
 #'
 #' @export
 #' @param x The set of GSEA statistics generated from from
@@ -94,8 +76,14 @@ constructGseaResultTable <- function(mg, method, fdr, prioritize=c('h')) {
 #' @param method the GSEA method being used fo rdisplay
 #' @param mg The `SparrowResult` object. This is used swap in the
 #' URL links for genesets using [sparrow::geneSetURL()].
-#' @return a DT::DataTable
-renderGseaResultTableDataTable <- function(x, method, mg, digits=3) {
+#' @param digits the number of digits to round numer columns to.
+#' @return A [DT::datatable()] for display
+#' @examples
+#' sres <- sparrow::exampleSparrowResult()
+#' method <- sparrow::resultNames(sres)[1L]
+#' stable <- constructGseaResultTable(sres, method)
+#' renderGseaResultTableDataTable(stable, method, sres, digits = 2)
+renderGseaResultTableDataTable <- function(x, method, mg, digits = 3) {
   stopifnot(is(x, 'data.frame'))
   stopifnot(is.character(method) && length(method) == 1L)
   stopifnot(is(mg, 'SparrowResult'))
@@ -112,6 +100,8 @@ renderGseaResultTableDataTable <- function(x, method, mg, digits=3) {
   res <- x[, names(rcols), with=FALSE]
   setnames(res, names(rcols), rcols)
 
+  # silence R CMD check notes from data.table NSE mojo
+  name <- collection <- NULL
   res[, name := {
     url <- sparrow::geneSetURL(mg, as.character(collection), name)
     xname <- gsub('_', ' ', name)
@@ -146,27 +136,41 @@ renderGseaResultTableDataTable <- function(x, method, mg, digits=3) {
   roundDT(out, digits = digits)
 }
 
-# Gene evel Table Helpers =====================================================
+# Gene level Table Helpers =====================================================
 
-#' Transforms a column in feature table to an external link for that feature.
+#' Transform a column in feature table to web link for that feature.
 #'
 #' @description
 #' When listing features in an interactive table, it's often useful to link
 #' the feature to an external webpage that has more information about that
-#' feature. Functions to genes to their NCBI or GeneCards webpage via their
-#' `feature_id` are provided via `ncbi.entrez.link` and
-#' `genecards.entrez.link`. The column used to transform into a link
-#' is specified by `link.col`.
+#' feature. We include a series of functions to link entrez or ensembl id's
+#' to different web pages. The data.frame needs to have a `feature_id` column
+#' which will be used to link out to the reference page.
 #'
 #' If `link.col` is not found in the data.frame `x` then the provided
 #' functions are NO-OPS, ie. the same data.frame is simply returned.
 #'
+#' @details
+#' These were implemented a while ago when our world focused on entrez id's,
+#' we need to update.
+#'
 #' @rdname feature-link-functions
+#' @examples
+#' sr <- sparrow::exampleSparrowResult()
+#' lfc <- sparrow::logFC(sr)
+#' # the symbol column in `lfhc` will be a linked to the entrez web page for
+#' # each gene
+#' linked <- ncbi.entrez.link(lfc, link.col = "symbol")
+#' head(linked[["symbol"]])
+.empty_link_function <- function(x, link.col=NULL) x
+
+#' @describeIn feature-link-functions links gene to ncbi web site by entrez id.
 #' @export
 #' @param x a data.frame from `SparrowResult`
 #' @param link.col the column in `x` that should be transformed to a link
 #' @return a modified `x` with an html link in `link.col`.
 ncbi.entrez.link <- function(x, link.col='symbol') {
+  assert_character(x[["feature_id"]])
   if (is.character(link.col) && is.character(x[[link.col]])) {
     url <- sprintf('https://www.ncbi.nlm.nih.gov/gene/?term=%s', x$feature_id)
     html <- sprintf('<a href="%s" target="_blank">%s</a>', url, x$symbol)
@@ -176,9 +180,11 @@ ncbi.entrez.link <- function(x, link.col='symbol') {
 }
 
 
-#' @rdname feature-link-functions
+#' @describeIn feature-link-functions links a gene row to the genecards website
+#'   by entrez id
 #' @export
 genecards.entrez.link <- function(x, link.col='symbol') {
+  assert_character(x[["feature_id"]])
   if (is.character(link.col) && is.character(x[[link.col]])) {
     url <- sprintf('http://www.genecards.org/cgi-bin/carddisp.pl?gene=%s',
                    x$feature_id)
@@ -188,7 +194,7 @@ genecards.entrez.link <- function(x, link.col='symbol') {
   x
 }
 
-#' Creates a DT::datatable of feature level statistics for use in shiny bits
+#' Create a DT::datatable of feature level statistics for use in shiny bits
 #'
 #' We often want to display an interactive table of feature level statistics
 #' for all features. This function is a convenience wrapper to do that.
@@ -205,11 +211,23 @@ genecards.entrez.link <- function(x, link.col='symbol') {
 #' @param columns the columns from `x` to use. If `missing`, then
 #'   only `c('symbol', 'feature_id', 'logFC', 'pval', 'padj', order.by)`
 #'   will be used. If explicitly set to `NULL` all columns will be used.
-#'
-#' @param feature.link.fn A funcion that receives the data.frame of statistics
+#' @param feature.link.fn A function that receives the data.frame of statistics
 #'   to be rendered and transforms one of its columns into a hyperlink for
-#'   further reference. Refer to the [ncbi.entrez.link()` function
-#'   as an example
+#'   further reference. Refer to [ncbi.entrez.link()] as an example.
+#' @param order.by name of the column to order the geneset stats by
+#' @param order.dir do we order the table by the values in `order.by` in
+#'   `"desc"`-ending, or `"asc"`-ending order (default: `"desc"`)
+#' @param filter passed to [DT::datatable()]
+#' @param length.opts parameter passed as an option to [DT::datatable()] that
+#'   specifies how long the table can be per page.
+#' @return A [DT::datatable()] of feature statistics
+#' @examples
+#' sr <- sparrow::exampleSparrowResult()
+#' lfc <- sparrow::logFC(sr)
+#' if (interactive()) {
+#'   renderFeatureStatsDataTable(sr, sample(lfc$feature_id, 200),
+#'                               feature.link.fn = ncbi.entrez.link)
+#' }
 renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
                                         columns=NULL, feature.link.fn=NULL,
                                         order.by='logFC',
@@ -222,7 +240,7 @@ renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
   stopifnot(is(x, 'data.table'), !is.null(x$feature_id))
   order.dir <- match.arg(order.dir)
   if (is.character(features)) {
-    x <- subset(x, feature_id %in% features)
+    x <- x[x$feature_id %in% features,,drop = FALSE]
   }
 
   ## Figure out what columns to keep in the outgoing datatable
@@ -268,8 +286,8 @@ renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
     length.opts <- nrow(x)
   } else {
     length.opts <- length.opts[length.opts <= nrow(x)]
-    if (tail(length.opts, 1) > nrow(x)) {
-      length.opts <- c(head(length.opts, -1L), nrow(x))
+    if (utils::tail(length.opts, 1) > nrow(x)) {
+      length.opts <- c(utils::head(length.opts, -1L), nrow(x))
     }
   }
 
@@ -297,8 +315,13 @@ renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
 #' of results
 #'
 #' @export
+#' @inheritParams sparrow::resultNames
 #' @return a \code{tagList} version of an HTML table for use in a shiny app
-summaryHTMLTable.sparrow <- function(x, names = resultNames(x), max.p, p.col) {
+#' @examples
+#' sr <- sparrow::exampleSparrowResult()
+#' summaryHTMLTable.sparrow(sr, max.p = 0.10, p.col = "padj")
+summaryHTMLTable.sparrow <- function(x, names = sparrow::resultNames(x),
+                                     max.p, p.col) {
   stopifnot(is(x, 'SparrowResult'))
   s <- sparrow::tabulateResults(x, names, max.p, p.col)
 
@@ -310,10 +333,10 @@ summaryHTMLTable.sparrow <- function(x, names = resultNames(x), max.p, p.col) {
                    shiny::tags$th("Analysis Summary", colspan=length(names))),
     ## Sub headers
     do.call(
-      tags$tr,
+      shiny::tags$tr,
       c(list(class='sub-header',
-             tags$th("Collection"), # class="sparrow-summary-table"),
-             tags$th("Count")), # class="sparrow-summary-table")),
+             shiny::tags$th("Collection"), # class="sparrow-summary-table"),
+             shiny::tags$th("Count")), # class="sparrow-summary-table")),
         lapply(names, function(name) {
           target.dom.id <- paste0('sparrow-result-', name)
           ## I wanted the headers that had the method names to link to the
@@ -323,33 +346,41 @@ summaryHTMLTable.sparrow <- function(x, names = resultNames(x), max.p, p.col) {
         })
       )))
 
-  ## The body of the table one row per collection
+  # The body of the table one row per collection
   collections <- unique(s$collection)
   tbody.rows <- lapply(collections, function(col) {
-    sc <- subset(s, collection == col)
+    sc <- s[s$collection == col,,drop=FALSE]
     stopifnot(all(names %in% sc$method))
     stopifnot(length(unique(sc$geneset_count)) == 1L)
 
     mres <- lapply(names, function(name) {
-      with(sc[sc[['method']] == name,,drop=FALSE], {
-        shiny::tags$td(sprintf("%d (%d up; %d down)", sig_count, sig_up, sig_down))
-      })
+      # with(sc[sc[['method']] == name,,drop=FALSE], {
+      #   shiny::tags$td(
+      #     sprintf("%d (%d up; %d down)", sig_count, sig_up, sig_down))
+      # })
+      xsc <- sc[sc[['method']] == name,,drop=FALSE]
+      shiny::tags$td(
+        sprintf("%d (%d up; %d down)", xsc$sig_count, xsc$sig_up, xsc$sig_down))
     })
 
     do.call(
       shiny::tags$tr,
-      c(list(shiny::tags$td(sc$collection[1L]), # class='sparrow-summary-table'),
-             shiny::tags$td(sc$geneset_count[1L])), # class='sparrow-summary-table')),
+      c(list(shiny::tags$td(sc$collection[1L]),
+             shiny::tags$td(sc$geneset_count[1L])),
         mres))
   })
 
   tbody <- shiny::tags$tbody(tbody.rows)
-  html <- shiny::tags$div(
+  shiny::tags$div(
     class='sparrow-summary-table',
     shiny::tags$table(thead, tbody))
 }
 
-#' Round the numeric columns of a DT
+#' Rounds all of the numeric columns of a DT
+#'
+#' This is a convenience function around [DT::formatRound()] that identifies
+#' all of the numeric columns and rounds them, as opposed to just rounding
+#' prespecified columns.
 #'
 #' @export
 #' @param x a DT::datatable
@@ -357,10 +388,8 @@ summaryHTMLTable.sparrow <- function(x, names = resultNames(x), max.p, p.col) {
 #'   is performed
 #' @return a rounded DT::datatable
 #' @examples
-#' \dontrun{
 #' df <- data.frame(a=rnorm(10), b=sample(letters, 10), c=rnorm(10))
-#' roundDT(datatable(df),  digits=2)
-#' }
+#' roundDT(DT::datatable(df),  digits=2)
 roundDT <- function(x, digits=3) {
   stopifnot(is(x, "datatables"))
   if (is.na(digits)) {

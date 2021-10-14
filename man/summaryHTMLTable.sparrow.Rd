@@ -4,7 +4,17 @@
 \alias{summaryHTMLTable.sparrow}
 \title{Creates an HTML-ized version of \code{tabuleResults}}
 \usage{
-summaryHTMLTable.sparrow(x, names = resultNames(x), max.p, p.col)
+summaryHTMLTable.sparrow(x, names = sparrow::resultNames(x), max.p, p.col)
+}
+\arguments{
+\item{x}{A \code{\link[sparrow:SparrowResult]{SparrowResult()}} object.}
+
+\item{names}{the names of the GSEA methods to be reported. By default,
+this function will display results for all methods.}
+
+\item{max.p}{The maximum padj value to consider a result significant}
+
+\item{p.col}{use padj or padj.by.collection?}
 }
 \value{
 a \code{tagList} version of an HTML table for use in a shiny app
@@ -14,4 +24,8 @@ The table produced here is broken into two sections (left and right). The
 left provides meta information about the geneset collections tested, ie.
 their names and number of genesets the contain. The right contains columns
 of results
+}
+\examples{
+sr <- sparrow::exampleSparrowResult()
+summaryHTMLTable.sparrow(sr, max.p = 0.10, p.col = "padj")
 }

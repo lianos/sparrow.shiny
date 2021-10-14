@@ -1,51 +1,74 @@
-#' A module that creates a dynamic selectizeInput for a SparrowResult object
+#' Create a selectize input to select a gene set from a sparrow result.
+#'
+#' Take a look at the [reactiveGeneSetSelect()] module to select gene sets
+#' but also enable the user to first filter the genesets to choose from based
+#' on some global criteria.
 #'
 #' This code was inspired from the
 #' \href{https://gist.github.com/MarkEdmondson1234/7e56ee7ac5caa74224327489b0849e61}{dynamicSelectShinyModule.R}
 #' gist.
 #'
-#' @export
-#' @rdname geneSetSelectModule
-#' @aliases geneSetSelectUI
-geneSetSelectUI <- function(id, label="Select Gene Set") {
-  ns <- shiny::NS(id)
-  shiny::uiOutput(ns("geneset_picker"))
-}
-
 #' @section Module Return:
 #' Returns information about the `geneSetSelect` object
 #'
 #' @export
-#' @rdname geneSetSelectModule
 #' @aliases geneSetSelect
 #'
 #' @param input,output,session the shiny-required bits for the module
-#' @param mgc A [SparrowResultContainer()] object
+#' @param src A [SparrowResultContainer()] object
 #' @param server boolean to indicate whether the genesets in the geneSetSelect
-#'   widget should be rendered server side or not (Default: \code{TRUE})
+#'   widget should be rendered server side or not (Default: `TRUE`)
 #' @param maxOptions a paremeter used to customize the
-#'   \code{GeneSetSelect::selectizeInput} UI element. I thought one might want
-#'   to tweak this, but I just leave it as is.
+#'   `GeneSetSelect::selectizeInput` UI element to configure the maximum number
+#'   of elements to include in the select dropdown, the remainder of the
+#'   genesets will be loaded from the server side. Default: `Inf` for all.
 #' @param sep the separater to put between the collection and name bits of a
-#'   geneset. These are the values used in the gene set \code{selectizeInput}.
-geneSetSelect <- function(input, output, session, mgc, server=TRUE,
+#'   geneset. These are the values used in the gene set `selectizeInput` to
+#'   create unique keys for each geneset.
+#' @return a reactive list of information about the selected geneset.
+#' \describe{
+#'   \item{collection}{the collection its from}
+#'   \item{name}{the name within the collection}
+#'   \item{stats}{
+#'     a data.frame of "contrast statistics" for the features in the geneset
+#'   }
+#'   \item{select.id}{the shiny id for this module}
+#'   \item{sep}{
+#'     the separator used to key the collection,name string for this geneset
+#'   }
+#' }
+#' @examples
+#' sres <- sparrow::exampleSparrowResult()
+#' app <- shiny::shinyApp(
+#'   ui = shiny::shinyUI(shiny::fluidPage(
+#'     exampleUISetup(),
+#'     title = "Gene Set Select",
+#'     geneSetSelectUI("mod"))),
+#'   server = function(input, output, session) {
+#'     src <- shiny::reactive(SparrowResultContainer(sres))
+#'     shiny::callModule(geneSetSelect, "mod", src)
+#'   })
+#' if (interactive()) {
+#'   shiny::runApp(app)
+#' }
+geneSetSelect <- function(input, output, session, src, server=TRUE,
                           maxOptions=Inf, sep='_::_') {
   # Programmatically create the UI from the SparrowResults
   output$geneset_picker <- shiny::renderUI({
-    shiny::req(mgc())
+    shiny::req(src())
     if (is.infinite(maxOptions)) {
-      mo <- nrow(sparrow::geneSets(mgc()$mg))
+      mo <- nrow(sparrow::geneSets(src()$sr))
     } else {
       mo <- maxOptions
     }
-    gs.render.select.ui(session$ns, mgc()$choices, server = server,
+    gs.render.select.ui(session$ns, src()$choices, server = server,
                         maxOptions = mo)
   })
   shiny::outputOptions(output, "geneset_picker", suspendWhenHidden = FALSE)
 
   if (server) {
-    shiny::observeEvent(mgc(), {
-      shiny::updateSelectizeInput(session, "geneset", choices=mgc()$choices,
+    shiny::observeEvent(src(), {
+      shiny::updateSelectizeInput(session, "geneset", choices=src()$choices,
                                   server=TRUE, selected=NULL)
     }, priority = 5)
   }
@@ -54,7 +77,7 @@ geneSetSelect <- function(input, output, session, mgc, server=TRUE,
     gs <- input$geneset
     if (is.null(gs) || length(gs) == 0 || nchar(gs) == 0) {
       # HACK, just put something here if it's not selectd
-      # gs <- mgc()$choices$value[1L]
+      # gs <- src()$choices$value[1L]
       coll <- name <- stats <- NULL
     } else {
       info <- unlist(strsplit(gs, sep, fixed = TRUE))
@@ -74,11 +97,12 @@ geneSetSelect <- function(input, output, session, mgc, server=TRUE,
       # means that geneset you are looking for disappeared, likely due to
       # the reason I stated above.
       stats <- sparrow::failWith(NULL, {
-        sparrow::geneSet(mgc()$mg, info[1L], info[2L], as.dt = TRUE)
+        sparrow::geneSet(src()$sr, info[1L], info[2L], as.dt = TRUE)
       })
       if (is.null(stats)) {
         coll <- name <- stats <- NULL
       } else {
+        logFC <- NULL # silence R CMD check for data.tabe NSE mojo
         stats <- stats[order(logFC, decreasing=TRUE)]
       }
     }
@@ -89,10 +113,23 @@ geneSetSelect <- function(input, output, session, mgc, server=TRUE,
   return(vals)
 }
 
+#' @describeIn geneSetSelect the ui for the module
 #' @export
-#' @rdname geneSetSelectModule
-updateGeneSetSelect <- function(session, id, label=NULL, choices=NULL,
-                                selected=NULL, options=list(), server=FALSE) {
+#' @param id the shiny namespace for the module
+#' @param label the label for the [shiny::selectizeInput()]
+geneSetSelectUI <- function(id, label = "Select Gene Set") {
+  ns <- shiny::NS(id)
+  shiny::uiOutput(ns("geneset_picker"))
+}
+
+#' @export
+#' @describeIn geneSetSelect update geneSetSelect externally.
+#'   with new choices
+#' @param id the 'naked' module id
+#' @inheritParams shiny::updateSelectizeInput
+updateGeneSetSelect <- function(session, id, label = NULL, choices = NULL,
+                                selected = NULL, options = list(),
+                                server = FALSE) {
   childScope <- session$makeScope(id)
   shiny::withReactiveDomain(childScope, {
     mod.id <- childScope$ns('geneset')
@@ -105,16 +142,14 @@ updateGeneSetSelect <- function(session, id, label=NULL, choices=NULL,
 
 ## Utility Functions -----------------------------------------------------------
 
-#' Builds a selectizeInput widget that is specific to a SparrowResult
-#'
-#' @rdname geneSetSelectModule
+#' @describeIn geneSetSelect Internal function to build a `selectizeInput`
+#'   widget that is specific to a SparrowResult.
 #'
 #' @param ns the namespace function for this module
-#' @param choices the output of gs.select.choices(SparrowResult)
-#' @param server \code{logical} to indicate whether options should be loaded
-#'   on the server side (default: `TRUE`)
-#' @param maxOptions The maximum number of options to load into the dropdown
-#' @return a properly wired `[shiny::selectizeInput()]`
+#' @param choices the output of `gs.select.choices(SparrowResult)`
+#' @param server logical indicating wether the options should be generated in
+#'   the server module, default: `TRUE`
+#' @return a properly wired `[shiny::selectizeInput()]` UI element.
 gs.render.select.ui <- function(ns, choices, server = TRUE,
                                 maxOptions = 1000, sep = '_::_') {
   # predefine all options groups
@@ -140,7 +175,7 @@ gs.render.select.ui <- function(ns, choices, server = TRUE,
   } else {
     choices <- sapply(unique(choices$collection), function(x) {
       out <- choices[choices[["collection"]] == x,]
-      setNames(out$value, out$label)
+      stats::setNames(out$value, out$label)
     }, simplify=FALSE)
     ui <- shiny::selectizeInput(ns("geneset"), label = NULL, choices = choices,
                                 width = "100%")
@@ -149,21 +184,25 @@ gs.render.select.ui <- function(ns, choices, server = TRUE,
   ui
 }
 
-#' Builds a `data.frame` used to populate choices for selectizeInput
+#' @describeIn geneSetSelect Internal function to build a `data.frame`
+#'   used to populate geneset choices for a select input.
 #'
-#' Note that when returning a data.frame for the choices of a selectizeInput,
-#' we need a column called "value" and a column called "label".
+#' Note that when returning a data.frame for the choices from
+#' `gs.select.choice()`, we need a column called `"value"` and a column called
+#' `"label"`.
 #'
 #' * `value`: the value that is sent back when an item is selected
 #' * `label`: athe text that appears in the selection after its triggered
 #'
-#' @rdname geneSetSelectModule
-#'
 #' @param mg `SparrowResult` to build options for
+#' @param sep the string used to concatenate geneset `collection` and `name`
+#'   to generate a uniqe string for a geneset
 #' @return `data.table` to populate `choices` of `selectizeInput`
-gs.select.choices <- function(mg, sep='_::_') {
-  out <- sparrow::geneSets(mg, as.dt=TRUE)[, {
-    list(collection, label=name, value=paste(collection, name, sep=sep))
+gs.select.choices <- function(mg, sep = "_::_") {
+  # silence R CMD check on data.table NSE mojo
+  name <- collection <- NULL
+  out <- sparrow::geneSets(mg, as.dt = TRUE)[, {
+    list(collection, label = name, value = paste(collection, name, sep = sep))
   }]
   out
 }

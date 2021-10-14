@@ -7,10 +7,14 @@
 initialized(x, ...)
 }
 \arguments{
-\item{a}{module}
+\item{x}{A thing used in a shiny environment that requires time to initialize
+before it can be used.}
+
+\item{...}{pass through}
 }
 \value{
-logical TRUE/FALSE
+logical TRUE/FALSE indicating wether or not `x` has been initialized
+  and ready for use.
 }
 \description{
 Tests if a module is initialized

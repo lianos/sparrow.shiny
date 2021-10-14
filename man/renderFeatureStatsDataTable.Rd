@@ -2,7 +2,7 @@
 % Please edit documentation in R/shiny-utils.R
 \name{renderFeatureStatsDataTable}
 \alias{renderFeatureStatsDataTable}
-\title{Creates a DT::datatable of feature level statistics for use in shiny bits}
+\title{Create a DT::datatable of feature level statistics for use in shiny bits}
 \usage{
 renderFeatureStatsDataTable(
   x,
@@ -32,12 +32,32 @@ all of `x` will be used.}
 only `c('symbol', 'feature_id', 'logFC', 'pval', 'padj', order.by)`
 will be used. If explicitly set to `NULL` all columns will be used.}
 
-\item{feature.link.fn}{A funcion that receives the data.frame of statistics
+\item{feature.link.fn}{A function that receives the data.frame of statistics
 to be rendered and transforms one of its columns into a hyperlink for
-further reference. Refer to the [ncbi.entrez.link()` function
-as an example}
+further reference. Refer to [ncbi.entrez.link()] as an example.}
+
+\item{order.by}{name of the column to order the geneset stats by}
+
+\item{order.dir}{do we order the table by the values in `order.by` in
+`"desc"`-ending, or `"asc"`-ending order (default: `"desc"`)}
+
+\item{filter}{passed to [DT::datatable()]}
+
+\item{length.opts}{parameter passed as an option to [DT::datatable()] that
+specifies how long the table can be per page.}
+}
+\value{
+A [DT::datatable()] of feature statistics
 }
 \description{
 We often want to display an interactive table of feature level statistics
 for all features. This function is a convenience wrapper to do that.
+}
+\examples{
+sr <- sparrow::exampleSparrowResult()
+lfc <- sparrow::logFC(sr)
+if (interactive()) {
+  renderFeatureStatsDataTable(sr, sample(lfc$feature_id, 200),
+                              feature.link.fn = ncbi.entrez.link)
+}
 }
