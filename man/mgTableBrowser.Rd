@@ -49,3 +49,17 @@ so you can react to the gene set selection the user triggers.
 \item \code{mgTableBrowserUI}: The UI for the module.
 }}
 
+\examples{
+sres <- sparrow::exampleSparrowResult()
+app <- shiny::shinyApp(
+  ui = mgTableBrowserUI("mod"),
+  server = function(input, output, session) {
+    src <- reactive(SparrowResultContainer(sres))
+    method <- reactive("camera")
+    fdr <- reactive(0.2)
+    callModule(mgTableBrowser, "mod", src, method, fdr)
+  })
+if (interactive()) {
+  shiny::runApp(app)
+}
+}

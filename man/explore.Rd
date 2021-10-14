@@ -24,3 +24,12 @@ without a `SparrowResult`, the app will enable the user to upload one.
 Reference the "shiny-sparrow" vignette for more detailed documentation of
 the functionality provided by this application.
 }
+\examples{
+# vm <- sparrow::exampleExpressionSet()
+# gdb <- sparrow::exampleGeneSetDb()
+# sr <- sparrow::seas(vm, gdb, vm$design, methods=c('camera', 'fry'))
+sr <- sparrow::exampleSparrowResult()
+if (interactive()) {
+  explore(sr)
+}
+}

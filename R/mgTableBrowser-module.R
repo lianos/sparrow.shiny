@@ -25,6 +25,19 @@
 #'     is defined as \code{<collection>_::_<name>}
 #'   }
 #' }
+#' @examples
+#' sres <- sparrow::exampleSparrowResult()
+#' app <- shiny::shinyApp(
+#'   ui = mgTableBrowserUI("mod"),
+#'   server = function(input, output, session) {
+#'     src <- reactive(SparrowResultContainer(sres))
+#'     method <- reactive("camera")
+#'     fdr <- reactive(0.2)
+#'     callModule(mgTableBrowser, "mod", src, method, fdr)
+#'   })
+#' if (interactive()) {
+#'   shiny::runApp(app)
+#' }
 mgTableBrowser <- function(input, output, session, mgc, method, fdr,
                            server = TRUE) {
 
