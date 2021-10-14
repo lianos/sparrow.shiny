@@ -13,7 +13,7 @@ unselected(value, ignore = c("---", "__initializing__", ""))
 "not selected / active" state}
 }
 \value{
-boolean flag used to indicate wether "this thing" has been set to
+a boolean flag used to indicate whether "this thing" has been set to
   a specific state by the user.
 }
 \description{
@@ -26,5 +26,5 @@ it returns `""`, so I'm just making this utility function to deal with that
 NOTE: This is really a function that is used by shiny modules, but instead
 of having every shiny function check if something is "unselected" and setting
 it to NULL, we move that functionality in here so that internal vizualization
-functions can do that jusst once
+functions can do that just once.
 }

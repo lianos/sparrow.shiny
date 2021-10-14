@@ -11,19 +11,16 @@ explore(x)
 missing, the shiny app will load without a `SparrowResult` object
 to explore, and the user can upload one into the app.}
 }
+\value{
+Returns the result from a call to [shiny::runApp()].
+}
 \description{
 This will launch a shiny application that enables exploratory analysis of
-the results from the different GSEA methods run within a `SparrowResul`.
+the results from the different GSEA methods run within a `SparrowResult`.
+This function accepts a `SparrowResult` that will be visualized, or if run
+without a `SparrowResult`, the app will enable the user to upload one.
 }
 \details{
 Reference the "shiny-sparrow" vignette for more detailed documentation of
 the functionality provided by this application.
-}
-\examples{
-\donttest{
-vm <- sparrow::exampleExpressionSet()
-gdb <- sparrow::exampleGeneSetDb()
-sr <- sparrow::seas(vm, gdb, vm$design, methods=c('camera', 'fry'))
-explore(sr)
-}
 }

@@ -53,3 +53,9 @@ A [DT::datatable()] of feature statistics
 We often want to display an interactive table of feature level statistics
 for all features. This function is a convenience wrapper to do that.
 }
+\examples{
+sr <- sparrow::exampleSparrowResult()
+lfc <- sparrow::logFC(sr)
+renderFeatureStatsDataTable(sr, sample(lfc$feature_id, 200),
+                            feature.link.fn = ncbi.entrez.link)
+}

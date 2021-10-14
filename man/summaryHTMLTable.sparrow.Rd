@@ -25,3 +25,7 @@ left provides meta information about the geneset collections tested, ie.
 their names and number of genesets the contain. The right contains columns
 of results
 }
+\examples{
+sr <- sparrow::exampleSparrowResult()
+summaryHTMLTable.sparrow(sr, max.p = 0.10, p.col = "padj")
+}

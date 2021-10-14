@@ -12,7 +12,16 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Overview
+# sparrow.shiny
+
+<!-- badges: start -->
+[![R build status](https://github.com/lianos/sparrow.shiny/workflows/R-CMD-check/badge.svg)](https://github.com/lianos/sparrow.shiny/actions)
+![pkgdown](https://github.com/lianos/sparrow.shiny/workflows/pkgdown/badge.svg)
+[![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![codecov](https://codecov.io/gh/lianos/sparrow.shiny/branch/main/graph/badge.svg)](https://codecov.io/gh/lianos/sparrow.shiny)
+<!-- badges: end -->
+
 
 The `sparrow.shiny` package provides an interactive shiny applications that
 enables users to explore the results of a gene set enrichment analysis performed

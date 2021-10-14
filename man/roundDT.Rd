@@ -2,7 +2,7 @@
 % Please edit documentation in R/shiny-utils.R
 \name{roundDT}
 \alias{roundDT}
-\title{Round the numeric columns of a DT}
+\title{Rounds all of the numeric columns of a DT}
 \usage{
 roundDT(x, digits = 3)
 }
@@ -16,11 +16,11 @@ is performed}
 a rounded DT::datatable
 }
 \description{
-Round the numeric columns of a DT
+This is a convenience function around [DT::formatRound()] that identifies
+all of the numeric columns and rounds them, as opposed to just rounding
+prespecified columns.
 }
 \examples{
-\dontrun{
 df <- data.frame(a=rnorm(10), b=sample(letters, 10), c=rnorm(10))
-roundDT(datatable(df),  digits=2)
-}
+roundDT(DT::datatable(df),  digits=2)
 }

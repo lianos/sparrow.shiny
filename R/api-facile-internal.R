@@ -7,7 +7,8 @@
 #' @param x A thing used in a shiny environment that requires time to initialize
 #'   before it can be used.
 #' @param ... pass through
-#' @return logical TRUE/FALSE
+#' @return logical TRUE/FALSE indicating wether or not `x` has been initialized
+#'   and ready for use.
 initialized <- function(x, ...) {
   UseMethod("initialized", x)
 }
@@ -27,12 +28,12 @@ initialized.ReactiveGeneSetDb <- function(x, ...) {
 #' NOTE: This is really a function that is used by shiny modules, but instead
 #' of having every shiny function check if something is "unselected" and setting
 #' it to NULL, we move that functionality in here so that internal vizualization
-#' functions can do that jusst once
+#' functions can do that just once.
 #'
 #' @param value The (character) object returned from a `selectInput`
 #' @param ignore strings that are included in a select box that define a
 #'   "not selected / active" state
-#' @return boolean flag used to indicate wether "this thing" has been set to
+#' @return a boolean flag used to indicate whether "this thing" has been set to
 #'   a specific state by the user.
 unselected <- function(value, ignore = c("---", "__initializing__", "")) {
   if (is.null(value)) return(TRUE)

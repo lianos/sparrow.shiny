@@ -6,7 +6,7 @@
 \alias{genecards.entrez.link}
 \title{Transform a column in feature table to web link for that feature.}
 \usage{
-.empty_link_function()
+.empty_link_function(x, link.col = NULL)
 
 ncbi.entrez.link(x, link.col = "symbol")
 
@@ -24,7 +24,8 @@ a modified `x` with an html link in `link.col`.
 When listing features in an interactive table, it's often useful to link
 the feature to an external webpage that has more information about that
 feature. We include a series of functions to link entrez or ensembl id's
-to different web pages.
+to different web pages. The data.frame needs to have a `feature_id` column
+which will be used to link out to the reference page.
 
 If `link.col` is not found in the data.frame `x` then the provided
 functions are NO-OPS, ie. the same data.frame is simply returned.
@@ -41,3 +42,11 @@ we need to update.
 by entrez id
 }}
 
+\examples{
+sr <- sparrow::exampleSparrowResult()
+lfc <- sparrow::logFC(sr)
+# the symbol column in `lfhc` will be a linked to the entrez web page for
+# each gene
+linked <- ncbi.entrez.link(lfc, link.col = "symbol")
+head(linked[["symbol"]])
+}

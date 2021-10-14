@@ -6,8 +6,6 @@
 #' then want to `observeEvent(this$selected)` in your `server.R` (or similar)
 #' so you can react to the gene set selection the user triggers.
 #'
-#'
-#'
 #' @export
 #' @param input,output,session shiny module bits
 #' @param mgc the \code{SparrowResultContainer} object

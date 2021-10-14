@@ -144,7 +144,8 @@ renderGseaResultTableDataTable <- function(x, method, mg, digits = 3) {
 #' When listing features in an interactive table, it's often useful to link
 #' the feature to an external webpage that has more information about that
 #' feature. We include a series of functions to link entrez or ensembl id's
-#' to different web pages.
+#' to different web pages. The data.frame needs to have a `feature_id` column
+#' which will be used to link out to the reference page.
 #'
 #' If `link.col` is not found in the data.frame `x` then the provided
 #' functions are NO-OPS, ie. the same data.frame is simply returned.
@@ -154,7 +155,14 @@ renderGseaResultTableDataTable <- function(x, method, mg, digits = 3) {
 #' we need to update.
 #'
 #' @rdname feature-link-functions
-.empty_link_function <- function() {}
+#' @examples
+#' sr <- sparrow::exampleSparrowResult()
+#' lfc <- sparrow::logFC(sr)
+#' # the symbol column in `lfhc` will be a linked to the entrez web page for
+#' # each gene
+#' linked <- ncbi.entrez.link(lfc, link.col = "symbol")
+#' head(linked[["symbol"]])
+.empty_link_function <- function(x, link.col=NULL) x
 
 #' @describeIn feature-link-functions links gene to ncbi web site by entrez id.
 #' @export
@@ -162,6 +170,7 @@ renderGseaResultTableDataTable <- function(x, method, mg, digits = 3) {
 #' @param link.col the column in `x` that should be transformed to a link
 #' @return a modified `x` with an html link in `link.col`.
 ncbi.entrez.link <- function(x, link.col='symbol') {
+  assert_character(x[["feature_id"]])
   if (is.character(link.col) && is.character(x[[link.col]])) {
     url <- sprintf('https://www.ncbi.nlm.nih.gov/gene/?term=%s', x$feature_id)
     html <- sprintf('<a href="%s" target="_blank">%s</a>', url, x$symbol)
@@ -175,6 +184,7 @@ ncbi.entrez.link <- function(x, link.col='symbol') {
 #'   by entrez id
 #' @export
 genecards.entrez.link <- function(x, link.col='symbol') {
+  assert_character(x[["feature_id"]])
   if (is.character(link.col) && is.character(x[[link.col]])) {
     url <- sprintf('http://www.genecards.org/cgi-bin/carddisp.pl?gene=%s',
                    x$feature_id)
@@ -211,6 +221,11 @@ genecards.entrez.link <- function(x, link.col='symbol') {
 #' @param length.opts parameter passed as an option to [DT::datatable()] that
 #'   specifies how long the table can be per page.
 #' @return A [DT::datatable()] of feature statistics
+#' @examples
+#' sr <- sparrow::exampleSparrowResult()
+#' lfc <- sparrow::logFC(sr)
+#' renderFeatureStatsDataTable(sr, sample(lfc$feature_id, 200),
+#'                             feature.link.fn = ncbi.entrez.link)
 renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
                                         columns=NULL, feature.link.fn=NULL,
                                         order.by='logFC',
@@ -300,6 +315,9 @@ renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
 #' @export
 #' @inheritParams sparrow::resultNames
 #' @return a \code{tagList} version of an HTML table for use in a shiny app
+#' @examples
+#' sr <- sparrow::exampleSparrowResult()
+#' summaryHTMLTable.sparrow(sr, max.p = 0.10, p.col = "padj")
 summaryHTMLTable.sparrow <- function(x, names = sparrow::resultNames(x),
                                      max.p, p.col) {
   stopifnot(is(x, 'SparrowResult'))
@@ -351,12 +369,16 @@ summaryHTMLTable.sparrow <- function(x, names = sparrow::resultNames(x),
   })
 
   tbody <- shiny::tags$tbody(tbody.rows)
-  html <- shiny::tags$div(
+  shiny::tags$div(
     class='sparrow-summary-table',
     shiny::tags$table(thead, tbody))
 }
 
-#' Round the numeric columns of a DT
+#' Rounds all of the numeric columns of a DT
+#'
+#' This is a convenience function around [DT::formatRound()] that identifies
+#' all of the numeric columns and rounds them, as opposed to just rounding
+#' prespecified columns.
 #'
 #' @export
 #' @param x a DT::datatable
@@ -364,10 +386,8 @@ summaryHTMLTable.sparrow <- function(x, names = sparrow::resultNames(x),
 #'   is performed
 #' @return a rounded DT::datatable
 #' @examples
-#' \dontrun{
 #' df <- data.frame(a=rnorm(10), b=sample(letters, 10), c=rnorm(10))
-#' roundDT(datatable(df),  digits=2)
-#' }
+#' roundDT(DT::datatable(df),  digits=2)
 roundDT <- function(x, digits=3) {
   stopifnot(is(x, "datatables"))
   if (is.na(digits)) {
