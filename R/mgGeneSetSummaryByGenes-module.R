@@ -9,9 +9,13 @@
 #' instance to see if they belong to another one that makes more sense to you
 #' given the biological context of your experiment.
 #'
+#' When the `genesets_sigonly` checkbox is selected, gene sets with an FDR
+#' below the indicated `fdr` are returned, otherwise all gene sets that include
+#' any of the feautures in the query are returned.
+#'
 #' @export
 #' @param input,output,session shiny bits
-#' @param mgc A [SparrowResultContainer()]
+#' @param src A [SparrowResultContainer()]
 #' @param features a character vector of feature id's to query
 #' @param method,fdr the GSEA method and FDR threshold used to filter the
 #'   returned gene sets against. Gene sets with features found in `features`
@@ -24,11 +28,32 @@
 #'     params}
 #'   \item{$selected}{the key of the user-selected geneset from the table}
 #' }
-mgGeneSetSummaryByGene <- function(input, output, session, mgc,
+#' @examples
+#' # Retrieve some genes to query the result so we can identify other gene sets
+#' # they belong to.
+#' sres <- sparrow::exampleSparrowResult()
+#' set.seed(0xBEEF)
+#' query <- sample(sparrow::featureIds(sparrow::geneSetDb(sres)), 10)
+#' app <- shiny::shinyApp(
+#'   ui = shiny::shinyUI(shiny::fluidPage(
+#'     exampleUISetup(),
+#'     title = "Gene Set Summary by Gene",
+#'     mgGeneSetSummaryByGeneUI("mod"))),
+#'   server = function(input, output, session) {
+#'     src <- shiny::reactive(SparrowResultContainer(sres))
+#'     ftrs <- shiny::reactive(query)
+#'     method <- reactive("camera")
+#'     fdr <- reactive(0.10)
+#'     shiny::callModule(mgGeneSetSummaryByGene, "mod", src, ftrs, method, fdr)
+#'   })
+#' if (interactive()) {
+#'   shiny::runApp(app)
+#' }
+mgGeneSetSummaryByGene <- function(input, output, session, src,
                                    features, method, fdr) {
   genesets <- shiny::reactive({
     fids <- shiny::req(features())
-    mg <- shiny::req(mgc()$mg)
+    mg <- shiny::req(src()$mg)
 
     if (input$genesets_sigonly) {
       method <- method()
@@ -75,7 +100,7 @@ mgGeneSetSummaryByGene <- function(input, output, session, mgc,
   collection <- active <- name <- NULL
   output$other_genesets <- DT::renderDataTable({
     out <- copy(shiny::req(genesets()))
-    mg <- shiny::req(mgc()$mg)
+    mg <- shiny::req(src()$mg)
     out[, collection := factor(collection)]
     out[, active := NULL]
     out[, name := {
@@ -86,9 +111,10 @@ mgGeneSetSummaryByGene <- function(input, output, session, mgc,
     }]
 
     out <- round.dt(out)
+    colnames <- if ("padj" %in% colnames(out)) c(FDR = "padj") else NULL
     DT::datatable(setDF(out), filter='top', escape=FALSE,
                   selection=list(mode='single', selected=NA, target='row'),
-                  rownames=FALSE, colnames=c("FDR"="padj"))
+                  rownames=FALSE, colnames = colnames)
   })
 
   # the selected geneset

@@ -5,14 +5,14 @@
 \alias{mgGeneSetSummaryByGeneUI}
 \title{A module to show a tabular view of genesets that contain genes of interest.}
 \usage{
-mgGeneSetSummaryByGene(input, output, session, mgc, features, method, fdr)
+mgGeneSetSummaryByGene(input, output, session, src, features, method, fdr)
 
 mgGeneSetSummaryByGeneUI(id)
 }
 \arguments{
 \item{input, output, session}{shiny bits}
 
-\item{mgc}{A [SparrowResultContainer()]}
+\item{src}{A [SparrowResultContainer()]}
 
 \item{features}{a character vector of feature id's to query}
 
@@ -42,9 +42,35 @@ This is useful when you are exploring GSEA hits and find esoteric results
 there. You can select some of the "more extreme" genes in that geneset, for
 instance to see if they belong to another one that makes more sense to you
 given the biological context of your experiment.
+
+When the `genesets_sigonly` checkbox is selected, gene sets with an FDR
+below the indicated `fdr` are returned, otherwise all gene sets that include
+any of the feautures in the query are returned.
 }
 \section{Functions}{
 \itemize{
 \item \code{mgGeneSetSummaryByGeneUI}: the UI for the module
 }}
 
+\examples{
+# Retrieve some genes to query the result so we can identify other gene sets
+# they belong to.
+sres <- sparrow::exampleSparrowResult()
+set.seed(0xBEEF)
+query <- sample(sparrow::featureIds(sparrow::geneSetDb(sres)), 10)
+app <- shiny::shinyApp(
+  ui = shiny::shinyUI(shiny::fluidPage(
+    exampleUISetup(),
+    title = "Gene Set Summary by Gene",
+    mgGeneSetSummaryByGeneUI("mod"))),
+  server = function(input, output, session) {
+    src <- shiny::reactive(SparrowResultContainer(sres))
+    ftrs <- shiny::reactive(query)
+    method <- reactive("camera")
+    fdr <- reactive(0.10)
+    shiny::callModule(mgGeneSetSummaryByGene, "mod", src, ftrs, method, fdr)
+  })
+if (interactive()) {
+  shiny::runApp(app)
+}
+}

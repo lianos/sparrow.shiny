@@ -12,7 +12,7 @@ geneSetSelect(
   input,
   output,
   session,
-  mgc,
+  src,
   server = TRUE,
   maxOptions = Inf,
   sep = "_::_"
@@ -43,7 +43,7 @@ gs.select.choices(mg, sep = "_::_")
 \arguments{
 \item{input, output, session}{the shiny-required bits for the module}
 
-\item{mgc}{A [SparrowResultContainer()] object}
+\item{src}{A [SparrowResultContainer()] object}
 
 \item{server}{logical indicating wether the options should be generated in
 the server module, default: `TRUE`}
@@ -123,3 +123,18 @@ Note that when returning a data.frame for the choices from
 Returns information about the `geneSetSelect` object
 }
 
+\examples{
+sres <- sparrow::exampleSparrowResult()
+app <- shiny::shinyApp(
+  ui = shiny::shinyUI(shiny::fluidPage(
+    exampleUISetup(),
+    title = "Gene Set Select",
+    geneSetSelectUI("mod"))),
+  server = function(input, output, session) {
+    src <- shiny::reactive(SparrowResultContainer(sres))
+    shiny::callModule(geneSetSelect, "mod", src)
+  })
+if (interactive()) {
+  shiny::runApp(app)
+}
+}

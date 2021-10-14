@@ -3,7 +3,7 @@
 \name{reactiveGeneSetSelect}
 \alias{reactiveGeneSetSelect}
 \alias{reactiveGeneSetSelectUI}
-\title{A geneset selector for a ReactiveGeneSetDb}
+\title{A gene set selector that enables users to pre-filter universe to choose from}
 \usage{
 reactiveGeneSetSelect(input, output, session, gdb = NULL, ...)
 
@@ -26,11 +26,28 @@ reactiveGeneSetSelectUI(id, label = NULL, dropdown_width = "350px", ...)
 A list of geneset info and membersihp
 }
 \description{
-This module is unique because if you pass `gdb = NULL` it returns a shim
-of iteself that will never trigger reactivity.
+This provides the user to pick a single gene set from a GeneSetDb collection.
+To help the user find the gene set, the user can select which collections
+and gene set sizes that serve as the universe of potential gene sets to
+pick from in a GeneSetDb.
 }
 \section{Functions}{
 \itemize{
 \item \code{reactiveGeneSetSelectUI}: The UI function
 }}
 
+\examples{
+sres <- sparrow::exampleSparrowResult()
+gdb <- sparrow::geneSetDb(sres)
+app <- shiny::shinyApp(
+  ui = shiny::shinyUI(shiny::fluidPage(
+    exampleUISetup(),
+    title = "Gene set selctor",
+    reactiveGeneSetSelectUI("mod"))),
+  server = function(input, output, session) {
+    shiny::callModule(reactiveGeneSetSelect, "mod", gdb)
+  })
+if (interactive()) {
+  shiny::runApp(app)
+}
+}

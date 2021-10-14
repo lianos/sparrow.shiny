@@ -16,6 +16,20 @@
 #' @return A reactive data.frame that includes the information of the genes
 #'   that are brushed in the volcano plot. If no genes have been selected, then
 #'   `NULL`.
+#' @examples
+#' sres <- sparrow::exampleSparrowResult()
+#' app <- shiny::shinyApp(
+#'   ui = shiny::shinyUI(shiny::fluidPage(
+#'     exampleUISetup(),
+#'     title = "Gene Set Summary by Gene",
+#'     mgVolcanoUI("mod"))),
+#'   server = function(input, output, session) {
+#'     src <- shiny::reactive(SparrowResultContainer(sres))
+#'     shiny::callModule(mgVolcano, "mod", src)
+#'   })
+#' if (interactive()) {
+#'   shiny::runApp(app)
+#' }
 mgVolcano <- function(input, output, session,
                       x, stats = 'dge', xaxis = 'logFC', yaxis = 'pval',
                       idx = 'idx',

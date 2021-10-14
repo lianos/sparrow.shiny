@@ -88,3 +88,18 @@ a single point for each gene/dot.
 \item \code{mgVolcanoUI}: the UI for the module
 }}
 
+\examples{
+sres <- sparrow::exampleSparrowResult()
+app <- shiny::shinyApp(
+  ui = shiny::shinyUI(shiny::fluidPage(
+    exampleUISetup(),
+    title = "Gene Set Summary by Gene",
+    mgVolcanoUI("mod"))),
+  server = function(input, output, session) {
+    src <- shiny::reactive(SparrowResultContainer(sres))
+    shiny::callModule(mgVolcano, "mod", src)
+  })
+if (interactive()) {
+  shiny::runApp(app)
+}
+}

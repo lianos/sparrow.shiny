@@ -1,29 +1,43 @@
 #' A module that allows users to select which GSEA results to display.
 #'
 #' The app is setup to only allow users to explore GSEA results one method at a
-#' time. Given a SparrowResultContainer `mgc`, this module presents the user
-#' with a dropdown list of GSEA methods that were run that they want to explore
-#' and an FDR cutoff that limits the gene sets returned for exploration.
+#' time. Given a SparrowResultContainer `src`, this module presents the user
+#' with a dropdown list of GSEA methods that were run that they want to explore,
+#' an FDR cutoff used to limit the gene sets returned for exploration, and a
+#' download button that will deliver the GSEA stats as a CSV to the user.
 #'
 #' @export
 #' @rdname mgResultFilter
 #' @param input,output,session shiny bits
-#' @param mgc the `SparrowResultContainer`
+#' @param src the `SparrowResultContainer`
 #' @return A list that includes the following reactives:
 #' \describe{
 #'   \item{$method}{The name of the GSEA method selected by the user}
 #'   \item{$fdr}{The fdr threshold specified by the user}
 #' }
-mgResultFilter <- function(input, output, session, mgc) {
-
+#' @examples
+#' sres <- sparrow::exampleSparrowResult()
+#' app <- shiny::shinyApp(
+#'   ui = shiny::shinyUI(shiny::fluidPage(
+#'     exampleUISetup(),
+#'     title = "Sparrow method result filter",
+#'     mgResultFilterUI("mod"))),
+#'   server = function(input, output, session) {
+#'     src <- shiny::reactive(SparrowResultContainer(sres))
+#'     shiny::callModule(mgResultFilter, "mod", src)
+#'   })
+#' if (interactive()) {
+#'   shiny::runApp(app)
+#' }
+mgResultFilter <- function(input, output, session, src) {
   # When the SparrowResult changes, we want to update different aspects of
   # the application
-  shiny::observeEvent(mgc(), {
-    shiny::req(mgc())
+  shiny::observeEvent(src(), {
+    shiny::req(src())
     shiny::updateSelectInput(
       session, "gseaMethod",
-      choices = mgc()$methods,
-      selected = mgc()$methods[1L])
+      choices = src()$methods,
+      selected = src()$methods[1L])
   })
 
   output$gseaDownloadStats <- shiny::downloadHandler(
@@ -33,7 +47,7 @@ mgResultFilter <- function(input, output, session, mgc) {
     },
     content = function(file) {
       utils::write.csv(
-        sparrow::result(mgc()$mg, shiny::isolate(input$gseaMethod)),
+        sparrow::result(src()$mg, shiny::isolate(input$gseaMethod)),
         file, row.names = FALSE)
     }
   )

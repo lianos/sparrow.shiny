@@ -2,7 +2,7 @@ shiny::shinyServer(function(input, output, session) {
   ## If this application was invoked via explore(SparrowResult), then
   ## getOption(EXPLORE_SPARROW_RESULT='path/to/result.rds') was set that
   ## we can load, otherwise this will respond to a user upload.
-  mgc <- shiny::reactive({
+  src <- shiny::reactive({
     ## Are we here because the user uploaded something, or did the user ask
     ## to `explore(SparrowResult)`? This implementation feels wrong, but ...
     if (is.null(input$mgresult)) {
@@ -19,17 +19,17 @@ shiny::shinyServer(function(input, output, session) {
   })
 
   lfc <- shiny::reactive({
-    lfc <- shiny::req(mgc()$mg)
+    lfc <- shiny::req(src()$mg)
     lfc <- sparrow::logFC(lfc, as.dt=TRUE)
     lfc[order(logFC, decreasing=TRUE)]
   })
 
   gs_result_filter <- shiny::callModule(
-    sparrow.shiny::mgResultFilter, 'mg_result_filter', mgc)
+    sparrow.shiny::mgResultFilter, 'mg_result_filter', src)
 
   ## Overview Tab ==============================================================
   output$gseaMethodSummary <- shiny::renderUI({
-    obj <- sparrow::failWith(NULL, expr = mgc(), silent = TRUE)
+    obj <- sparrow::failWith(NULL, expr = src(), silent = TRUE)
     if (!is(obj, 'SparrowResultContainer')) {
       shiny::tags$p(
         style = "font-weight: bold; color: red",
@@ -48,23 +48,23 @@ shiny::shinyServer(function(input, output, session) {
   ## GSEA Results Tab ==========================================================
   gs_viewer <- shiny::callModule(
     sparrow.shiny::geneSetContrastView,
-    'geneset_viewer', mgc, maxOptions=500, server=TRUE)
+    'geneset_viewer', src, maxOptions=500, server=TRUE)
 
   ## A table of GSEA statistics/results for the given method and fdr threshold
   ## The table is wired to the gs_viewer so that row clicks can signal updates
   ## to the contrast viewer
   gs_table_browser <- shiny::callModule(
     sparrow.shiny::mgTableBrowser,
-    'mg_table_browser', mgc,
+    'mg_table_browser', src,
     method = gs_result_filter$method,
     fdr = gs_result_filter$fdr,
     server = TRUE)
   ## clicks on gsea result table update the contrast view
   shiny::observeEvent(gs_table_browser$selected(), {
-    .mgc <- shiny::req(mgc())
+    .src <- shiny::req(src())
     geneset <- shiny::req(gs_table_browser$selected())
     sparrow.shiny::updateActiveGeneSetInContrastView(
-      session, gs_viewer, geneset, .mgc)
+      session, gs_viewer, geneset, .src)
   })
 
   ## A table of other genesets that brushed genes in the contrast viewer
@@ -73,7 +73,7 @@ shiny::shinyServer(function(input, output, session) {
   other_genesets_gsea <- shiny::callModule(
     sparrow.shiny::mgGeneSetSummaryByGene,
     'other_genesets_gsea',
-    mgc, features = gs_viewer$selected,
+    src, features = gs_viewer$selected,
     method = gs_result_filter$method,
     fdr = gs_result_filter$fdr)
   ## DEBUG: Can we add a DT row click listner to the `other_genesets_gsea` so
@@ -83,7 +83,7 @@ shiny::shinyServer(function(input, output, session) {
 
   ## Differential Gene Expression Tab ==========================================
   gene.volcano <- shiny::callModule(
-    sparrow.shiny::mgVolcano, 'dge_volcano', mgc,
+    sparrow.shiny::mgVolcano, 'dge_volcano', src,
     width=400, height=350)
 
   output$dge_volcano_genestats <- DT::renderDataTable({
@@ -111,7 +111,7 @@ shiny::shinyServer(function(input, output, session) {
   other_genesets_volcano <- shiny::callModule(
     sparrow.shiny::mgGeneSetSummaryByGene,
     'other_genesets_volcano',
-    mgc, features=gene.volcano,
+    src, features=gene.volcano,
     method=gs_result_filter$method,
     fdr=gs_result_filter$fdr)
 })

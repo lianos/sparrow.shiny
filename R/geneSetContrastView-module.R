@@ -31,13 +31,27 @@
 #'     a character vector of feature_ids currently brushed in the contrast view
 #'   }
 #' }
-geneSetContrastView <- function(input, output, session, mgc,
+#' @examples
+#' sres <- sparrow::exampleSparrowResult()
+#' app <- shiny::shinyApp(
+#'   ui = shiny::shinyUI(shiny::fluidPage(
+#'     exampleUISetup(),
+#'     title = "Gene Set Contrast View",
+#'     geneSetContrastViewUI("mod"))),
+#'   server = function(input, output, session) {
+#'     src <- shiny::reactive(SparrowResultContainer(sres))
+#'     shiny::callModule(geneSetContrastView, "mod", src)
+#'   })
+#' if (interactive()) {
+#'   shiny::runApp(app)
+#' }
+geneSetContrastView <- function(input, output, session, src,
                                 server=TRUE, maxOptions=Inf, sep="_::_",
                                 feature.link.fn=ncbi.entrez.link,
                                 feature_table_filter = "none",
                                 itools=c('wheel_zoom', 'box_select', 'reset', 'save')) {
   gs <- shiny::callModule(
-    geneSetSelect, 'gs_select', mgc, server = server,
+    geneSetSelect, 'gs_select', src, server = server,
     maxOptions = maxOptions, sep = sep)
 
   plt <- shiny::reactive({
@@ -45,7 +59,7 @@ geneSetContrastView <- function(input, output, session, mgc,
     name <- shiny::req(gs()$name)
     ns <- session$ns
     shinyjs::js$reset_gs_viz_selected()
-    sparrow::iplot(mgc()$mg, collection = coll, name = name,
+    sparrow::iplot(src()$mg, collection = coll, name = name,
                    value = input$gs_viz_stat,
                    type = input$gs_viz_type,
                    tools = itools,
@@ -153,9 +167,9 @@ geneSetContrastViewUI <- function(id, height="590px", width="400px") {
 #' @param session the shiny session
 #' @param viewer a `geneSetContrastViewModule`
 #' @param geneset the key of a geneset to select
-#' @param mgc a `SparrowResultContainer`
-updateActiveGeneSetInContrastView <- function(session, viewer, geneset, mgc) {
-  stopifnot(is(mgc, 'SparrowResultContainer'))
+#' @param src a `SparrowResultContainer`
+updateActiveGeneSetInContrastView <- function(session, viewer, geneset, src) {
+  stopifnot(is(src, 'SparrowResultContainer'))
   stopifnot(is(viewer, "geneSetContrastView"))
   shiny::withReactiveDomain(session, {
     # id <- req(viewer()$gs()$select.id)
@@ -172,6 +186,6 @@ updateActiveGeneSetInContrastView <- function(session, viewer, geneset, mgc) {
     id <- shiny::req(viewer$gs()$select.id)
     id <- sub(paste0(modname, '-'), '', id)
     shiny::updateSelectizeInput(
-      session, id, choices = mgc$choices, selected = geneset, server = TRUE)
+      session, id, choices = src$choices, selected = geneset, server = TRUE)
   })
 }

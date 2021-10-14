@@ -11,7 +11,7 @@
 #' @aliases geneSetSelect
 #'
 #' @param input,output,session the shiny-required bits for the module
-#' @param mgc A [SparrowResultContainer()] object
+#' @param src A [SparrowResultContainer()] object
 #' @param server boolean to indicate whether the genesets in the geneSetSelect
 #'   widget should be rendered server side or not (Default: `TRUE`)
 #' @param maxOptions a paremeter used to customize the
@@ -33,24 +33,38 @@
 #'     the separator used to key the collection,name string for this geneset
 #'   }
 #' }
-geneSetSelect <- function(input, output, session, mgc, server=TRUE,
+#' @examples
+#' sres <- sparrow::exampleSparrowResult()
+#' app <- shiny::shinyApp(
+#'   ui = shiny::shinyUI(shiny::fluidPage(
+#'     exampleUISetup(),
+#'     title = "Gene Set Select",
+#'     geneSetSelectUI("mod"))),
+#'   server = function(input, output, session) {
+#'     src <- shiny::reactive(SparrowResultContainer(sres))
+#'     shiny::callModule(geneSetSelect, "mod", src)
+#'   })
+#' if (interactive()) {
+#'   shiny::runApp(app)
+#' }
+geneSetSelect <- function(input, output, session, src, server=TRUE,
                           maxOptions=Inf, sep='_::_') {
   # Programmatically create the UI from the SparrowResults
   output$geneset_picker <- shiny::renderUI({
-    shiny::req(mgc())
+    shiny::req(src())
     if (is.infinite(maxOptions)) {
-      mo <- nrow(sparrow::geneSets(mgc()$mg))
+      mo <- nrow(sparrow::geneSets(src()$mg))
     } else {
       mo <- maxOptions
     }
-    gs.render.select.ui(session$ns, mgc()$choices, server = server,
+    gs.render.select.ui(session$ns, src()$choices, server = server,
                         maxOptions = mo)
   })
   shiny::outputOptions(output, "geneset_picker", suspendWhenHidden = FALSE)
 
   if (server) {
-    shiny::observeEvent(mgc(), {
-      shiny::updateSelectizeInput(session, "geneset", choices=mgc()$choices,
+    shiny::observeEvent(src(), {
+      shiny::updateSelectizeInput(session, "geneset", choices=src()$choices,
                                   server=TRUE, selected=NULL)
     }, priority = 5)
   }
@@ -59,7 +73,7 @@ geneSetSelect <- function(input, output, session, mgc, server=TRUE,
     gs <- input$geneset
     if (is.null(gs) || length(gs) == 0 || nchar(gs) == 0) {
       # HACK, just put something here if it's not selectd
-      # gs <- mgc()$choices$value[1L]
+      # gs <- src()$choices$value[1L]
       coll <- name <- stats <- NULL
     } else {
       info <- unlist(strsplit(gs, sep, fixed = TRUE))
@@ -79,7 +93,7 @@ geneSetSelect <- function(input, output, session, mgc, server=TRUE,
       # means that geneset you are looking for disappeared, likely due to
       # the reason I stated above.
       stats <- sparrow::failWith(NULL, {
-        sparrow::geneSet(mgc()$mg, info[1L], info[2L], as.dt = TRUE)
+        sparrow::geneSet(src()$mg, info[1L], info[2L], as.dt = TRUE)
       })
       if (is.null(stats)) {
         coll <- name <- stats <- NULL

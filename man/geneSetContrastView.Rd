@@ -10,7 +10,7 @@ geneSetContrastView(
   input,
   output,
   session,
-  mgc,
+  src,
   server = TRUE,
   maxOptions = Inf,
   sep = "_::_",
@@ -21,7 +21,7 @@ geneSetContrastView(
 
 geneSetContrastViewUI(id, height = "590px", width = "400px")
 
-updateActiveGeneSetInContrastView(session, viewer, geneset, mgc)
+updateActiveGeneSetInContrastView(session, viewer, geneset, src)
 }
 \arguments{
 \item{input}{the shiny-required bits for the module}
@@ -30,7 +30,7 @@ updateActiveGeneSetInContrastView(session, viewer, geneset, mgc)
 
 \item{session}{the shiny session}
 
-\item{mgc}{a `SparrowResultContainer`}
+\item{src}{a `SparrowResultContainer`}
 
 \item{server}{logical indicating wether the options should be generated in
 the server module, default: `TRUE`}
@@ -97,3 +97,18 @@ selected in the [geneSetSelect()] module.
 geneset in a contrast view module externally.
 }}
 
+\examples{
+sres <- sparrow::exampleSparrowResult()
+app <- shiny::shinyApp(
+  ui = shiny::shinyUI(shiny::fluidPage(
+    exampleUISetup(),
+    title = "Gene Set Contrast View",
+    geneSetContrastViewUI("mod"))),
+  server = function(input, output, session) {
+    src <- shiny::reactive(SparrowResultContainer(sres))
+    shiny::callModule(geneSetContrastView, "mod", src)
+  })
+if (interactive()) {
+  shiny::runApp(app)
+}
+}

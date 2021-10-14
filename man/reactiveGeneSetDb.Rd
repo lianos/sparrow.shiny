@@ -2,8 +2,8 @@
 % Please edit documentation in R/reactiveGeneSetDb-module.R
 \name{reactiveGeneSetDb}
 \alias{reactiveGeneSetDb}
-\alias{reactiveGeneSetDbFilterUI}
-\title{A ReactiveGeneSetDb for use in the shiiny world.}
+\alias{reactiveGeneSetDbUI}
+\title{A UI for a GeneSetDb that enables users to select gene sets used for testing.}
 \usage{
 reactiveGeneSetDb(
   input,
@@ -16,7 +16,7 @@ reactiveGeneSetDb(
   ...
 )
 
-reactiveGeneSetDbFilterUI(id, min = 2, max = 100L, ...)
+reactiveGeneSetDbUI(id, min = 2, max = 100L, ...)
 }
 \arguments{
 \item{input, output, session}{shiny module bits}
@@ -58,6 +58,21 @@ It allows users to customize which genesets are active by:
 }
 \section{Functions}{
 \itemize{
-\item \code{reactiveGeneSetDbFilterUI}: the UI for the module
+\item \code{reactiveGeneSetDbUI}: the UI for the module
 }}
 
+\examples{
+sres <- sparrow::exampleSparrowResult()
+gdb <- sparrow::geneSetDb(sres)
+app <- shiny::shinyApp(
+  ui = shiny::shinyUI(shiny::fluidPage(
+    exampleUISetup(),
+    title = "Configure GeneSetDb",
+    reactiveGeneSetDbUI("mod"))),
+  server = function(input, output, session) {
+    shiny::callModule(reactiveGeneSetDb, "mod", gdb)
+  })
+if (interactive()) {
+  shiny::runApp(app)
+}
+}

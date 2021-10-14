@@ -11,6 +11,21 @@
 #' @return A list of reactive components. `$gdb()` will be a GeneSetDb when
 #'   the user uploades a valid gene set definition file. Otherwise it will be
 #'   `NULL`.
+#' @examples
+#' # You can upload the file available here:
+#' (ex.fn <- system.file("testdata", "user-defined-genesets-example.xlsx",
+#'                       package = "sparrow.shiny"))
+#' app <- shiny::shinyApp(
+#'   ui = shiny::shinyUI(shiny::fluidPage(
+#'     exampleUISetup(),
+#'     title = "Costum Gene Set Collection Upload",
+#'     userDefinedGeneSetDbUI("mod"))),
+#'   server = function(input, output, session) {
+#'     shiny::callModule(userDefinedGeneSetDb, "mod", gdb)
+#'   })
+#' if (interactive()) {
+#'   shiny::runApp(app)
+#' }
 userDefinedGeneSetDb <- function(input, output, session, ...) {
   xlsx.ok <- requireNamespace("readxl", quietly = TRUE)
 
@@ -52,13 +67,10 @@ userDefinedGeneSetDb <- function(input, output, session, ...) {
       shiny::need(
         length(missed) == 0L,
         sprintf("Missing columns: %s", paste(missed, collapse = ","))))
-
+    dat[["name"]] <- as.character(dat[["name"]])
+    dat[["colelction"]] <- as.character(dat[["collection"]])
     dat[["feature_id"]] <- as.character(dat[["feature_id"]])
-    state$dat <- transform(
-      dat,
-      collection = as.character(state$dat$collection),
-      name = as.character(state$dat$name),
-      feature_id = as.character(state$dat$feature_id))
+    state$dat <- dat
   })
 
   gdb <- shiny::reactive({

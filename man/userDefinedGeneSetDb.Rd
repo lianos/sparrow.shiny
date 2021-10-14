@@ -32,3 +32,19 @@ are implemented.
 \item \code{userDefinedGeneSetDbUI}: ui for the module
 }}
 
+\examples{
+# You can upload the file available here:
+(ex.fn <- system.file("testdata", "user-defined-genesets-example.xlsx",
+                      package = "sparrow.shiny"))
+app <- shiny::shinyApp(
+  ui = shiny::shinyUI(shiny::fluidPage(
+    exampleUISetup(),
+    title = "Costum Gene Set Collection Upload",
+    userDefinedGeneSetDbUI("mod"))),
+  server = function(input, output, session) {
+    shiny::callModule(userDefinedGeneSetDb, "mod", gdb)
+  })
+if (interactive()) {
+  shiny::runApp(app)
+}
+}

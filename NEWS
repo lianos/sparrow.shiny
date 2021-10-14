@@ -1,2 +1,3 @@
 Changes in version 0.99.0 (2021-09-29)
 * Submission to Bioconductor
+* reactiveGeneSetDbFilterUI function renamed to `reactiveGeneSetDbUI`
