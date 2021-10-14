@@ -53,7 +53,7 @@ mgGeneSetSummaryByGene <- function(input, output, session, src,
                                    features, method, fdr) {
   genesets <- shiny::reactive({
     fids <- shiny::req(features())
-    mg <- shiny::req(src()$mg)
+    mg <- shiny::req(src()$sr)
 
     if (input$genesets_sigonly) {
       method <- method()
@@ -100,7 +100,7 @@ mgGeneSetSummaryByGene <- function(input, output, session, src,
   collection <- active <- name <- NULL
   output$other_genesets <- DT::renderDataTable({
     out <- copy(shiny::req(genesets()))
-    mg <- shiny::req(src()$mg)
+    mg <- shiny::req(src()$sr)
     out[, collection := factor(collection)]
     out[, active := NULL]
     out[, name := {

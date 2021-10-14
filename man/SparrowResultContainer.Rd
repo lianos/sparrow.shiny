@@ -2,7 +2,7 @@
 % Please edit documentation in R/SparrowResultContainer.R
 \name{SparrowResultContainer}
 \alias{SparrowResultContainer}
-\title{A wrapper for a SparrowResult that makes some shiny bits explicit.}
+\title{A wrapper for a SparrowResult that promotes internals of object.}
 \usage{
 SparrowResultContainer(x)
 }
@@ -11,9 +11,17 @@ SparrowResultContainer(x)
 an rds-serliazed one}
 }
 \value{
-a `SparrowResultContainer` object
+a `SparrowResultContainer` object (list), with these elements:
+\describe{
+  \item{sr}{The `SparrowResult` object}
+  \item{methods}{A character vector of method names that were run}
+}
 }
 \description{
-This creates a "shiny facade" over our standard `SparrowResult` object
-returned from [sparrow::seas()].
+This creates a facade over `SparrowResult` object that enables us to wrap
+`reactive`s around its internal intresting bits that are used elsewhere.
+}
+\examples{
+sres <- sparrow::exampleSparrowResult()
+src <- SparrowResultContainer(sres)
 }

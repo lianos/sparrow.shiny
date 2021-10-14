@@ -6,7 +6,7 @@
 \alias{updateGeneSetSelect}
 \alias{gs.render.select.ui}
 \alias{gs.select.choices}
-\title{A module that creates a dynamic selectizeInput for a SparrowResult object}
+\title{Create a selectize input to select a gene set from a sparrow result.}
 \usage{
 geneSetSelect(
   input,
@@ -93,6 +93,11 @@ a properly wired `[shiny::selectizeInput()]` UI element.
 `data.table` to populate `choices` of `selectizeInput`
 }
 \description{
+Take a look at the [reactiveGeneSetSelect()] module to select gene sets
+but also enable the user to first filter the genesets to choose from based
+on some global criteria.
+}
+\details{
 This code was inspired from the
 \href{https://gist.github.com/MarkEdmondson1234/7e56ee7ac5caa74224327489b0849e61}{dynamicSelectShinyModule.R}
 gist.

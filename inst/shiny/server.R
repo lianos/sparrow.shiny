@@ -6,10 +6,10 @@ shiny::shinyServer(function(input, output, session) {
     ## Are we here because the user uploaded something, or did the user ask
     ## to `explore(SparrowResult)`? This implementation feels wrong, but ...
     if (is.null(input$mgresult)) {
-      mg <- getOption('EXPLORE_SPARROW_RESULT', NULL)
+      sr <- getOption('EXPLORE_SPARROW_RESULT', NULL)
       res <- sparrow::failWith(
         NULL,
-        sparrow.shiny::SparrowResultContainer(mg), silent=TRUE)
+        sparrow.shiny::SparrowResultContainer(sr), silent=TRUE)
       return(res)
     }
     ## User uploaded a file
@@ -19,7 +19,7 @@ shiny::shinyServer(function(input, output, session) {
   })
 
   lfc <- shiny::reactive({
-    lfc <- shiny::req(src()$mg)
+    lfc <- shiny::req(src()$sr)
     lfc <- sparrow::logFC(lfc, as.dt=TRUE)
     lfc[order(logFC, decreasing=TRUE)]
   })
@@ -38,7 +38,7 @@ shiny::shinyServer(function(input, output, session) {
       shiny::tagList(
         shiny::tags$h4("GSEA Analyses Overview"),
         sparrow.shiny::summaryHTMLTable.sparrow(
-          obj$mg, obj$methods,
+          obj$sr, obj$methods,
           gs_result_filter$fdr(),
           p.col = 'padj.by.collection')
       )

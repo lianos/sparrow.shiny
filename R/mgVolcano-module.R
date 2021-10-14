@@ -21,11 +21,11 @@
 #' app <- shiny::shinyApp(
 #'   ui = shiny::shinyUI(shiny::fluidPage(
 #'     exampleUISetup(),
-#'     title = "Gene Set Summary by Gene",
+#'     title = "Interactive volcano plot",
 #'     mgVolcanoUI("mod"))),
 #'   server = function(input, output, session) {
 #'     src <- shiny::reactive(SparrowResultContainer(sres))
-#'     shiny::callModule(mgVolcano, "mod", src)
+#'     shiny::callModule(mgVolcano, "mod", src, default_xhex = 2)
 #'   })
 #' if (interactive()) {
 #'   shiny::runApp(app)
@@ -46,7 +46,7 @@ mgVolcano <- function(input, output, session,
   # Extract the data used in the volcano to keep it handy
   dat <- shiny::reactive({
     xx <- shiny::req(x())
-    sparrow::volcanoStatsTable(xx, stats, xaxis, yaxis, idx)
+    sparrow::volcanoStatsTable(xx$sr, stats, xaxis, yaxis, idx)
   })
 
   # If UI is showing the hexbin sliders, fix ranges and labels when dat()

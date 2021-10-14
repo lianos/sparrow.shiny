@@ -47,7 +47,7 @@ mgResultFilter <- function(input, output, session, src) {
     },
     content = function(file) {
       utils::write.csv(
-        sparrow::result(src()$mg, shiny::isolate(input$gseaMethod)),
+        sparrow::result(src()$sr, shiny::isolate(input$gseaMethod)),
         file, row.names = FALSE)
     }
   )

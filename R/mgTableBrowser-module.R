@@ -1,4 +1,4 @@
-#' A module that displays an interactive table of genesets from an analysis.
+#' Displays a an interactive table of GSEA statistics from an analysis.
 #'
 #' This module lists all of the genesets from an analysis that are significant
 #' given an `fdr` and `method` of analysis. Row selections trigger a shiny
@@ -28,10 +28,10 @@
 #' @examples
 #' sres <- sparrow::exampleSparrowResult()
 #' app <- shiny::shinyApp(
-#'   ui = shiny::shinyUI(shiny::fluidPagefluidPage(
+#'   ui = shiny::shinyUI(shiny::fluidPage(
 #'     exampleUISetup(),
-#'     title = "Table Browser Module",
-#'     mgTableBrowserUI("mod")))),
+#'     title = "GSEA Stats Table Browser Module",
+#'     mgTableBrowserUI("mod"))),
 #'   server = function(input, output, session) {
 #'     src <- shiny::reactive(SparrowResultContainer(sres))
 #'     method <- shiny::reactive("camera")
@@ -46,14 +46,14 @@ mgTableBrowser <- function(input, output, session, src, method, fdr,
 
   ## under the FDR threshold
   gsea.result.table <- shiny::reactive({
-    mg <- shiny::req(src()$mg)
+    sr <- shiny::req(src()$sr)
     if (is.null(method()) || method() == "") {
       # msg("... gseaMethod not selected yet")
       return(NULL)
     }
     ## MultiGSEResult object, method, and FDR thersholds all set, now fetch
     ## the data that corresponds to this criteria
-    constructGseaResultTable(mg, method(), fdr())
+    constructGseaResultTable(sr, method(), fdr())
   })
 
   selected <- shiny::reactive({
@@ -85,7 +85,7 @@ mgTableBrowser <- function(input, output, session, src, method, fdr,
   output$gseaResultTable <- DT::renderDataTable({
     shiny::req(gsea.result.table(), src())
     renderGseaResultTableDataTable(gsea.result.table(), method(),
-                                   src()$mg)
+                                   src()$sr)
   }, server = server)
 
   list(stats = gsea.result.table, selected = selected)

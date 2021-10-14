@@ -3,7 +3,7 @@
 \name{mgTableBrowser}
 \alias{mgTableBrowser}
 \alias{mgTableBrowserUI}
-\title{A module that displays an interactive table of genesets from an analysis.}
+\title{Displays a an interactive table of GSEA statistics from an analysis.}
 \usage{
 mgTableBrowser(input, output, session, src, method, fdr, server = TRUE)
 
@@ -52,10 +52,10 @@ so you can react to the gene set selection the user triggers.
 \examples{
 sres <- sparrow::exampleSparrowResult()
 app <- shiny::shinyApp(
-  ui = shiny::shinyUI(shiny::fluidPagefluidPage(
+  ui = shiny::shinyUI(shiny::fluidPage(
     exampleUISetup(),
-    title = "Table Browser Module",
-    mgTableBrowserUI("mod")))),
+    title = "GSEA Stats Table Browser Module",
+    mgTableBrowserUI("mod"))),
   server = function(input, output, session) {
     src <- shiny::reactive(SparrowResultContainer(sres))
     method <- shiny::reactive("camera")

@@ -59,7 +59,7 @@ geneSetContrastView <- function(input, output, session, src,
     name <- shiny::req(gs()$name)
     ns <- session$ns
     shinyjs::js$reset_gs_viz_selected()
-    sparrow::iplot(src()$mg, collection = coll, name = name,
+    sparrow::iplot(src()$sr, collection = coll, name = name,
                    value = input$gs_viz_stat,
                    type = input$gs_viz_type,
                    tools = itools,

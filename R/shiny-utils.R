@@ -224,8 +224,10 @@ genecards.entrez.link <- function(x, link.col='symbol') {
 #' @examples
 #' sr <- sparrow::exampleSparrowResult()
 #' lfc <- sparrow::logFC(sr)
-#' renderFeatureStatsDataTable(sr, sample(lfc$feature_id, 200),
-#'                             feature.link.fn = ncbi.entrez.link)
+#' if (interactive()) {
+#'   renderFeatureStatsDataTable(sr, sample(lfc$feature_id, 200),
+#'                               feature.link.fn = ncbi.entrez.link)
+#' }
 renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
                                         columns=NULL, feature.link.fn=NULL,
                                         order.by='logFC',

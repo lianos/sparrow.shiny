@@ -1,12 +1,19 @@
-#' A wrapper for a SparrowResult that makes some shiny bits explicit.
+#' A wrapper for a SparrowResult that promotes internals of object.
 #'
-#' This creates a "shiny facade" over our standard `SparrowResult` object
-#' returned from [sparrow::seas()].
+#' This creates a facade over `SparrowResult` object that enables us to wrap
+#' `reactive`s around its internal intresting bits that are used elsewhere.
 #'
 #' @export
 #' @param x A `[sparrow::SparrowResult()]` object, or a path to
 #'   an rds-serliazed one
-#' @return a `SparrowResultContainer` object
+#' @return a `SparrowResultContainer` object (list), with these elements:
+#' \describe{
+#'   \item{sr}{The `SparrowResult` object}
+#'   \item{methods}{A character vector of method names that were run}
+#' }
+#' @examples
+#' sres <- sparrow::exampleSparrowResult()
+#' src <- SparrowResultContainer(sres)
 SparrowResultContainer <- function(x) {
   if (is.character(x)) {
     ## Assume this is a file
@@ -49,7 +56,7 @@ SparrowResultContainer <- function(x) {
 
   gs.choices <- gs.select.choices(sr)
 
-  out <- list(mg = sr, methods = methods, choices = gs.choices)
+  out <- list(sr = sr, methods = methods, choices = gs.choices)
   class(out) <- c('SparrowResultContainer', class(out))
   out
 }

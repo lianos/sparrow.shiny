@@ -1,4 +1,8 @@
-#' A module that creates a dynamic selectizeInput for a SparrowResult object
+#' Create a selectize input to select a gene set from a sparrow result.
+#'
+#' Take a look at the [reactiveGeneSetSelect()] module to select gene sets
+#' but also enable the user to first filter the genesets to choose from based
+#' on some global criteria.
 #'
 #' This code was inspired from the
 #' \href{https://gist.github.com/MarkEdmondson1234/7e56ee7ac5caa74224327489b0849e61}{dynamicSelectShinyModule.R}
@@ -53,7 +57,7 @@ geneSetSelect <- function(input, output, session, src, server=TRUE,
   output$geneset_picker <- shiny::renderUI({
     shiny::req(src())
     if (is.infinite(maxOptions)) {
-      mo <- nrow(sparrow::geneSets(src()$mg))
+      mo <- nrow(sparrow::geneSets(src()$sr))
     } else {
       mo <- maxOptions
     }
@@ -93,7 +97,7 @@ geneSetSelect <- function(input, output, session, src, server=TRUE,
       # means that geneset you are looking for disappeared, likely due to
       # the reason I stated above.
       stats <- sparrow::failWith(NULL, {
-        sparrow::geneSet(src()$mg, info[1L], info[2L], as.dt = TRUE)
+        sparrow::geneSet(src()$sr, info[1L], info[2L], as.dt = TRUE)
       })
       if (is.null(stats)) {
         coll <- name <- stats <- NULL

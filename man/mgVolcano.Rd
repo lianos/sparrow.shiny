@@ -93,11 +93,11 @@ sres <- sparrow::exampleSparrowResult()
 app <- shiny::shinyApp(
   ui = shiny::shinyUI(shiny::fluidPage(
     exampleUISetup(),
-    title = "Gene Set Summary by Gene",
+    title = "Interactive volcano plot",
     mgVolcanoUI("mod"))),
   server = function(input, output, session) {
     src <- shiny::reactive(SparrowResultContainer(sres))
-    shiny::callModule(mgVolcano, "mod", src)
+    shiny::callModule(mgVolcano, "mod", src, default_xhex = 2)
   })
 if (interactive()) {
   shiny::runApp(app)
