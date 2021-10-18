@@ -66,7 +66,7 @@
       <h1 data-toc-skip>Interactive Exploration SparrowResults with sparrow.shiny</h1>
                         <h4 class="author">Steve Lianoglou</h4>
             
-            <h4 class="date">17 October 2021</h4>
+            <h4 class="date">18 October 2021</h4>
       
       
       <div class="hidden name"><code>sparrow-shiny.Rmd</code></div>
@@ -86,7 +86,7 @@
 <a href="#setup" class="anchor"></a>Setup</h2>
 <p>We’ll perform a GSEA analysis using the <code><a href="https://rdrr.io/pkg/limma/man/camera.html">limma::cameraPR()</a></code> and an overrepresentaiton analysis (goseq-like test) via <code><a href="https://rdrr.io/pkg/sparrow/man/ora.html">sparrow::ora</a></code> using an example expression dataset from the sparrow package, which was taken from a subset of samples from the TCGA/BRCA indication.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">sparrow</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lianos/sparrow">sparrow</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">sparrow.shiny</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 <span class="va">vm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html">exampleExpressionSet</a></span><span class="op">(</span>do.voom <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
