@@ -66,7 +66,7 @@
       <h1 data-toc-skip>Interactive Exploration SparrowResults with sparrow.shiny</h1>
                         <h4 class="author">Steve Lianoglou</h4>
             
-            <h4 class="date">31 October 2021</h4>
+            <h4 class="date">1 November 2021</h4>
       
       
       <div class="hidden name"><code>sparrow-shiny.Rmd</code></div>
@@ -95,7 +95,7 @@
 <code class="sourceCode R"><span class="va">gdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html">exampleGeneSetDb</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><code>gdb</code> contains the following number of genesets per collection:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/geneSets.html">geneSets</a></span><span class="op">(</span><span class="va">gdb</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/geneSets.html">geneSets</a></span><span class="op">(</span><span class="va">gdb</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">collection</span><span class="op">)</span></code></pre></div>
 <pre><code>##   collection  n
 ## 1         c2 30

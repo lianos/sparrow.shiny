@@ -165,22 +165,23 @@ pick from in a GeneSetDb.</p>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>sres</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/examples.html'>exampleSparrowResult</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>gdb</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/SparrowResult-utilities.html'>geneSetDb</a></span><span class='op'>(</span><span class='va'>sres</span><span class='op'>)</span>
-<span class='va'>app</span> <span class='op'>&lt;-</span> <span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/shiny/man/shinyApp.html'>shinyApp</a></span><span class='op'>(</span>
-  ui <span class='op'>=</span> <span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/shiny/man/shinyUI.html'>shinyUI</a></span><span class='op'>(</span><span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/shiny/man/fluidPage.html'>fluidPage</a></span><span class='op'>(</span>
-    <span class='fu'><a href='exampleUISetup.html'>exampleUISetup</a></span><span class='op'>(</span><span class='op'>)</span>,
-    title <span class='op'>=</span> <span class='st'>"Gene set selctor"</span>,
-    <span class='fu'>reactiveGeneSetSelectUI</span><span class='op'>(</span><span class='st'>"mod"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
-  server <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span><span class='op'>)</span> <span class='op'>{</span>
-    <span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/shiny/man/callModule.html'>callModule</a></span><span class='op'>(</span><span class='va'>reactiveGeneSetSelect</span>, <span class='st'>"mod"</span>, <span class='va'>gdb</span><span class='op'>)</span>
-  <span class='op'>}</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>The `name` provided ('sliders') is deprecated in Font Awesome 5:</span>
-#&gt; <span class='message'>* please consider using 'sliders-h' or 'fas fa-sliders-h' instead</span>
-#&gt; <span class='message'>* use the `verify_fa = FALSE` to deactivate these messages</span></div><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/shiny/man/runApp.html'>runApp</a></span><span class='op'>(</span><span class='va'>app</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>sres</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/examples.html'>exampleSparrowResult</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>gdb</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/SparrowResult-utilities.html'>geneSetDb</a></span><span class='op'>(</span><span class='va'>sres</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>app</span> <span class='op'>&lt;-</span> <span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/shiny/man/shinyApp.html'>shinyApp</a></span><span class='op'>(</span></span>
+<span class='r-in'>  ui <span class='op'>=</span> <span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/shiny/man/shinyUI.html'>shinyUI</a></span><span class='op'>(</span><span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/shiny/man/fluidPage.html'>fluidPage</a></span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='fu'><a href='exampleUISetup.html'>exampleUISetup</a></span><span class='op'>(</span><span class='op'>)</span>,</span>
+<span class='r-in'>    title <span class='op'>=</span> <span class='st'>"Gene set selctor"</span>,</span>
+<span class='r-in'>    <span class='fu'>reactiveGeneSetSelectUI</span><span class='op'>(</span><span class='st'>"mod"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,</span>
+<span class='r-in'>  server <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>input</span>, <span class='va'>output</span>, <span class='va'>session</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>    <span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/shiny/man/callModule.html'>callModule</a></span><span class='op'>(</span><span class='va'>reactiveGeneSetSelect</span>, <span class='st'>"mod"</span>, <span class='va'>gdb</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='op'>}</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> The `name` provided ('sliders') is deprecated in Font Awesome 5:</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> * please consider using 'sliders-h' or 'fas fa-sliders-h' instead</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> * use the `verify_fa = FALSE` to deactivate these messages</span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/shiny/man/runApp.html'>runApp</a></span><span class='op'>(</span><span class='va'>app</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

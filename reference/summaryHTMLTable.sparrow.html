@@ -150,44 +150,45 @@ this function will display results for all methods.</p></td>
     <p>a <code>tagList</code> version of an HTML table for use in a shiny app</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>sr</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/examples.html'>exampleSparrowResult</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'>summaryHTMLTable.sparrow</span><span class='op'>(</span><span class='va'>sr</span>, max.p <span class='op'>=</span> <span class='fl'>0.10</span>, p.col <span class='op'>=</span> <span class='st'>"padj"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; &lt;div class="sparrow-summary-table"&gt;
-#&gt;   &lt;table&gt;
-#&gt;     &lt;thead&gt;
-#&gt;       &lt;tr class="super-header"&gt;
-#&gt;         &lt;th colspan="2"&gt;Gene Sets&lt;/th&gt;
-#&gt;         &lt;th colspan="2"&gt;Analysis Summary&lt;/th&gt;
-#&gt;       &lt;/tr&gt;
-#&gt;       &lt;tr class="sub-header"&gt;
-#&gt;         &lt;th&gt;Collection&lt;/th&gt;
-#&gt;         &lt;th&gt;Count&lt;/th&gt;
-#&gt;         &lt;th&gt;camera&lt;/th&gt;
-#&gt;         &lt;th&gt;fry&lt;/th&gt;
-#&gt;       &lt;/tr&gt;
-#&gt;     &lt;/thead&gt;
-#&gt;     &lt;tbody&gt;
-#&gt;       &lt;tr&gt;
-#&gt;         &lt;td&gt;c2&lt;/td&gt;
-#&gt;         &lt;td&gt;30&lt;/td&gt;
-#&gt;         &lt;td&gt;15 (6 up; 9 down)&lt;/td&gt;
-#&gt;         &lt;td&gt;13 (4 up; 9 down)&lt;/td&gt;
-#&gt;       &lt;/tr&gt;
-#&gt;       &lt;tr&gt;
-#&gt;         &lt;td&gt;c6&lt;/td&gt;
-#&gt;         &lt;td&gt;26&lt;/td&gt;
-#&gt;         &lt;td&gt;9 (2 up; 7 down)&lt;/td&gt;
-#&gt;         &lt;td&gt;15 (2 up; 13 down)&lt;/td&gt;
-#&gt;       &lt;/tr&gt;
-#&gt;       &lt;tr&gt;
-#&gt;         &lt;td&gt;c7&lt;/td&gt;
-#&gt;         &lt;td&gt;20&lt;/td&gt;
-#&gt;         &lt;td&gt;5 (3 up; 2 down)&lt;/td&gt;
-#&gt;         &lt;td&gt;5 (1 up; 4 down)&lt;/td&gt;
-#&gt;       &lt;/tr&gt;
-#&gt;     &lt;/tbody&gt;
-#&gt;   &lt;/table&gt;
-#&gt; &lt;/div&gt;</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>sr</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/examples.html'>exampleSparrowResult</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>summaryHTMLTable.sparrow</span><span class='op'>(</span><span class='va'>sr</span>, max.p <span class='op'>=</span> <span class='fl'>0.10</span>, p.col <span class='op'>=</span> <span class='st'>"padj"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;div class="sparrow-summary-table"&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   &lt;table&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;thead&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;tr class="super-header"&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;th colspan="2"&gt;Gene Sets&lt;/th&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;th colspan="2"&gt;Analysis Summary&lt;/th&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;tr class="sub-header"&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;th&gt;Collection&lt;/th&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;th&gt;Count&lt;/th&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;th&gt;camera&lt;/th&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;th&gt;fry&lt;/th&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/thead&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;tbody&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;td&gt;c2&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;td&gt;30&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;td&gt;15 (6 up; 9 down)&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;td&gt;13 (4 up; 9 down)&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;td&gt;c6&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;td&gt;26&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;td&gt;9 (2 up; 7 down)&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;td&gt;15 (2 up; 13 down)&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;td&gt;c7&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;td&gt;20&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;td&gt;5 (3 up; 2 down)&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>         &lt;td&gt;5 (1 up; 4 down)&lt;/td&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       &lt;/tr&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     &lt;/tbody&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   &lt;/table&gt;</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> &lt;/div&gt;</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

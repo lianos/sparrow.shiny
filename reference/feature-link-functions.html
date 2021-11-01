@@ -163,18 +163,19 @@ by entrez id</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>sr</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/examples.html'>exampleSparrowResult</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>lfc</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/logFC.html'>logFC</a></span><span class='op'>(</span><span class='va'>sr</span><span class='op'>)</span>
-<span class='co'># the symbol column in `lfhc` will be a linked to the entrez web page for</span>
-<span class='co'># each gene</span>
-<span class='va'>linked</span> <span class='op'>&lt;-</span> <span class='fu'>ncbi.entrez.link</span><span class='op'>(</span><span class='va'>lfc</span>, link.col <span class='op'>=</span> <span class='st'>"symbol"</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>linked</span><span class='op'>[[</span><span class='st'>"symbol"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "&lt;a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=1\" target=\"_blank\"&gt;A1BG&lt;/a&gt;"                
-#&gt; [2] "&lt;a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=100\" target=\"_blank\"&gt;ADA&lt;/a&gt;"               
-#&gt; [3] "&lt;a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=1000\" target=\"_blank\"&gt;CDH2&lt;/a&gt;"             
-#&gt; [4] "&lt;a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=10000\" target=\"_blank\"&gt;AKT3&lt;/a&gt;"            
-#&gt; [5] "&lt;a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=100009676\" target=\"_blank\"&gt;LOC100009676&lt;/a&gt;"
-#&gt; [6] "&lt;a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=10001\" target=\"_blank\"&gt;MED6&lt;/a&gt;"            </div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>sr</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/examples.html'>exampleSparrowResult</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>lfc</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/logFC.html'>logFC</a></span><span class='op'>(</span><span class='va'>sr</span><span class='op'>)</span></span>
+<span class='r-in'><span class='co'># the symbol column in `lfhc` will be a linked to the entrez web page for</span></span>
+<span class='r-in'><span class='co'># each gene</span></span>
+<span class='r-in'><span class='va'>linked</span> <span class='op'>&lt;-</span> <span class='fu'>ncbi.entrez.link</span><span class='op'>(</span><span class='va'>lfc</span>, link.col <span class='op'>=</span> <span class='st'>"symbol"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>linked</span><span class='op'>[[</span><span class='st'>"symbol"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "&lt;a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=1\" target=\"_blank\"&gt;A1BG&lt;/a&gt;"                </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [2] "&lt;a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=100\" target=\"_blank\"&gt;ADA&lt;/a&gt;"               </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [3] "&lt;a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=1000\" target=\"_blank\"&gt;CDH2&lt;/a&gt;"             </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [4] "&lt;a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=10000\" target=\"_blank\"&gt;AKT3&lt;/a&gt;"            </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [5] "&lt;a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=100009676\" target=\"_blank\"&gt;LOC100009676&lt;/a&gt;"</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [6] "&lt;a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=10001\" target=\"_blank\"&gt;MED6&lt;/a&gt;"            </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

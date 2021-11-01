@@ -186,13 +186,13 @@ specifies how long the table can be per page.</p></td>
     <p>A [DT::datatable()] of feature statistics</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>sr</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/examples.html'>exampleSparrowResult</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>lfc</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/logFC.html'>logFC</a></span><span class='op'>(</span><span class='va'>sr</span><span class='op'>)</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='fu'>renderFeatureStatsDataTable</span><span class='op'>(</span><span class='va'>sr</span>, <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>lfc</span><span class='op'>$</span><span class='va'>feature_id</span>, <span class='fl'>200</span><span class='op'>)</span>,
-                              feature.link.fn <span class='op'>=</span> <span class='va'>ncbi.entrez.link</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>sr</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/examples.html'>exampleSparrowResult</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>lfc</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/logFC.html'>logFC</a></span><span class='op'>(</span><span class='va'>sr</span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='fu'>renderFeatureStatsDataTable</span><span class='op'>(</span><span class='va'>sr</span>, <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='va'>lfc</span><span class='op'>$</span><span class='va'>feature_id</span>, <span class='fl'>200</span><span class='op'>)</span>,</span>
+<span class='r-in'>                              feature.link.fn <span class='op'>=</span> <span class='va'>ncbi.entrez.link</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

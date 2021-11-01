@@ -155,124 +155,125 @@ therofre prioritize their display in the select dropdown for the filter</p></td>
   A 0-row data.table is returned if nothing passes.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>sres</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/examples.html'>exampleSparrowResult</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'>constructGseaResultTable</span><span class='op'>(</span><span class='va'>sres</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;     collection                                                    name active
-#&gt;  1:         c2                      LOPEZ_MESOTELIOMA_SURVIVAL_TIME_UP   TRUE
-#&gt;  2:         c2                  SOTIRIOU_BREAST_CANCER_GRADE_1_VS_3_UP   TRUE
-#&gt;  3:         c2              PUJANA_BREAST_CANCER_WITH_BRCA1_MUTATED_UP   TRUE
-#&gt;  4:         c2                    REACTOME_MRNA_SPLICING_MINOR_PATHWAY   TRUE
-#&gt;  5:         c7                                 GSE3982_BCELL_VS_TH2_DN   TRUE
-#&gt;  6:         c6                                           E2F3_UP.V1_UP   TRUE
-#&gt;  7:         c7             GSE13485_CTRL_VS_DAY3_YF17D_VACCINE_PBMC_DN   TRUE
-#&gt;  8:         c2                     MOREAUX_MULTIPLE_MYELOMA_BY_TACI_DN   TRUE
-#&gt;  9:         c6                                        TBK1.DN.48HRS_DN   TRUE
-#&gt; 10:         c2                          VANTVEER_BREAST_CANCER_ESR1_DN   TRUE
-#&gt; 11:         c6                                           CAMP_UP.V1_DN   TRUE
-#&gt; 12:         c6                           KRAS.600.LUNG.BREAST_UP.V1_DN   TRUE
-#&gt; 13:         c7   GSE22886_IGG_IGA_MEMORY_BCELL_VS_BLOOD_PLASMA_CELL_UP   TRUE
-#&gt; 14:         c6                                    KRAS.BREAST_UP.V1_DN   TRUE
-#&gt; 15:         c2                  SCHAEFFER_PROSTATE_DEVELOPMENT_48HR_DN   TRUE
-#&gt; 16:         c6                               KRAS.LUNG.BREAST_UP.V1_DN   TRUE
-#&gt; 17:         c6                                            ATM_DN.V1_UP   TRUE
-#&gt; 18:         c6                                      KRAS.LUNG_UP.V1_DN   TRUE
-#&gt; 19:         c2                     YAMASHITA_LIVER_CANCER_STEM_CELL_DN   TRUE
-#&gt; 20:         c2           CHARAFE_BREAST_CANCER_BASAL_VS_MESENCHYMAL_DN   TRUE
-#&gt; 21:         c2                                  BIOCARTA_AGPCR_PATHWAY   TRUE
-#&gt; 22:         c2          GUTIERREZ_WALDENSTROEMS_MACROGLOBULINEMIA_1_UP   TRUE
-#&gt; 23:         c2                   BOYAULT_LIVER_CANCER_SUBCLASS_G123_DN   TRUE
-#&gt; 24:         c6                                        KRAS.50_UP.V1_UP   TRUE
-#&gt; 25:         c2                         BURTON_ADIPOGENESIS_PEAK_AT_2HR   TRUE
-#&gt; 26:         c2                        HUPER_BREAST_BASAL_VS_LUMINAL_UP   TRUE
-#&gt; 27:         c2 TURASHVILI_BREAST_LOBULAR_CARCINOMA_VS_DUCTAL_NORMAL_DN   TRUE
-#&gt;     collection                                                    name active
-#&gt;       N   n         pval         padj padj.by.collection n.sig n.neutral n.up
-#&gt;  1:  14  14 1.695907e-08 4.296298e-07       1.695907e-07     8         6   14
-#&gt;  2: 151 149 9.516274e-41 7.232368e-39       2.854882e-39    80        69  147
-#&gt;  3:  56  55 1.334978e-10 5.072916e-09       2.002467e-09    18        37   47
-#&gt;  4:  45  42 4.100173e-06 6.232263e-05       2.460104e-05     2        40   35
-#&gt;  5: 200 175 2.850357e-04 3.094673e-03       5.700714e-03    30       145  116
-#&gt;  6: 196 155 3.153970e-02 8.877841e-02       9.111468e-02    21       134   98
-#&gt;  7: 200 191 2.523983e-03 1.370162e-02       1.682655e-02    11       180  130
-#&gt;  8: 172 170 1.297630e-03 1.064454e-02       5.135523e-03    10       160  104
-#&gt;  9:  50  50 2.961713e-02 8.877841e-02       9.111468e-02     7        43   31
-#&gt; 10: 240 233 3.609397e-02 9.707699e-02       7.218795e-02    28       205  135
-#&gt; 11: 200 183 3.055288e-02 8.877841e-02       9.111468e-02    22       161   75
-#&gt; 12: 289 189 2.564978e-02 8.475579e-02       9.111468e-02    23       166   77
-#&gt; 13: 200 176 1.256932e-03 1.064454e-02       1.256932e-02    17       159   57
-#&gt; 14: 145  90 2.487090e-02 8.475579e-02       9.111468e-02     9        81   31
-#&gt; 15: 428 356 1.727021e-03 1.093780e-02       5.181062e-03    63       293  137
-#&gt; 16: 145  96 2.273234e-02 8.226941e-02       9.111468e-02    11        85   36
-#&gt; 17: 146  89 1.567032e-02 6.616355e-02       9.111468e-02    13        76   29
-#&gt; 18: 145  98 2.270691e-02 8.226941e-02       9.111468e-02    13        85   34
-#&gt; 19:  76  47 1.518841e-02 6.616355e-02       3.505018e-02     5        42   16
-#&gt; 20:  50  45 1.540657e-03 1.064454e-02       5.135523e-03     7        38   13
-#&gt; 21:  13  11 2.271767e-02 8.226941e-02       4.868071e-02     1        10    3
-#&gt; 22:   9   9 7.265220e-03 3.681045e-02       1.816305e-02     2         7    2
-#&gt; 23:  51  41 4.310320e-05 5.459739e-04       2.155160e-04     9        32   11
-#&gt; 24:  48  33 1.330857e-02 6.321570e-02       9.111468e-02    10        23    9
-#&gt; 25:  51  50 1.473643e-03 1.064454e-02       5.135523e-03     9        41   14
-#&gt; 26:  54  52 2.162668e-03 1.264329e-02       5.898185e-03     9        43   15
-#&gt; 27:  91  91 2.766197e-06 5.255773e-05       2.074647e-05    20        71   24
-#&gt;       N   n         pval         padj padj.by.collection n.sig n.neutral n.up
-#&gt;     n.down n.sig.up n.sig.down mean.logFC mean.logFC.trim     mean.t
-#&gt;  1:      0        8          0  1.9053048       1.9201957  2.6611296
-#&gt;  2:      2       80          0  1.8402359       1.8310993  2.8107308
-#&gt;  3:      8       18          0  1.0281693       0.9533016  1.7020744
-#&gt;  4:      7        2          0  0.3510180       0.3433814  1.2752435
-#&gt;  5:     59       20         10  0.3908602       0.3337944  0.6218071
-#&gt;  6:     57        9         12  0.2605313       0.2896170  0.3003986
-#&gt;  7:     61        4          7  0.2774772       0.2685242  0.4590224
-#&gt;  8:     66        6          4  0.1972357       0.1685089  0.5338254
-#&gt;  9:     19        5          2  0.2699208       0.1658724  0.4860196
-#&gt; 10:     98       20          8  0.2188470       0.1531049  0.2752792
-#&gt; 11:    108        2         20 -0.2631505      -0.2306874 -0.6154836
-#&gt; 12:    112        1         22 -0.3056071      -0.2627638 -0.6498984
-#&gt; 13:    119        0         17 -0.3241097      -0.2890946 -0.8570488
-#&gt; 14:     59        0          9 -0.3264680      -0.3098887 -0.7466725
-#&gt; 15:    219        5         58 -0.3405691      -0.3268273 -0.7889832
-#&gt; 16:     60        1         10 -0.3470210      -0.3396559 -0.7333986
-#&gt; 17:     60        1         12 -0.4379007      -0.4117162 -0.7610840
-#&gt; 18:     64        1         12 -0.4812555      -0.4309138 -0.7247246
-#&gt; 19:     31        0          5 -0.5284611      -0.4369603 -0.8993549
-#&gt; 20:     32        0          7 -0.4568979      -0.4711493 -1.1350462
-#&gt; 21:      8        0          1 -0.4953724      -0.5044566 -1.3726441
-#&gt; 22:      7        0          2 -0.6026479      -0.6026479 -1.7435775
-#&gt; 23:     30        0          9 -0.7685127      -0.6500474 -1.5021451
-#&gt; 24:     24        2          8 -0.5773156      -0.6725080 -0.9812401
-#&gt; 25:     36        1          8 -0.7654912      -0.7382118 -1.0964370
-#&gt; 26:     37        1          8 -0.6465576      -0.7566993 -1.0664421
-#&gt; 27:     67        0         20 -0.9569427      -0.9387142 -1.3803432
-#&gt;     n.down n.sig.up n.sig.down mean.logFC mean.logFC.trim     mean.t
-#&gt;     mean.t.trim Direction rank
-#&gt;  1:   2.7229413        Up    3
-#&gt;  2:   2.8715625        Up    1
-#&gt;  3:   1.8177360        Up    2
-#&gt;  4:   1.2959816        Up    5
-#&gt;  5:   0.7146269        Up    7
-#&gt;  6:   0.3953663        Up   27
-#&gt;  7:   0.5821929        Up   14
-#&gt;  8:   0.5781200        Up    9
-#&gt;  9:   0.5228263        Up   24
-#&gt; 10:   0.2928013        Up   28
-#&gt; 11:  -0.5800135      Down   25
-#&gt; 12:  -0.5144962      Down   23
-#&gt; 13:  -0.7581619      Down    8
-#&gt; 14:  -0.5891867      Down   22
-#&gt; 15:  -0.7050304      Down   12
-#&gt; 16:  -0.6149464      Down   21
-#&gt; 17:  -0.7435324      Down   18
-#&gt; 18:  -0.6159783      Down   19
-#&gt; 19:  -0.8207050      Down   17
-#&gt; 20:  -1.0681036      Down   11
-#&gt; 21:  -1.3765614      Down   20
-#&gt; 22:  -1.7435775      Down   15
-#&gt; 23:  -1.5212565      Down    6
-#&gt; 24:  -1.1545970      Down   16
-#&gt; 25:  -1.1564061      Down   10
-#&gt; 26:  -1.0481488      Down   13
-#&gt; 27:  -1.2397314      Down    4
-#&gt;     mean.t.trim Direction rank</div></pre>
+    <pre class="examples"><span class='r-in'><span class='va'>sres</span> <span class='op'>&lt;-</span> <span class='fu'>sparrow</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/sparrow/man/examples.html'>exampleSparrowResult</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>constructGseaResultTable</span><span class='op'>(</span><span class='va'>sres</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     collection                                                    name active</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  1:         c2                      LOPEZ_MESOTELIOMA_SURVIVAL_TIME_UP   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  2:         c2                  SOTIRIOU_BREAST_CANCER_GRADE_1_VS_3_UP   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  3:         c2              PUJANA_BREAST_CANCER_WITH_BRCA1_MUTATED_UP   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  4:         c2                    REACTOME_MRNA_SPLICING_MINOR_PATHWAY   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  5:         c7                                 GSE3982_BCELL_VS_TH2_DN   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  6:         c6                                           E2F3_UP.V1_UP   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  7:         c7             GSE13485_CTRL_VS_DAY3_YF17D_VACCINE_PBMC_DN   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  8:         c2                     MOREAUX_MULTIPLE_MYELOMA_BY_TACI_DN   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  9:         c6                                        TBK1.DN.48HRS_DN   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10:         c2                          VANTVEER_BREAST_CANCER_ESR1_DN   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11:         c6                                           CAMP_UP.V1_DN   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12:         c6                           KRAS.600.LUNG.BREAST_UP.V1_DN   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13:         c7   GSE22886_IGG_IGA_MEMORY_BCELL_VS_BLOOD_PLASMA_CELL_UP   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14:         c6                                    KRAS.BREAST_UP.V1_DN   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15:         c2                  SCHAEFFER_PROSTATE_DEVELOPMENT_48HR_DN   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16:         c6                               KRAS.LUNG.BREAST_UP.V1_DN   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 17:         c6                                            ATM_DN.V1_UP   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 18:         c6                                      KRAS.LUNG_UP.V1_DN   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 19:         c2                     YAMASHITA_LIVER_CANCER_STEM_CELL_DN   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 20:         c2           CHARAFE_BREAST_CANCER_BASAL_VS_MESENCHYMAL_DN   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 21:         c2                                  BIOCARTA_AGPCR_PATHWAY   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 22:         c2          GUTIERREZ_WALDENSTROEMS_MACROGLOBULINEMIA_1_UP   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 23:         c2                   BOYAULT_LIVER_CANCER_SUBCLASS_G123_DN   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 24:         c6                                        KRAS.50_UP.V1_UP   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 25:         c2                         BURTON_ADIPOGENESIS_PEAK_AT_2HR   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 26:         c2                        HUPER_BREAST_BASAL_VS_LUMINAL_UP   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 27:         c2 TURASHVILI_BREAST_LOBULAR_CARCINOMA_VS_DUCTAL_NORMAL_DN   TRUE</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     collection                                                    name active</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       N   n         pval         padj padj.by.collection n.sig n.neutral n.up</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  1:  14  14 1.695907e-08 4.296298e-07       1.695907e-07     8         6   14</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  2: 151 149 9.516274e-41 7.232368e-39       2.854882e-39    80        69  147</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  3:  56  55 1.334978e-10 5.072916e-09       2.002467e-09    18        37   47</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  4:  45  42 4.100173e-06 6.232263e-05       2.460104e-05     2        40   35</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  5: 200 175 2.850357e-04 3.094673e-03       5.700714e-03    30       145  116</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  6: 196 155 3.153970e-02 8.877841e-02       9.111468e-02    21       134   98</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  7: 200 191 2.523983e-03 1.370162e-02       1.682655e-02    11       180  130</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  8: 172 170 1.297630e-03 1.064454e-02       5.135523e-03    10       160  104</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  9:  50  50 2.961713e-02 8.877841e-02       9.111468e-02     7        43   31</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10: 240 233 3.609397e-02 9.707699e-02       7.218795e-02    28       205  135</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11: 200 183 3.055288e-02 8.877841e-02       9.111468e-02    22       161   75</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12: 289 189 2.564978e-02 8.475579e-02       9.111468e-02    23       166   77</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13: 200 176 1.256932e-03 1.064454e-02       1.256932e-02    17       159   57</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14: 145  90 2.487090e-02 8.475579e-02       9.111468e-02     9        81   31</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15: 428 356 1.727021e-03 1.093780e-02       5.181062e-03    63       293  137</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16: 145  96 2.273234e-02 8.226941e-02       9.111468e-02    11        85   36</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 17: 146  89 1.567032e-02 6.616355e-02       9.111468e-02    13        76   29</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 18: 145  98 2.270691e-02 8.226941e-02       9.111468e-02    13        85   34</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 19:  76  47 1.518841e-02 6.616355e-02       3.505018e-02     5        42   16</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 20:  50  45 1.540657e-03 1.064454e-02       5.135523e-03     7        38   13</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 21:  13  11 2.271767e-02 8.226941e-02       4.868071e-02     1        10    3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 22:   9   9 7.265220e-03 3.681045e-02       1.816305e-02     2         7    2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 23:  51  41 4.310320e-05 5.459739e-04       2.155160e-04     9        32   11</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 24:  48  33 1.330857e-02 6.321570e-02       9.111468e-02    10        23    9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 25:  51  50 1.473643e-03 1.064454e-02       5.135523e-03     9        41   14</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 26:  54  52 2.162668e-03 1.264329e-02       5.898185e-03     9        43   15</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 27:  91  91 2.766197e-06 5.255773e-05       2.074647e-05    20        71   24</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       N   n         pval         padj padj.by.collection n.sig n.neutral n.up</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     n.down n.sig.up n.sig.down mean.logFC mean.logFC.trim     mean.t</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  1:      0        8          0  1.9053048       1.9201957  2.6611296</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  2:      2       80          0  1.8402359       1.8310993  2.8107308</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  3:      8       18          0  1.0281693       0.9533016  1.7020744</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  4:      7        2          0  0.3510180       0.3433814  1.2752435</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  5:     59       20         10  0.3908602       0.3337944  0.6218071</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  6:     57        9         12  0.2605313       0.2896170  0.3003986</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  7:     61        4          7  0.2774772       0.2685242  0.4590224</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  8:     66        6          4  0.1972357       0.1685089  0.5338254</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  9:     19        5          2  0.2699208       0.1658724  0.4860196</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10:     98       20          8  0.2188470       0.1531049  0.2752792</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11:    108        2         20 -0.2631505      -0.2306874 -0.6154836</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12:    112        1         22 -0.3056071      -0.2627638 -0.6498984</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13:    119        0         17 -0.3241097      -0.2890946 -0.8570488</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14:     59        0          9 -0.3264680      -0.3098887 -0.7466725</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15:    219        5         58 -0.3405691      -0.3268273 -0.7889832</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16:     60        1         10 -0.3470210      -0.3396559 -0.7333986</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 17:     60        1         12 -0.4379007      -0.4117162 -0.7610840</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 18:     64        1         12 -0.4812555      -0.4309138 -0.7247246</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 19:     31        0          5 -0.5284611      -0.4369603 -0.8993549</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 20:     32        0          7 -0.4568979      -0.4711493 -1.1350462</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 21:      8        0          1 -0.4953724      -0.5044566 -1.3726441</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 22:      7        0          2 -0.6026479      -0.6026479 -1.7435775</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 23:     30        0          9 -0.7685127      -0.6500474 -1.5021451</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 24:     24        2          8 -0.5773156      -0.6725080 -0.9812401</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 25:     36        1          8 -0.7654912      -0.7382118 -1.0964370</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 26:     37        1          8 -0.6465576      -0.7566993 -1.0664421</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 27:     67        0         20 -0.9569427      -0.9387142 -1.3803432</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     n.down n.sig.up n.sig.down mean.logFC mean.logFC.trim     mean.t</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     mean.t.trim Direction rank</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  1:   2.7229413        Up    3</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  2:   2.8715625        Up    1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  3:   1.8177360        Up    2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  4:   1.2959816        Up    5</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  5:   0.7146269        Up    7</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  6:   0.3953663        Up   27</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  7:   0.5821929        Up   14</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  8:   0.5781200        Up    9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  9:   0.5228263        Up   24</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10:   0.2928013        Up   28</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11:  -0.5800135      Down   25</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12:  -0.5144962      Down   23</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13:  -0.7581619      Down    8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14:  -0.5891867      Down   22</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15:  -0.7050304      Down   12</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16:  -0.6149464      Down   21</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 17:  -0.7435324      Down   18</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 18:  -0.6159783      Down   19</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 19:  -0.8207050      Down   17</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 20:  -1.0681036      Down   11</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 21:  -1.3765614      Down   20</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 22:  -1.7435775      Down   15</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 23:  -1.5212565      Down    6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 24:  -1.1545970      Down   16</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 25:  -1.1564061      Down   10</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 26:  -1.0481488      Down   13</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 27:  -1.2397314      Down    4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>     mean.t.trim Direction rank</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
