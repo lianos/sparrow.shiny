@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">sparrow.shiny</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="articles/sparrow-shiny.html">Get started</a>
 </li>
@@ -70,83 +66,95 @@
       </header><div class="row">
   <div class="contents col-md-9">
 
-<div id="overview" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h1></div>
-<p>The <code>sparrow.shiny</code> package provides an interactive shiny applications that enables users to explore the results of a gene set enrichment analysis performed using the <a href="https://github.com/lianos/sparrow">sparrow</a></p>
-<p>Although this is a standalone package, it’s really only used as an “enhancement” to the sparrow package itself, as well as providing shiny modules to the <a href="https://github.com/facilebio/FacileAnalysis">FacileAnalysis</a> package, too.</p>
+<div class="section level1">
+<div class="page-header"><h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h1></div>
+<p>The <code>sparrow.shiny</code> package provides an interactive shiny applications that enables users to explore the results of a gene set enrichment analysis performed using the <a href="https://github.com/lianos/sparrow" class="external-link">sparrow</a></p>
+<p>Although this is a standalone package, it’s really only used as an “enhancement” to the sparrow package itself, as well as providing shiny modules to the <a href="https://github.com/facilebio/FacileAnalysis" class="external-link">FacileAnalysis</a> package, too.</p>
 <p>All that of that is to say: there isn’t much end-user stuff here to play with.</p>
 </div>
-<div id="usage" class="section level1">
-<h1 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h1>
+<div class="section level1">
+<h1 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h1>
 <p>More thorough documentation of the shiny application will be provided in the near future in the form of a vignette, or more likely a screen cast.</p>
 <p>In the meantime, this will just have to get you started:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">vm</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html">exampleExpressionSet</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">'tumor-vs-normal'</span>, do.voom <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">gdb</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html">exampleGeneSetDb</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">sr</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/seas.html">seas</a></span><span class="op">(</span><span class="va">gdb</span>, <span class="va">vm</span>, <span class="va">vm</span><span class="op">$</span><span class="va">design</span>, <span class="st">"tumor"</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"camera"</span>, <span class="st">"fry"</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">vm</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleExpressionSet</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">'tumor-vs-normal'</span>, do.voom <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">gdb</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleGeneSetDb</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">sr</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/seas.html" class="external-link">seas</a></span><span class="op">(</span><span class="va">gdb</span>, <span class="va">vm</span>, <span class="va">vm</span><span class="op">$</span><span class="va">design</span>, <span class="st">"tumor"</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"camera"</span>, <span class="st">"fry"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">sparrow.shiny</span><span class="fu">::</span><span class="fu"><a href="reference/explore.html">explore</a></span><span class="op">(</span><span class="va">sr</span><span class="op">)</span></code></pre></div>
-<p>The <code>explore</code> function will launch the application and load it with the <code>SparrowResult</code> object produced by the call to the <code><a href="https://rdrr.io/pkg/sparrow/man/seas.html">sparrow::seas()</a></code> function. You can then explore the results of the “camera” or “fry” analysis through there.</p>
+<p>The <code>explore</code> function will launch the application and load it with the <code>SparrowResult</code> object produced by the call to the <code><a href="https://rdrr.io/pkg/sparrow/man/seas.html" class="external-link">sparrow::seas()</a></code> function. You can then explore the results of the “camera” or “fry” analysis through there.</p>
 <p>Users can serialize <code>SparrowResult</code> objects to <code>*.rds</code> files on their filesystem, which can also be loaded individually once the application is launched.</p>
 </div>
-<div id="application-deployment" class="section level1">
-<h1 class="hasAnchor">
-<a href="#application-deployment" class="anchor"></a>Application Deployment</h1>
+<div class="section level1">
+<h1 id="application-deployment">Application Deployment<a class="anchor" aria-label="anchor" href="#application-deployment"></a>
+</h1>
 <p>Analysts can simply launch the <code><a href="reference/explore.html">sparrow.shiny::explore()</a></code> application from their workstation, however these applications can also be deployed to a shiny server.</p>
-<div id="docker" class="section level2">
-<h2 class="hasAnchor">
-<a href="#docker" class="anchor"></a>Docker</h2>
+<div class="section level2">
+<h2 id="docker">Docker<a class="anchor" aria-label="anchor" href="#docker"></a>
+</h2>
 <p>The <a href="inst/docker"><code>inst/docker</code></a> folder provides examples of how to containerize and deploy this application in different contexts.</p>
 <p>The <a href="inst/docker/Dockerfile-base"><code>Dockerfile-base</code></a> creates a docker image that, when run, launches the shiny app on <code>http://container.ip/sparrow</code> (ie. <code>http://localhost/sparrow</code>).</p>
 </div>
-<div id="shinyproxy" class="section level2">
-<h2 class="hasAnchor">
-<a href="#shinyproxy" class="anchor"></a>ShinyProxy</h2>
-<p>The <a href="inst/docker/Dockerfile-shinyproxy"><code>Dockerfile-shinyproxy</code></a> creates an image that can be deployed via a <a href="https://www.shinyproxy.io/">ShinyProxy server</a>.</p>
+<div class="section level2">
+<h2 id="shinyproxy">ShinyProxy<a class="anchor" aria-label="anchor" href="#shinyproxy"></a>
+</h2>
+<p>The <a href="inst/docker/Dockerfile-shinyproxy"><code>Dockerfile-shinyproxy</code></a> creates an image that can be deployed via a <a href="https://www.shinyproxy.io/" class="external-link">ShinyProxy server</a>.</p>
 <p>Notes on setting up a ShinyProxy server on AWS are provided in the <a href="inst/docker/aws-ubuntu-deployment.html"><code>aws-ubuntu-deployment.md</code></a> file.</p>
 </div>
 </div>
-<div id="installation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h1>
+<div class="section level1">
+<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h1>
 <p>The sparrow suite of package will soon be submitted to bioconductor and installable via the recommended <code>BiocManager</code> mechanism. In the meantime, these packages can be installed like so:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"lianos/sparrow.shiny"</span><span class="op">)</span></code></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"lianos/sparrow.shiny"</span><span class="op">)</span></code></pre></div>
 </div>
 
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing sparrow.shiny</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Steve Lianoglou <br><small class="roles"> Author, maintainer </small>  </li>
-<li>Denali Therapeutics <br><small class="roles"> Copyright holder, funder </small>  <br><small>(2018+)</small>
-</li>
-<li>Genentech <br><small class="roles"> Copyright holder, funder </small>  <br><small>(2014 - 2017)</small>
-</li>
+<li>Denali Therapeutics <br><small class="roles"> Copyright holder, funder </small>  </li>
+<li>Genentech <br><small class="roles"> Copyright holder, funder </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
+
+
 
   </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Steve Lianoglou, Denali Therapeutics, Genentech.</p>
+  <p></p>
+<p>Developed by Steve Lianoglou, Denali Therapeutics, Genentech.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
 </div>
 
       </footer>
@@ -154,6 +162,8 @@
 
   
 
+
+  
 
   </body>
 </html>

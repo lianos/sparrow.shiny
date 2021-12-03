@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">sparrow.shiny</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.99.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.99.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/sparrow-shiny.html">Get started</a>
 </li>
@@ -60,13 +56,13 @@
 
       
 
-      </header><script src="sparrow-shiny_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Interactive Exploration SparrowResults with sparrow.shiny</h1>
-                        <h4 class="author">Steve Lianoglou</h4>
+                        <h4 data-toc-skip class="author">Steve Lianoglou</h4>
             
-            <h4 class="date">1 December 2021</h4>
+            <h4 data-toc-skip class="date">3 December 2021</h4>
       
       
       <div class="hidden name"><code>sparrow-shiny.Rmd</code></div>
@@ -75,43 +71,43 @@
 
     
     
-<div id="overview" class="section level2">
-<h2 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h2>
-<p>This package provides a number of shiny modules we can use to interact with a <code>SparrowResult</code> object we get from invoking <code><a href="https://rdrr.io/pkg/sparrow/man/seas.html">sparrow::seas()</a></code>.</p>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<p>This package provides a number of shiny modules we can use to interact with a <code>SparrowResult</code> object we get from invoking <code><a href="https://rdrr.io/pkg/sparrow/man/seas.html" class="external-link">sparrow::seas()</a></code>.</p>
 <p>We also provide a shiny app that combines these modules together for interactive exploration which can be launched via the <code><a href="../reference/explore.html">explore()</a></code> method. We’ll go over the functionality of the app here.</p>
 </div>
-<div id="setup" class="section level2">
-<h2 class="hasAnchor">
-<a href="#setup" class="anchor"></a>Setup</h2>
-<p>We’ll perform a GSEA analysis using the <code><a href="https://rdrr.io/pkg/limma/man/camera.html">limma::cameraPR()</a></code> and an overrepresentaiton analysis (goseq-like test) via <code><a href="https://rdrr.io/pkg/sparrow/man/ora.html">sparrow::ora</a></code> using an example expression dataset from the sparrow package, which was taken from a subset of samples from the TCGA/BRCA indication.</p>
+<div class="section level2">
+<h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
+</h2>
+<p>We’ll perform a GSEA analysis using the <code><a href="https://rdrr.io/pkg/limma/man/camera.html" class="external-link">limma::cameraPR()</a></code> and an overrepresentaiton analysis (goseq-like test) via <code><a href="https://rdrr.io/pkg/sparrow/man/ora.html" class="external-link">sparrow::ora</a></code> using an example expression dataset from the sparrow package, which was taken from a subset of samples from the TCGA/BRCA indication.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lianos/sparrow">sparrow</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">sparrow.shiny</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="va">vm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html">exampleExpressionSet</a></span><span class="op">(</span>do.voom <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lianos/sparrow" class="external-link">sparrow</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">sparrow.shiny</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="va">vm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleExpressionSet</a></span><span class="op">(</span>do.voom <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>We’ll also use a subset of the C2, C6, and C7 MSigDB gene set collections, which is also available as an example dataset in the sparrow package:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html">exampleGeneSetDb</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">gdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleGeneSetDb</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><code>gdb</code> contains the following number of genesets per collection:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/geneSets.html">geneSets</a></span><span class="op">(</span><span class="va">gdb</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">collection</span><span class="op">)</span></code></pre></div>
-<pre><code>##   collection  n
-## 1         c2 30
-## 2         c6 26
-## 3         c7 20</code></pre>
-<p>And finally, we’ll run the <code>limm::cameraPR()</code> and <code><a href="https://rdrr.io/pkg/sparrow/man/ora.html">sparrow::ora()</a></code> enrichment tests on the tumor vs normal comparion:</p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/geneSets.html" class="external-link">geneSets</a></span><span class="op">(</span><span class="va">gdb</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">collection</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">##   collection  n</span>
+<span class="co">## 1         c2 30</span>
+<span class="co">## 2         c6 26</span>
+<span class="co">## 3         c7 20</span></code></pre>
+<p>And finally, we’ll run the <code>limm::cameraPR()</code> and <code><a href="https://rdrr.io/pkg/sparrow/man/ora.html" class="external-link">sparrow::ora()</a></code> enrichment tests on the tumor vs normal comparion:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">sres</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/seas.html">seas</a></span><span class="op">(</span><span class="va">vm</span>, <span class="va">gdb</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cameraPR"</span>, <span class="st">"ora"</span><span class="op">)</span>, <span class="va">vm</span><span class="op">$</span><span class="va">design</span>, <span class="st">"tumor"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">sres</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/seas.html" class="external-link">seas</a></span><span class="op">(</span><span class="va">vm</span>, <span class="va">gdb</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cameraPR"</span>, <span class="st">"ora"</span><span class="op">)</span>, <span class="va">vm</span><span class="op">$</span><span class="va">design</span>, <span class="st">"tumor"</span><span class="op">)</span></code></pre></div>
 <p>You can launch the shiny app included here to explore the <code>seas</code> results via the <code><a href="../reference/explore.html">sparrow.shiny::explore()</a></code> function.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/explore.html">explore</a></span><span class="op">(</span><span class="va">sres</span><span class="op">)</span></code></pre></div>
 <p>When you do that, you will be greeted with a tabbed interface with the following tabs outlined below.</p>
 </div>
-<div id="overview-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#overview-1" class="anchor"></a>Overview</h2>
+<div class="section level2">
+<h2 id="overview-1">Overview<a class="anchor" aria-label="anchor" href="#overview-1"></a>
+</h2>
 <p><img src="images/explore-landing-page.png" alt="shiny landing and overview page"> The control widgets in the top right box, outlined in purple, allow the user to filter which geneset results to view by only showing those genesets that have an FDR cutoff of less than 20% under the cameraPR analysis.</p>
 <p>The table at the bottom that is highlighted with red and blue boxes gives you an overview of your GSEA hits from at the 20% cutoff. The numbers in the red box recapitulate the same output we calculated above, which tells us the number of genesets <em>per collection</em> we ran our analysis against (30 c2 gene sets, 26 c6, and 20 c7). The blue-highlighted portion of the table tells us the number of genesets per collection that satisfy the 20% FDR cutoff for each of the GSEA methods we ran: cameraPR or ora.</p>
 <p>We can see that at an FDR of 20%, 19 gene sets in the c2 collection were significant, and nine of those gene sets are going up, whiel ten are going down.</p>
@@ -125,13 +121,13 @@
 <code>ora.down</code>: pathway enrichment analysis using only down regulated genes.</li>
 </ol>
 </div>
-<div id="gsea-results" class="section level2">
-<h2 class="hasAnchor">
-<a href="#gsea-results" class="anchor"></a>GSEA Results</h2>
+<div class="section level2">
+<h2 id="gsea-results">GSEA Results<a class="anchor" aria-label="anchor" href="#gsea-results"></a>
+</h2>
 <p><img src="images/browse-results.png" alt="GSEA results tab"> The genesets that are signifcant via a cameraPR analysis at an FDR cutoff less than 20% are listed on the table on the right. Clicking on the different rows of the table will select it for view, updating the <code>geneSetContrastView</code> module on the left.</p>
-<div id="the-genesetcontrastview-module" class="section level3">
-<h3 class="hasAnchor">
-<a href="#the-genesetcontrastview-module" class="anchor"></a>The geneSetContrastView Module</h3>
+<div class="section level3">
+<h3 id="the-genesetcontrastview-module">The geneSetContrastView Module<a class="anchor" aria-label="anchor" href="#the-genesetcontrastview-module"></a>
+</h3>
 <p>Provides a graphical view of the result, a tabular view which lists all of the genes in the geneset as well as their individual differential expression statistics, and the ability to select genes in the geneset to see <em>what other</em> gene sets they are also a part of.</p>
 </div>
 </div>
@@ -148,11 +144,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Steve Lianoglou, Denali Therapeutics, Genentech.</p>
+  <p></p>
+<p>Developed by Steve Lianoglou, Denali Therapeutics, Genentech.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
 </div>
 
       </footer>
@@ -160,6 +158,8 @@
 
   
 
+
+  
 
   </body>
 </html>
