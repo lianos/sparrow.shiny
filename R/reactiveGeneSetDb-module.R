@@ -57,7 +57,7 @@ reactiveGeneSetDb <- function(input, output, session, gdb,
   })
 
   shiny::observe({
-    gs.range <- input$size
+    gs.range <- shiny::req(input$size)
     if (state$min.gs.size != gs.range[1L]) state$min.gs.size <- gs.range[1L]
     if (state$min.gs.size != gs.range[2L]) state$max.gs.size <- gs.range[2L]
   })
@@ -107,7 +107,7 @@ reactiveGeneSetDb <- function(input, output, session, gdb,
   })
 
   genesets <- shiny::reactive({
-    selected.colls <- input$collections
+    selected.colls <- shiny::req(input$collections)
     gdb. <- shiny::req(rgdb())
     shiny::req(is(gdb., "GeneSetDb"))
     gsets <- sparrow::geneSets(gdb., as.dt = TRUE)
