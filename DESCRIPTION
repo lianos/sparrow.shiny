@@ -1,7 +1,7 @@
 Package: sparrow.shiny
 Type: Package
-Title: Provides shiny moduels to visualize sparrow results
-Version: 0.99.0
+Title: Provides shiny modules to visualize sparrow results
+Version: 0.99.1
 Authors@R: c(
     person("Steve", "Lianoglou", , "slianoglou@gmail.com", c("aut", "cre")),
     person("Denali Therapeutics", role = c("cph", "fnd"), comment = "2018+"),
@@ -38,7 +38,8 @@ Suggests:
     knitr,
     readxl,
     rmarkdown,
-    testthat
+    testthat,
+    tibble
 VignetteBuilder: knitr
 biocViews: GUI, DataRepresentation, ReportWriting, GeneSetEnrichment
 RoxygenNote: 7.1.2
