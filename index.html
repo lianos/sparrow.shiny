@@ -79,10 +79,10 @@
 <p>More thorough documentation of the shiny application will be provided in the near future in the form of a vignette, or more likely a screen cast.</p>
 <p>In the meantime, this will just have to get you started:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">vm</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleExpressionSet</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">'tumor-vs-normal'</span>, do.voom <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">gdb</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleGeneSetDb</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">sr</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/seas.html" class="external-link">seas</a></span><span class="op">(</span><span class="va">gdb</span>, <span class="va">vm</span>, <span class="va">vm</span><span class="op">$</span><span class="va">design</span>, <span class="st">"tumor"</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"camera"</span>, <span class="st">"fry"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">sparrow.shiny</span><span class="fu">::</span><span class="fu"><a href="reference/explore.html">explore</a></span><span class="op">(</span><span class="va">sr</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">vm</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleExpressionSet</a></span><span class="op">(</span>dataset <span class="op">=</span> <span class="st">'tumor-vs-normal'</span>, do.voom <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">gdb</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleGeneSetDb</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">sr</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/seas.html" class="external-link">seas</a></span><span class="op">(</span><span class="va">gdb</span>, <span class="va">vm</span>, <span class="va">vm</span><span class="op">$</span><span class="va">design</span>, <span class="st">"tumor"</span>, methods <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"camera"</span>, <span class="st">"fry"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">sparrow.shiny</span><span class="fu">::</span><span class="fu"><a href="reference/explore.html">explore</a></span><span class="op">(</span><span class="va">sr</span><span class="op">)</span></span></code></pre></div>
 <p>The <code>explore</code> function will launch the application and load it with the <code>SparrowResult</code> object produced by the call to the <code><a href="https://rdrr.io/pkg/sparrow/man/seas.html" class="external-link">sparrow::seas()</a></code> function. You can then explore the results of the “camera” or “fry” analysis through there.</p>
 <p>Users can serialize <code>SparrowResult</code> objects to <code>*.rds</code> files on their filesystem, which can also be loaded individually once the application is launched.</p>
 </div>
@@ -108,8 +108,8 @@
 </h1>
 <p>The sparrow suite of package will soon be submitted to bioconductor and installable via the recommended <code>BiocManager</code> mechanism. In the meantime, these packages can be installed like so:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"lianos/sparrow.shiny"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"lianos/sparrow.shiny"</span><span class="op">)</span></span></code></pre></div>
 </div>
 
   </div>
@@ -154,7 +154,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

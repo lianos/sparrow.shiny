@@ -51,78 +51,103 @@ on some global criteria.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">geneSetSelect</span><span class="op">(</span>
-  <span class="va">input</span>,
-  <span class="va">output</span>,
-  <span class="va">session</span>,
-  <span class="va">src</span>,
-  server <span class="op">=</span> <span class="cn">TRUE</span>,
-  maxOptions <span class="op">=</span> <span class="cn">Inf</span>,
-  sep <span class="op">=</span> <span class="st">"_::_"</span>
-<span class="op">)</span>
-
-<span class="fu">geneSetSelectUI</span><span class="op">(</span><span class="va">id</span>, label <span class="op">=</span> <span class="st">"Select Gene Set"</span><span class="op">)</span>
-
-<span class="fu">updateGeneSetSelect</span><span class="op">(</span>
-  <span class="va">session</span>,
-  <span class="va">id</span>,
-  label <span class="op">=</span> <span class="cn">NULL</span>,
-  choices <span class="op">=</span> <span class="cn">NULL</span>,
-  selected <span class="op">=</span> <span class="cn">NULL</span>,
-  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  server <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">gs.render.select.ui</span><span class="op">(</span>
-  <span class="va">ns</span>,
-  <span class="va">choices</span>,
-  server <span class="op">=</span> <span class="cn">TRUE</span>,
-  maxOptions <span class="op">=</span> <span class="fl">1000</span>,
-  sep <span class="op">=</span> <span class="st">"_::_"</span>
-<span class="op">)</span>
-
-<span class="fu">gs.select.choices</span><span class="op">(</span><span class="va">mg</span>, sep <span class="op">=</span> <span class="st">"_::_"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">geneSetSelect</span><span class="op">(</span></span>
+<span>  <span class="va">input</span>,</span>
+<span>  <span class="va">output</span>,</span>
+<span>  <span class="va">session</span>,</span>
+<span>  <span class="va">src</span>,</span>
+<span>  server <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  maxOptions <span class="op">=</span> <span class="cn">Inf</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">"_::_"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">geneSetSelectUI</span><span class="op">(</span><span class="va">id</span>, label <span class="op">=</span> <span class="st">"Select Gene Set"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">updateGeneSetSelect</span><span class="op">(</span></span>
+<span>  <span class="va">session</span>,</span>
+<span>  <span class="va">id</span>,</span>
+<span>  label <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  choices <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  selected <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  server <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">gs.render.select.ui</span><span class="op">(</span></span>
+<span>  <span class="va">ns</span>,</span>
+<span>  <span class="va">choices</span>,</span>
+<span>  server <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  maxOptions <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">"_::_"</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">gs.select.choices</span><span class="op">(</span><span class="va">mg</span>, sep <span class="op">=</span> <span class="st">"_::_"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>input, output, session</dt>
 <dd><p>the shiny-required bits for the module</p></dd>
+
+
 <dt>src</dt>
 <dd><p>A [SparrowResultContainer()] object</p></dd>
+
+
 <dt>server</dt>
 <dd><p>logical indicating wether the options should be generated in
 the server module, default: `TRUE`</p></dd>
+
+
 <dt>maxOptions</dt>
 <dd><p>a paremeter used to customize the
 `GeneSetSelect::selectizeInput` UI element to configure the maximum number
 of elements to include in the select dropdown, the remainder of the
 genesets will be loaded from the server side. Default: `Inf` for all.</p></dd>
+
+
 <dt>sep</dt>
 <dd><p>the string used to concatenate geneset `collection` and `name`
 to generate a uniqe string for a geneset</p></dd>
+
+
 <dt>id</dt>
 <dd><p>the 'naked' module id</p></dd>
+
+
 <dt>label</dt>
 <dd><p>the label for the [shiny::selectizeInput()]</p></dd>
+
+
 <dt>choices</dt>
 <dd><p>the output of `gs.select.choices(SparrowResult)`</p></dd>
+
+
 <dt>selected</dt>
 <dd><p>The initially selected value (or multiple values if <code>multiple = TRUE</code>). If not specified then defaults to the first value for
 single-select lists and no values for multiple select lists.</p></dd>
+
+
 <dt>options</dt>
 <dd><p>A list of options. See the documentation of <span class="pkg">selectize.js</span>
 for possible options (character option values inside <code><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">base::I()</a></code> will
-be treated as literal JavaScript code; see <code><a href="https://rdrr.io/pkg/shiny/man/renderDataTable.html" class="external-link">renderDataTable()</a></code>
+be treated as literal JavaScript code; see <code><a href="https://shiny.rstudio.com/reference/shiny/latest/renderDataTable.html" class="external-link">renderDataTable()</a></code>
 for details).</p></dd>
+
+
 <dt>ns</dt>
 <dd><p>the namespace function for this module</p></dd>
+
+
 <dt>mg</dt>
 <dd><p>`SparrowResult` to build options for</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a reactive list of information about the selected geneset.</p><dl><dt>collection</dt>
+    
+
+<p>a reactive list of information about the selected geneset.</p><dl><dt>collection</dt>
 <dd><p>the collection its from</p></dd>
 
   <dt>name</dt>
@@ -138,8 +163,10 @@ for details).</p></dd>
 <dd><p>the separator used to key the collection,name string for this geneset</p></dd>
 
 
-</dl><p>a properly wired `[shiny::selectizeInput()]` UI element.
-`data.table` to populate `choices` of `selectizeInput`</p>
+</dl><p>a properly wired `[shiny::selectizeInput()]` UI element.</p>
+
+
+<p>`data.table` to populate `choices` of `selectizeInput`</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -172,19 +199,19 @@ widget that is specific to a SparrowResult.</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">sres</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleSparrowResult</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span></span>
-<span class="r-in">  ui <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyUI.html" class="external-link">shinyUI</a></span><span class="op">(</span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="fu"><a href="exampleUISetup.html">exampleUISetup</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span class="r-in">    title <span class="op">=</span> <span class="st">"Gene Set Select"</span>,</span>
-<span class="r-in">    <span class="fu">geneSetSelectUI</span><span class="op">(</span><span class="st">"mod"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">src</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu"><a href="SparrowResultContainer.html">SparrowResultContainer</a></span><span class="op">(</span><span class="va">sres</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">    <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/callModule.html" class="external-link">callModule</a></span><span class="op">(</span><span class="va">geneSetSelect</span>, <span class="st">"mod"</span>, <span class="va">src</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">sres</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleSparrowResult</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  ui <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyUI.html" class="external-link">shinyUI</a></span><span class="op">(</span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="exampleUISetup.html">exampleUISetup</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    title <span class="op">=</span> <span class="st">"Gene Set Select"</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">geneSetSelectUI</span><span class="op">(</span><span class="st">"mod"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">src</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu"><a href="SparrowResultContainer.html">SparrowResultContainer</a></span><span class="op">(</span><span class="va">sres</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/callModule.html" class="external-link">callModule</a></span><span class="op">(</span><span class="va">geneSetSelect</span>, <span class="st">"mod"</span>, <span class="va">src</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -199,7 +226,7 @@ widget that is specific to a SparrowResult.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

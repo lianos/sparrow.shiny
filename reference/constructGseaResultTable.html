@@ -49,39 +49,48 @@ gene sets with an FDR (by collection) less than given threshold.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">constructGseaResultTable</span><span class="op">(</span>
-  <span class="va">mg</span>,
-  method <span class="op">=</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/results.html" class="external-link">resultNames</a></span><span class="op">(</span><span class="va">mg</span><span class="op">)</span><span class="op">[</span><span class="fl">1L</span><span class="op">]</span>,
-  fdr <span class="op">=</span> <span class="fl">0.1</span>,
-  prioritize <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">constructGseaResultTable</span><span class="op">(</span></span>
+<span>  <span class="va">mg</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/results.html" class="external-link">resultNames</a></span><span class="op">(</span><span class="va">mg</span><span class="op">)</span><span class="op">[</span><span class="fl">1L</span><span class="op">]</span>,</span>
+<span>  fdr <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  prioritize <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>mg</dt>
 <dd><p>`SparrowResult` object</p></dd>
+
+
 <dt>method</dt>
 <dd><p>the method to show statistics for</p></dd>
+
+
 <dt>fdr</dt>
 <dd><p>the FDR cut off to present statistics for</p></dd>
+
+
 <dt>prioritize</dt>
 <dd><p>the preferred collections to put at the top of the
 list. The collection column of the table is turned into a factor for
 more useful display with datatable's filter. Specifcying collections
 here will put those collections at the front of the factor levels and
 therofre prioritize their display in the select dropdown for the filter</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a data.table of the statistics that match the filtering criteria.
+    
+
+<p>a data.table of the statistics that match the filtering criteria.
   A 0-row data.table is returned if nothing passes.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">sres</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleSparrowResult</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">constructGseaResultTable</span><span class="op">(</span><span class="va">sres</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">sres</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleSparrowResult</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">constructGseaResultTable</span><span class="op">(</span><span class="va">sres</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     collection                                                    name active</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:         c2                      LOPEZ_MESOTELIOMA_SURVIVAL_TIME_UP   TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:         c2                  SOTIRIOU_BREAST_CANCER_GRADE_1_VS_3_UP   TRUE</span>
@@ -212,7 +221,7 @@ therofre prioritize their display in the select dropdown for the filter</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

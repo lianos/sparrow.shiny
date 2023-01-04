@@ -49,17 +49,17 @@ for all features. This function is a convenience wrapper to do that.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">renderFeatureStatsDataTable</span><span class="op">(</span>
-  <span class="va">x</span>,
-  features <span class="op">=</span> <span class="cn">NULL</span>,
-  digits <span class="op">=</span> <span class="fl">3</span>,
-  columns <span class="op">=</span> <span class="cn">NULL</span>,
-  feature.link.fn <span class="op">=</span> <span class="cn">NULL</span>,
-  order.by <span class="op">=</span> <span class="st">"logFC"</span>,
-  order.dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"desc"</span>, <span class="st">"asc"</span><span class="op">)</span>,
-  filter <span class="op">=</span> <span class="st">"none"</span>,
-  length.opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">250</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">renderFeatureStatsDataTable</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  features <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  columns <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  feature.link.fn <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  order.by <span class="op">=</span> <span class="st">"logFC"</span>,</span>
+<span>  order.dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"desc"</span>, <span class="st">"asc"</span><span class="op">)</span>,</span>
+<span>  filter <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>  length.opts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">100</span>, <span class="fl">250</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -69,44 +69,63 @@ for all features. This function is a convenience wrapper to do that.</p>
 statistics. When `x` is a `SparrowResult`, the
 `logFC` feature level statistics will be extracted for
 display.</p></dd>
+
+
 <dt>features</dt>
 <dd><p>A character vector that specifies the subset of
 `feature_id`'s to display from `x`. If `NULL` (default),
 all of `x` will be used.</p></dd>
+
+
 <dt>digits</dt>
 <dd><p>number of digits to round the numeric columns to</p></dd>
+
+
 <dt>columns</dt>
 <dd><p>the columns from `x` to use. If `missing`, then
 only `c('symbol', 'feature_id', 'logFC', 'pval', 'padj', order.by)`
 will be used. If explicitly set to `NULL` all columns will be used.</p></dd>
+
+
 <dt>feature.link.fn</dt>
 <dd><p>A function that receives the data.frame of statistics
 to be rendered and transforms one of its columns into a hyperlink for
 further reference. Refer to [ncbi.entrez.link()] as an example.</p></dd>
+
+
 <dt>order.by</dt>
 <dd><p>name of the column to order the geneset stats by</p></dd>
+
+
 <dt>order.dir</dt>
 <dd><p>do we order the table by the values in `order.by` in
 `"desc"`-ending, or `"asc"`-ending order (default: `"desc"`)</p></dd>
+
+
 <dt>filter</dt>
 <dd><p>passed to [DT::datatable()]</p></dd>
+
+
 <dt>length.opts</dt>
 <dd><p>parameter passed as an option to [DT::datatable()] that
 specifies how long the table can be per page.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A [DT::datatable()] of feature statistics</p>
+    
+
+<p>A [DT::datatable()] of feature statistics</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">sr</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleSparrowResult</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lfc</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/logFC.html" class="external-link">logFC</a></span><span class="op">(</span><span class="va">sr</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">renderFeatureStatsDataTable</span><span class="op">(</span><span class="va">sr</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">lfc</span><span class="op">$</span><span class="va">feature_id</span>, <span class="fl">200</span><span class="op">)</span>,</span>
-<span class="r-in">                              feature.link.fn <span class="op">=</span> <span class="va">ncbi.entrez.link</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">sr</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleSparrowResult</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lfc</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/logFC.html" class="external-link">logFC</a></span><span class="op">(</span><span class="va">sr</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">renderFeatureStatsDataTable</span><span class="op">(</span><span class="va">sr</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="va">lfc</span><span class="op">$</span><span class="va">feature_id</span>, <span class="fl">200</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                              feature.link.fn <span class="op">=</span> <span class="va">ncbi.entrez.link</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -121,7 +140,7 @@ specifies how long the table can be per page.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

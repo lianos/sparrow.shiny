@@ -51,80 +51,111 @@ a single point for each gene/dot.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">mgVolcano</span><span class="op">(</span>
-  <span class="va">input</span>,
-  <span class="va">output</span>,
-  <span class="va">session</span>,
-  <span class="va">x</span>,
-  stats <span class="op">=</span> <span class="st">"dge"</span>,
-  xaxis <span class="op">=</span> <span class="st">"logFC"</span>,
-  yaxis <span class="op">=</span> <span class="st">"pval"</span>,
-  idx <span class="op">=</span> <span class="st">"idx"</span>,
-  tools <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"box_select"</span>, <span class="st">"reset"</span>, <span class="st">"save"</span><span class="op">)</span>,
-  width <span class="op">=</span> <span class="cn">NULL</span>,
-  height <span class="op">=</span> <span class="cn">NULL</span>,
-  highlight <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>,
-  default_xhex <span class="op">=</span> <span class="fl">1</span>,
-  default_yhex <span class="op">=</span> <span class="fl">0.1</span>,
-  webgl <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">mgVolcanoUI</span><span class="op">(</span>
-  <span class="va">id</span>,
-  <span class="va">x</span>,
-  stats <span class="op">=</span> <span class="st">"dge"</span>,
-  xaxis <span class="op">=</span> <span class="st">"logFC"</span>,
-  yaxis <span class="op">=</span> <span class="st">"padj"</span>,
-  idx <span class="op">=</span> <span class="st">"idx"</span>,
-  hexbin <span class="op">=</span> <span class="cn">TRUE</span>,
-  default_xhex <span class="op">=</span> <span class="fl">1</span>,
-  default_yhex <span class="op">=</span> <span class="fl">0.1</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mgVolcano</span><span class="op">(</span></span>
+<span>  <span class="va">input</span>,</span>
+<span>  <span class="va">output</span>,</span>
+<span>  <span class="va">session</span>,</span>
+<span>  <span class="va">x</span>,</span>
+<span>  stats <span class="op">=</span> <span class="st">"dge"</span>,</span>
+<span>  xaxis <span class="op">=</span> <span class="st">"logFC"</span>,</span>
+<span>  yaxis <span class="op">=</span> <span class="st">"pval"</span>,</span>
+<span>  idx <span class="op">=</span> <span class="st">"idx"</span>,</span>
+<span>  tools <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"box_select"</span>, <span class="st">"reset"</span>, <span class="st">"save"</span><span class="op">)</span>,</span>
+<span>  width <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  height <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  highlight <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span>,</span>
+<span>  default_xhex <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  default_yhex <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  webgl <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">mgVolcanoUI</span><span class="op">(</span></span>
+<span>  <span class="va">id</span>,</span>
+<span>  <span class="va">x</span>,</span>
+<span>  stats <span class="op">=</span> <span class="st">"dge"</span>,</span>
+<span>  xaxis <span class="op">=</span> <span class="st">"logFC"</span>,</span>
+<span>  yaxis <span class="op">=</span> <span class="st">"padj"</span>,</span>
+<span>  idx <span class="op">=</span> <span class="st">"idx"</span>,</span>
+<span>  hexbin <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  default_xhex <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  default_yhex <span class="op">=</span> <span class="fl">0.1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>input, output, session</dt>
 <dd><p>shiny bits</p></dd>
+
+
 <dt>x</dt>
 <dd><p>A <code>SparrowResult</code> object, or a <code>data.frame</code></p></dd>
+
+
 <dt>stats</dt>
 <dd><p>One of <code>"dge"</code> or <code>resultNames(x)</code></p></dd>
+
+
 <dt>xaxis</dt>
 <dd><p>the column of the the provided (or extracted)
 <code>data.frame</code> to use for the xaxis and yaxis of the volcano</p></dd>
+
+
 <dt>yaxis</dt>
 <dd><p>the column of the the provided (or extracted)
 <code>data.frame</code> to use for the xaxis and yaxis of the volcano</p></dd>
+
+
 <dt>idx</dt>
 <dd><p>The column of the <code>data.frame</code> to use as the identifier
 for the element in the row. You probably don't want to mess with this</p></dd>
+
+
 <dt>tools</dt>
 <dd><p>the plotly tools to include in the figures toolbar</p></dd>
+
+
 <dt>width</dt>
 <dd><p>the width and height of the output plotly plot</p></dd>
+
+
 <dt>height</dt>
 <dd><p>the width and height of the output plotly plot</p></dd>
+
+
 <dt>highlight</dt>
 <dd><p>a reactive vector of featureIds that indicate which points
 to highlight on the volcano, irresespective of their "hexbin" status.</p></dd>
+
+
 <dt>default_xhex, default_yhex</dt>
 <dd><p>default values to set the slider inputs
 to pass in for hex-ization</p></dd>
+
+
 <dt>webgl</dt>
 <dd><p>use webgl to make the plotly plot</p></dd>
+
+
 <dt>...</dt>
 <dd><p>pass through arguments (not used)</p></dd>
+
+
 <dt>id</dt>
 <dd><p>the shiny id of the output widget</p></dd>
+
+
 <dt>hexbin</dt>
 <dd><p>boolean to indicate if the UI should show a wrench widget to
 configure the parameters for the hexbin drawing (default: `TRUE`)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A reactive data.frame that includes the information of the genes
+    
+
+<p>A reactive data.frame that includes the information of the genes
   that are brushed in the volcano plot. If no genes have been selected, then
   `NULL`.</p>
     </div>
@@ -136,19 +167,19 @@ configure the parameters for the hexbin drawing (default: `TRUE`)</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">sres</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleSparrowResult</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span></span>
-<span class="r-in">  ui <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyUI.html" class="external-link">shinyUI</a></span><span class="op">(</span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="fu"><a href="exampleUISetup.html">exampleUISetup</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span class="r-in">    title <span class="op">=</span> <span class="st">"Interactive volcano plot"</span>,</span>
-<span class="r-in">    <span class="fu">mgVolcanoUI</span><span class="op">(</span><span class="st">"mod"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">src</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu"><a href="SparrowResultContainer.html">SparrowResultContainer</a></span><span class="op">(</span><span class="va">sres</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">    <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/callModule.html" class="external-link">callModule</a></span><span class="op">(</span><span class="va">mgVolcano</span>, <span class="st">"mod"</span>, <span class="va">src</span>, default_xhex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">sres</span> <span class="op">&lt;-</span> <span class="fu">sparrow</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/sparrow/man/examples.html" class="external-link">exampleSparrowResult</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">app</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  ui <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyUI.html" class="external-link">shinyUI</a></span><span class="op">(</span><span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="exampleUISetup.html">exampleUISetup</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    title <span class="op">=</span> <span class="st">"Interactive volcano plot"</span>,</span></span>
+<span class="r-in"><span>    <span class="fu">mgVolcanoUI</span><span class="op">(</span><span class="st">"mod"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">src</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu"><a href="SparrowResultContainer.html">SparrowResultContainer</a></span><span class="op">(</span><span class="va">sres</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/callModule.html" class="external-link">callModule</a></span><span class="op">(</span><span class="va">mgVolcano</span>, <span class="st">"mod"</span>, <span class="va">src</span>, default_xhex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="va">app</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -163,7 +194,7 @@ configure the parameters for the hexbin drawing (default: `TRUE`)</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
