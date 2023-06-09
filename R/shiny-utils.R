@@ -48,7 +48,8 @@ insertPlotlyReset <- function(source, event = c('hover', 'click', 'selected')) {
 constructGseaResultTable <- function(mg, method = sparrow::resultNames(mg)[1L],
                                      fdr = 0.10, prioritize = NULL) {
   assert_character(prioritize, null.ok = TRUE)
-  assert_number(fdr, lower = 0.01, upper = 1)
+  # assert_number(fdr, lower = 0, upper = 1)
+  assert_number(fdr)
 
   # silence R CMD check notes from data.table NSE mojo
   padj.by.collection <- collection <- mean.logFC.trim <- NULL
@@ -323,7 +324,12 @@ renderFeatureStatsDataTable <- function(x, features=NULL, digits=3,
 summaryHTMLTable.sparrow <- function(x, names = sparrow::resultNames(x),
                                      max.p, p.col) {
   stopifnot(is(x, 'SparrowResult'))
-  s <- sparrow::tabulateResults(x, names, max.p, p.col)
+  
+  if (unselected(max.p) || unselected(p.col)) {
+    s <- data.table(collection = character(), padj = numeric())
+  } else {
+    s <- sparrow::tabulateResults(x, names, max.p, p.col)
+  }
 
   ## The header of this table is two rows
   thead <- shiny::tags$thead(

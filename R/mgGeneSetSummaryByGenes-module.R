@@ -58,6 +58,7 @@ mgGeneSetSummaryByGene <- function(input, output, session, src,
     if (input$genesets_sigonly) {
       method <- method()
       max.p <- fdr()
+      req(!unselected(method), !unselected(max.p))
     } else {
       method <- NULL
       max.p <- NULL

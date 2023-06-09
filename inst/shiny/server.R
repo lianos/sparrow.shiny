@@ -35,12 +35,14 @@ shiny::shinyServer(function(input, output, session) {
         style = "font-weight: bold; color: red",
         "Upload the SparrowResult object to initialize the application")
     } else {
+      fdr. <- gs_result_filter$fdr()
+      req(!unselected(fdr.))
+      
       shiny::tagList(
         shiny::tags$h4("GSEA Analyses Overview"),
         sparrow.shiny::summaryHTMLTable.sparrow(
           obj$sr, obj$methods,
-          gs_result_filter$fdr(),
-          p.col = 'padj.by.collection')
+          fdr., p.col = 'padj.by.collection')
       )
     }
   })

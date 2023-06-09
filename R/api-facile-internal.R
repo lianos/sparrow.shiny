@@ -1,9 +1,9 @@
-# This functions are defined in facilebio, but are redefined and kept internal
-# here. We define them like so because we don't want to add a facilebio
-# dependency.
+# This functions are defined in facilebio/FacileShine and facilebio/FacileViz,
+# but we are redefining them here because we don't want to depned on those.
 
 #' Tests if a module is initialized
-#'
+#' (really defined in FacileShine)
+#' 
 #' @param x A thing used in a shiny environment that requires time to initialize
 #'   before it can be used.
 #' @param ... pass through
@@ -20,7 +20,8 @@ initialized.ReactiveGeneSetDb <- function(x, ...) {
 
 #' Checks if the return value from a selectInput looks like it's unselected
 #'
-#' Copied from FacileViz, but we don't want to depend on that.
+#' Copied from FacileViz, but we don't want to depend on that. If you need to
+#' change this function, go back to FacileViz and keep in sync
 #'
 #' For some reason, sometimes a selectInput returns `NULL` and other times
 #' it returns `""`, so I'm just making this utility function to deal with that
@@ -41,7 +42,10 @@ unselected <- function(value, ignore = c("---", "__initializing__", "")) {
   if (is(value, "data.frame") || is(value, "tbl")) {
     val <- nrow(value) == 0
   } else {
-    val <- length(value) == 0L || nchar(value) == 0L || all(value %in% ignore)
+    val <- length(value) == 0L || 
+      all(sapply(value, function(v) nchar(v) == 0L)) || 
+      any(is.na(value)) ||
+      all(value %in% ignore)
   }
   val
 }

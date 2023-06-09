@@ -47,12 +47,12 @@ mgTableBrowser <- function(input, output, session, src, method, fdr,
   ## under the FDR threshold
   gsea.result.table <- shiny::reactive({
     sr <- shiny::req(src()$sr)
-    if (is.null(method()) || method() == "") {
-      # msg("... gseaMethod not selected yet")
-      return(NULL)
-    }
-    ## MultiGSEResult object, method, and FDR thersholds all set, now fetch
-    ## the data that corresponds to this criteria
+    method. <- method()
+    fdr. <- fdr()
+    req(!unselected(method.), !unselected(fdr.))
+
+    # MultiGSEResult object, method, and FDR thersholds all set, now fetch
+    # the data that corresponds to this criteria
     constructGseaResultTable(sr, method(), fdr())
   })
 
