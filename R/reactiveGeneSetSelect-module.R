@@ -24,7 +24,8 @@
 #' if (interactive()) {
 #'   shiny::runApp(app)
 #' }
-reactiveGeneSetSelect <- function(input, output, session, gdb = NULL, ...) {
+reactiveGeneSetSelect <- function(input, output, session, 
+                                  gdb = shiny::reactive(NULL), ...) {
   assert_multi_class(gdb, c("reactive", "GeneSetDb"), null.ok = TRUE)
 
   state <- shiny::reactiveValues(
@@ -76,20 +77,36 @@ reactiveGeneSetSelect <- function(input, output, session, gdb = NULL, ...) {
   gscoll <- shiny::reactive(state$collection)
   gsname <- shiny::reactive(state$name)
 
+  # membership <- shiny::reactive({
+  #   shiny::req(initialized(rgdb))
+  #   gdb. <- rgdb$gdb()
+  #   coll <- gscoll()
+  #   name <- gsname()
+  #   if (!unselected(coll) && !unselected(name)) {
+  #     out <- sparrow::geneSet(gdb., collection = coll, name = name)
+  #     out <- out[, "feature_id", drop = FALSE]
+  #   } else {
+  #     out <- data.frame(feature_id = character())
+  #   }
+  #   out
+  # })
+
   membership <- shiny::reactive({
-    shiny::req(initialized(rgdb))
-    gdb. <- rgdb$gdb()
-    coll <- gscoll()
-    name <- gsname()
-    if (!unselected(coll) && !unselected(name)) {
-      out <- sparrow::geneSet(gdb., collection = coll, name = name)
-      out <- out[, "feature_id", drop = FALSE]
-    } else {
-      out <- data.frame(feature_id = character())
+    out <- data.frame(feature_id = character())
+    if (initialized(rgdb)) {
+      gdb. <- rgdb$gdb()
+      coll <- gscoll()
+      name <- gsname()
+      if (!unselected(coll) && !unselected(name)) {
+        out <- tryCatch({
+          gs <- sparrow::geneSet(gdb., collection = coll, name = name)
+          gs[, "feature_id", drop = FALSE]
+        }, error = function(e) out)
+      }
     }
     out
   })
-
+  
   list(
     collection = gscoll,
     name = gsname,

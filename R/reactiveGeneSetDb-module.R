@@ -52,7 +52,7 @@ reactiveGeneSetDb <- function(input, output, session, gdb,
 
   rgdb <- shiny::reactive({
     gdb. <- if (is(gdb, "reactive")) gdb() else gdb
-    assert_class(gdb., "GeneSetDb")
+    if (!is.null(gdb.)) assert_class(gdb., "GeneSetDb")
     gdb.
   })
 
