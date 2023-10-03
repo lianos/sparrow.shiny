@@ -49,7 +49,10 @@ mgTableBrowser <- function(input, output, session, src, method, fdr,
     sr <- shiny::req(src()$sr)
     method. <- method()
     fdr. <- fdr()
-    req(!unselected(method.), !unselected(fdr.))
+    req(
+      !unselected(method.), 
+      method. %in% sparrow::resultNames(sr),
+      !unselected(fdr.))
 
     # MultiGSEResult object, method, and FDR thersholds all set, now fetch
     # the data that corresponds to this criteria
