@@ -1,93 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/sparrow-shiny.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/GeneSetDb.ReactiveGeneSetDb.html</loc>
-  </url>
-  <url>
-    <loc>/reference/SparrowResultContainer.html</loc>
-  </url>
-  <url>
-    <loc>/reference/constructGseaResultTable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/exampleUISetup.html</loc>
-  </url>
-  <url>
-    <loc>/reference/explore.html</loc>
-  </url>
-  <url>
-    <loc>/reference/feature-link-functions.html</loc>
-  </url>
-  <url>
-    <loc>/reference/geneSetContrastView.html</loc>
-  </url>
-  <url>
-    <loc>/reference/geneSetSelect.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/initialized.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mgGeneSetSummaryByGene.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mgResultFilter.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mgTableBrowser.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mgVolcano.html</loc>
-  </url>
-  <url>
-    <loc>/reference/reactiveGeneSetDb.html</loc>
-  </url>
-  <url>
-    <loc>/reference/reactiveGeneSetSelect.html</loc>
-  </url>
-  <url>
-    <loc>/reference/renderFeatureStatsDataTable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/renderGseaResultTableDataTable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/round.dt.html</loc>
-  </url>
-  <url>
-    <loc>/reference/roundDT.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summaryHTMLTable.sparrow.html</loc>
-  </url>
-  <url>
-    <loc>/reference/unselected.html</loc>
-  </url>
-  <url>
-    <loc>/reference/userDefinedGeneSetDb.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/sparrow-shiny.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/GeneSetDb.ReactiveGeneSetDb.html</loc></url>
+<url><loc>/reference/SparrowResultContainer.html</loc></url>
+<url><loc>/reference/constructGseaResultTable.html</loc></url>
+<url><loc>/reference/exampleUISetup.html</loc></url>
+<url><loc>/reference/explore.html</loc></url>
+<url><loc>/reference/feature-link-functions.html</loc></url>
+<url><loc>/reference/geneSetContrastView.html</loc></url>
+<url><loc>/reference/geneSetSelect.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/initialized.html</loc></url>
+<url><loc>/reference/mgGeneSetSummaryByGene.html</loc></url>
+<url><loc>/reference/mgResultFilter.html</loc></url>
+<url><loc>/reference/mgTableBrowser.html</loc></url>
+<url><loc>/reference/mgVolcano.html</loc></url>
+<url><loc>/reference/reactiveGeneSetDb.html</loc></url>
+<url><loc>/reference/reactiveGeneSetSelect.html</loc></url>
+<url><loc>/reference/renderFeatureStatsDataTable.html</loc></url>
+<url><loc>/reference/renderGseaResultTableDataTable.html</loc></url>
+<url><loc>/reference/round.dt.html</loc></url>
+<url><loc>/reference/roundDT.html</loc></url>
+<url><loc>/reference/summaryHTMLTable.sparrow.html</loc></url>
+<url><loc>/reference/unselected.html</loc></url>
+<url><loc>/reference/userDefinedGeneSetDb.html</loc></url>
 </urlset>
+

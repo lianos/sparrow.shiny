@@ -4,7 +4,7 @@ for all features. This function is a convenience wrapper to do that."><!-- mathj
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -33,13 +33,13 @@ for all features. This function is a convenience wrapper to do that."><!-- mathj
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create a DT::datatable of feature level statistics for use in shiny bits</h1>
-    
+
     <div class="hidden name"><code>renderFeatureStatsDataTable.Rd</code></div>
     </div>
 
@@ -64,58 +64,58 @@ for all features. This function is a convenience wrapper to do that.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>x</dt>
+
+
+<dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>A `SparrowResult` or `data.frame` of feature level
 statistics. When `x` is a `SparrowResult`, the
 `logFC` feature level statistics will be extracted for
 display.</p></dd>
 
 
-<dt>features</dt>
+<dt id="arg-features">features<a class="anchor" aria-label="anchor" href="#arg-features"></a></dt>
 <dd><p>A character vector that specifies the subset of
 `feature_id`'s to display from `x`. If `NULL` (default),
 all of `x` will be used.</p></dd>
 
 
-<dt>digits</dt>
+<dt id="arg-digits">digits<a class="anchor" aria-label="anchor" href="#arg-digits"></a></dt>
 <dd><p>number of digits to round the numeric columns to</p></dd>
 
 
-<dt>columns</dt>
+<dt id="arg-columns">columns<a class="anchor" aria-label="anchor" href="#arg-columns"></a></dt>
 <dd><p>the columns from `x` to use. If `missing`, then
 only `c('symbol', 'feature_id', 'logFC', 'pval', 'padj', order.by)`
 will be used. If explicitly set to `NULL` all columns will be used.</p></dd>
 
 
-<dt>feature.link.fn</dt>
+<dt id="arg-feature-link-fn">feature.link.fn<a class="anchor" aria-label="anchor" href="#arg-feature-link-fn"></a></dt>
 <dd><p>A function that receives the data.frame of statistics
 to be rendered and transforms one of its columns into a hyperlink for
 further reference. Refer to [ncbi.entrez.link()] as an example.</p></dd>
 
 
-<dt>order.by</dt>
+<dt id="arg-order-by">order.by<a class="anchor" aria-label="anchor" href="#arg-order-by"></a></dt>
 <dd><p>name of the column to order the geneset stats by</p></dd>
 
 
-<dt>order.dir</dt>
+<dt id="arg-order-dir">order.dir<a class="anchor" aria-label="anchor" href="#arg-order-dir"></a></dt>
 <dd><p>do we order the table by the values in `order.by` in
 `"desc"`-ending, or `"asc"`-ending order (default: `"desc"`)</p></dd>
 
 
-<dt>filter</dt>
+<dt id="arg-filter">filter<a class="anchor" aria-label="anchor" href="#arg-filter"></a></dt>
 <dd><p>passed to [DT::datatable()]</p></dd>
 
 
-<dt>length.opts</dt>
+<dt id="arg-length-opts">length.opts<a class="anchor" aria-label="anchor" href="#arg-length-opts"></a></dt>
 <dd><p>parameter passed as an option to [DT::datatable()] that
 specifies how long the table can be per page.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>A [DT::datatable()] of feature statistics</p>
+    <p>A [DT::datatable()] of feature statistics</p>
     </div>
 
     <div id="ref-examples">
@@ -140,15 +140,15 @@ specifies how long the table can be per page.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 
