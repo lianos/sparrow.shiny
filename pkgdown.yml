@@ -1,6 +1,6 @@
-pandoc: 3.6.3
+pandoc: 3.6.4
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   sparrow-shiny: sparrow-shiny.html
-last_built: 2025-04-20T11:07Z
+last_built: 2025-04-21T11:06Z
