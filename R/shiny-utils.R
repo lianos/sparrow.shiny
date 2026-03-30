@@ -91,21 +91,31 @@ renderGseaResultTableDataTable <- function(x, method, mg, digits = 3) {
 
   x <- setDT(copy(x))
 
-  rcols <- c('collection'='collection', 'name'='name', 'n'='n',
-             ## 'padj'='padj', 'padj.by.collection'='padjByColl',
-             'pval'='pval',
-             'padj.by.collection'='FDR',
-             'mean.logFC.trim'='logFC', 'n.sig.up'='nSigUp',
-             'n.sig.down'='nSigDown', 'n.up'='nUp', 'n.down'='nDown')
-
+  rcols <- c(
+    'collection' = 'collection',
+    'name' = 'name', 
+    'n' = 'n',
+    ## 'padj'='padj', 'padj.by.collection'='padjByColl',
+    "NES" = "NES",
+    'mean.logFC.trim' = 'logFC', 
+    'pval' = 'pval',
+    'padj.by.collection' = 'FDR',
+    'n.sig.up' =  'nSigUp',
+    'n.sig.down' = 'nSigDown' #, 
+    # 'n.up' = 'nUp',
+    # 'n.down' =  'nDown'
+  )
+  
+  rcols <- rcols[names(rcols) %in% names(x)]
   res <- x[, names(rcols), with=FALSE]
   setnames(res, names(rcols), rcols)
 
   # silence R CMD check notes from data.table NSE mojo
   name <- collection <- NULL
+  levels(res$collection) <- htmltools::htmlEscape(levels(res$collection))
   res[, name := {
     url <- sparrow::geneSetURL(mg, as.character(collection), name)
-    xname <- gsub('_', ' ', name)
+    xname <- htmltools::htmlEscape(gsub('_', ' ', name))
     html <- '<a href="%s" target="_blank">%s</a>'
     ifelse(is.na(url), xname, sprintf(html, url, xname))
   }]
