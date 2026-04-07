@@ -54,6 +54,25 @@ geneSetContrastView <- function(input, output, session, src,
     geneSetSelect, 'gs_select', src, server = server,
     maxOptions = maxOptions, sep = sep)
 
+  # update available view options from the gsea methods ran in `src`
+  shiny::observe({
+    src. <- src()
+    opts <- NULL
+    if (is(src., "SparrowResultContainer")) {
+      opts <- c("density", "boxplot")
+      if ("fgsea" %in% src.$methods) {
+        opts <- c("gsea", opts)
+      }
+    }
+    sel <- intersect(input$gs_viz_type, opts)
+    if (length(sel) != 1L) sel <- opts[1L]
+    shiny::updateSelectInput(
+      session,
+      "gs_viz_type",
+      choices = opts,
+      selected = sel
+    )
+  }) |> shiny::bindEvent(src())
   plt <- shiny::reactive({
     coll <- shiny::req(gs()$collection)
     name <- shiny::req(gs()$name)
@@ -138,8 +157,12 @@ geneSetContrastViewUI <- function(id, height="590px", width="400px") {
             shiny::fluidRow(
               shiny::column(
                 8,
-                shiny::selectInput(ns("gs_viz_type"), NULL,
-                                   c('boxplot', 'density'), 'density')),
+                shiny::selectInput(
+                  ns("gs_viz_type"),
+                  label = NULL,
+                  choices = c('boxplot', 'density'),
+                  selected = 'density')
+              ),
               shiny::column(
                 4,
                 shiny::selectInput(ns("gs_viz_stat"), NULL,
