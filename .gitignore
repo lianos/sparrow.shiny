@@ -5,3 +5,4 @@
 docs
 *.Rproj
 .positai
+*.devcontainer/*
