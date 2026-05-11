@@ -12,6 +12,8 @@
 #' @param x A `SparrowResult` object, or path to one as an *.rds. If
 #'   missing, the shiny app will load without a `SparrowResult` object
 #'   to explore, and the user can upload one into the app.
+#' @param ... Additional arguments forwarded to [shiny::runApp()] (e.g.
+#'   `host`, `port`, `launch.browser`).
 #' @return Returns the result from a call to [shiny::runApp()].
 #' @examples
 #' # vm <- sparrow::exampleExpressionSet()
@@ -21,12 +23,12 @@
 #' if (interactive()) {
 #'   explore(sr)
 #' }
-explore <- function(x) {
+explore <- function(x, ...) {
   if (!missing(x)) {
     if (is.character(x)) x <- readRDS(x)
     assert_class(x, 'SparrowResult')
     options(EXPLORE_SPARROW_RESULT = x)
     on.exit(options(EXPLORE_SPARROW_RESULT = NULL))
   }
-  shiny::runApp(system.file("shiny", package = "sparrow.shiny"))
+  shiny::runApp(system.file("shiny", package = "sparrow.shiny"), ...)
 }

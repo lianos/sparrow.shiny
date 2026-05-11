@@ -43,12 +43,18 @@ mgResultFilter <- function(input, output, session, src) {
   output$gseaDownloadStats <- shiny::downloadHandler(
     filename = function() {
       sprintf('sparrow-gsea-statistics-%s.csv',
-              shiny::isolate(input$gseaMethod))
+              shiny::req(input$gseaMethod))
     },
     content = function(file) {
-      utils::write.csv(
-        sparrow::result(src()$sr, shiny::isolate(input$gseaMethod)),
-        file, row.names = FALSE)
+      method <- shiny::req(input$gseaMethod)
+      res <- as.data.frame(sparrow::result(src()$sr, method))
+      list_cols <- vapply(res, is.list, logical(1))
+      if (any(list_cols)) {
+        res[list_cols] <- lapply(res[list_cols], function(col) {
+          vapply(col, function(x) paste(x, collapse = ";"), character(1))
+        })
+      }
+      utils::write.csv(res, file, row.names = FALSE)
     }
   )
 
