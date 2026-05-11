@@ -45,7 +45,7 @@ SparrowResultContainer <- function(x) {
       out <- character()
     } else {
       # I am biased and prefer to show these methods first, if available
-      pref <- c('camera', 'cameraPR', 'fgsea',
+      pref <- c('fgsea', 'cameraPR', 'camera', 
                 'ora', 'ora.up', 'ora.down',
                 'goseq', 'goseq.up', 'goseq.down')
       pref <- pref[pref %in% tmp]

@@ -121,7 +121,9 @@ renderGseaResultTableDataTable <- function(x, method, mg, digits = 3) {
   }]
 
   dt.order <- list()
-  lfc.col <- which(colnames(res) == 'logFC') - 1L
+  # default order by NES if present, otherwise logFC
+  order.col <- intersect(c("NES", "logFC"), colnames(res))[1L]
+  lfc.col <- which(colnames(res) == order.col) - 1L
   dt.order[[length(dt.order) + 1L]] <- list(lfc.col, 'desc')
 
   length.opts <- c(10, 20, 50, 100, 250)

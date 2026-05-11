@@ -1,10 +1,10 @@
 Package: sparrow.shiny
 Type: Package
 Title: Provides shiny modules to visualize sparrow results
-Version: 0.99.6
+Version: 0.99.8
 Authors@R: c(
     person("Steve", "Lianoglou", , "slianoglou@gmail.com", c("aut", "cre")),
-    person("Denali Therapeutics", role = c("cph", "fnd"), comment = "2018+"),
+    person("Denali Therapeutics", role = c("cph", "fnd"), comment = "2018-2022"),
     person("Genentech", role = c("cph", "fnd"), comment = "2014 - 2017"))
 Description: Provides shiny modules that used to visualize and interact with
     gene set enrichment analyses performed by the sparrow package. A

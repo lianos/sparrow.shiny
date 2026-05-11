@@ -7,3 +7,5 @@
 ^\.travis\.yml$
 ^\.github$
 ^LICENSE\.md$
+^\.positai$
+^\.claude$
